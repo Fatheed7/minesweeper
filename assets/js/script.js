@@ -1,6 +1,16 @@
 const gameArea = document.getElementById("game-area");
 
-function gameType(rows, cols) {
+window.addEventListener(
+  "contextmenu",
+  function (e) {
+    rightClick();
+    leftClick();
+    e.preventDefault();
+  },
+  false
+);
+
+function newGame(rows, cols) {
   gameSize(rows, cols);
   applyStyle(rows, cols);
 }
@@ -27,4 +37,16 @@ function gameSize(rows, cols) {
 
 function clearGame() {
   gameArea.innerHTML = "";
+}
+
+function rightClick() {
+  $(document).on("contextmenu", ".ms-cell", function () {
+    $(this).text("Boo!");
+  });
+}
+
+function leftClick() {
+  $(document).on("click", ".ms-cell", function () {
+    $(this).text("Ahh!");
+  });
 }
