@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+table {
+  border: 1px solid black;
+}
+
+.buttons {
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+  margin-bottom: 20px;
+}
+#game-area {
+  display: grid;
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+  margin: auto;
+}
+
+.ms-cell {
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.beginner {
+  --grid-rows: 9;
+  --grid-cols: 9;
+  width: 30%;
+}
+
+.intermediate {
+  --grid-rows: 16;
+  --grid-cols: 16;
+  width: 50%;
+}
+
+.expert {
+  --grid-rows: 30;
+  --grid-cols: 16;
+  width: 70%;
+}
