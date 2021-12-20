@@ -23,7 +23,7 @@ function gameSize(rows, cols) {
   clearGame();
   for (square = 0; square < rows * cols; square++) {
     let squareInner = document.createElement("div");
-    gameArea.appendChild(squareInner).className = "ms-cell";
+    gameArea.appendChild(squareInner).className = "ms-cell untouched";
   }
 }
 
@@ -52,7 +52,7 @@ function generateBombs(rows, cols) {
     ? (numOfBombs = 99)
     : "Test";
 
-  const locOfBombs = new Set();
+  var locOfBombs = new Set();
   while (locOfBombs.size !== numOfBombs) {
     locOfBombs.add(Math.floor(Math.random() * (rows * cols)) + 1);
   }
@@ -60,6 +60,8 @@ function generateBombs(rows, cols) {
   for (loc of locOfBombs) {
     $(".ms-cell:nth-of-type(" + loc + "").text("💣");
   }
+
+  $("#bombNo").text(numOfBombs);
 }
 
 function rightClick() {
@@ -71,9 +73,11 @@ function rightClick() {
 function leftClick() {
   $(document).on("click", ".ms-cell", function () {
     if ($(this).is(':contains("💣")')) {
-      $(this).text("Boom!");
+      $(this).text("💥");
     } else {
-      $(this).text("Test!");
+      $(this).text("");
+      this.classList.remove("untouched");
+      this.classList.add("empty-cell");
     }
   });
 }
