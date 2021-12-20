@@ -1,10 +1,13 @@
 const gameArea = document.getElementById("game-area");
 
+$("document").ready(function () {
+  rightClick();
+  leftClick();
+});
+
 window.addEventListener(
   "contextmenu",
   function (e) {
-    rightClick();
-    leftClick();
     e.preventDefault();
   },
   false
@@ -67,6 +70,10 @@ function rightClick() {
 
 function leftClick() {
   $(document).on("click", ".ms-cell", function () {
-    $(this).text("Test!");
+    if ($(this).is(':contains("💣")')) {
+      $(this).text("Boom!");
+    } else {
+      $(this).text("Test!");
+    }
   });
 }
