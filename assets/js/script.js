@@ -30,7 +30,6 @@ function gameSize(rows, cols) {
   clearGame();
   for (square = 0; square < rows * cols; square++) {
     let squareInner = document.createElement("div");
-    squareInner.innerText = square + 1;
     gameArea.appendChild(squareInner).className = "ms-cell";
   }
 }
@@ -41,12 +40,12 @@ function clearGame() {
 
 function rightClick() {
   $(document).on("contextmenu", ".ms-cell", function () {
-    $(this).text("Boo!");
+    $(this).text("🚩");
   });
 }
 
 function leftClick() {
   $(document).on("click", ".ms-cell", function () {
-    $(this).text("Ahh!");
+    $(this).text("Test!");
   });
 }
