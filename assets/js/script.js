@@ -1,4 +1,5 @@
 const gameArea = document.getElementById("game-area");
+let bombCells;
 
 $("document").ready(function () {
   rightClick();
@@ -51,17 +52,28 @@ function generateBombs(rows, cols) {
     : rows == 30 && cols == 16
     ? (numOfBombs = 99)
     : "Test";
-
-  var locOfBombs = new Set();
-  while (locOfBombs.size !== numOfBombs) {
-    locOfBombs.add(Math.floor(Math.random() * (rows * cols)) + 1);
-  }
-
-  for (loc of locOfBombs) {
-    $(".ms-cell:nth-of-type(" + loc + "").text("💣");
-  }
-
   $("#bombNo").text(numOfBombs);
+  locOfBombs(numOfBombs, rows, cols);
+}
+
+function locOfBombs(numOfBombs, rows, cols) {
+  bombCells = new Set();
+
+  while (bombCells.size !== numOfBombs) {
+    bombCells.add(Math.floor(Math.random() * (rows * cols)) + 1);
+  }
+
+  checkForBomb(bombCells);
+}
+function checkForBomb(cellNumber) {
+  console.log(bombCells);
+  if (bombCells.has(cellNumber)) {
+    for (bomb of bombCells) {
+      $(".ms-cell:nth-of-type(" + bomb + "").text("💥");
+    }
+  } else {
+    return true;
+  }
 }
 
 function rightClick() {
@@ -72,9 +84,7 @@ function rightClick() {
 
 function leftClick() {
   $(document).on("click", ".ms-cell", function () {
-    if ($(this).is(':contains("💣")')) {
-      $(this).text("💥");
-    } else {
+    if (checkForBomb($(this).index() + 1)) {
       $(this).text("");
       this.classList.remove("untouched");
       this.classList.add("empty-cell");
