@@ -1,9 +1,11 @@
 const gameArea = document.getElementById("game-area");
-let bombCells;
+let adjacent = 0;
+const bombCells = [];
+let gameWidth;
 
 $("document").ready(function () {
-  rightClick();
   leftClick();
+  rightClick();
 });
 
 window.addEventListener(
@@ -17,15 +19,27 @@ window.addEventListener(
 function newGame(rows, cols) {
   gameSize(rows, cols);
   applyStyle(rows, cols);
-  generateBombs(rows, cols);
 }
 
 function gameSize(rows, cols) {
   clearGame();
-  for (square = 0; square < rows * cols; square++) {
-    let squareInner = document.createElement("div");
-    gameArea.appendChild(squareInner).className = "ms-cell untouched";
+  const gameBoard = [];
+  for (let x = 0; x < rows; x++) {
+    const row = [];
+    for (let y = 0; y < cols; y++) {
+      let squareInner = document.createElement("div");
+      gameArea.appendChild(squareInner).className = "ms-cell untouched";
+
+      const cell = {
+        x,
+        y,
+      };
+      row.push(cell);
+    }
+    gameBoard.push(row);
   }
+  console.log(gameBoard);
+  return gameBoard;
 }
 
 function clearGame() {
@@ -34,40 +48,40 @@ function clearGame() {
 
 function applyStyle(rows, cols) {
   gameArea.classList.remove("beginner", "intermediate", "expert");
-  rows == 9 && cols == 9
-    ? gameArea.classList.add("beginner")
-    : rows == 16 && cols == 16
-    ? gameArea.classList.add("intermediate")
-    : rows == 30 && cols == 16
-    ? gameArea.classList.add("expert")
-    : "Test";
-}
-
-function generateBombs(rows, cols) {
-  let numOfBombs = 0;
-  rows == 9 && cols == 9
-    ? (numOfBombs = 10)
-    : rows == 16 && cols == 16
-    ? (numOfBombs = 40)
-    : rows == 30 && cols == 16
-    ? (numOfBombs = 99)
-    : "Test";
-  $("#bombNo").text(numOfBombs);
-  locOfBombs(numOfBombs, rows, cols);
+  if (rows == 9 && cols == 9) {
+    gameArea.classList.add("beginner");
+    gameWidth = cols;
+  } else if (rows == 16 && cols == 16) {
+    gameArea.classList.add("intermediate");
+    gameWidth = cols;
+  } else if (rows == 16 && cols == 30) {
+    gameArea.classList.add("expert");
+    gameWidth = cols;
+  }
 }
 
 function locOfBombs(numOfBombs, rows, cols) {
-  bombCells = new Set();
-
-  while (bombCells.size !== numOfBombs) {
-    bombCells.add(Math.floor(Math.random() * (rows * cols)) + 1);
+  while (bombCells.length < numOfBombs) {
+    const cell = {
+      x: Math.floor(Math.random() * rows),
+      y: Math.floor(Math.random() * cols),
+    };
+    if (!bombCells.some((bomb) => cellMatch(bomb, cell))) {
+      bombCells.push(cell);
+    }
   }
-
-  checkForBomb(bombCells);
-}
-function checkForBomb(cellNumber) {
   console.log(bombCells);
-  if (bombCells.has(cellNumber)) {
+
+  //checkForBomb(bombCells);
+  return bombCells;
+}
+
+function cellMatch(x, y) {
+  return x.x === y.x && y.x === y.y;
+}
+
+function checkForBomb(cellNumber) {
+  if (bombCells.includes(cellNumber)) {
     for (bomb of bombCells) {
       $(".ms-cell:nth-of-type(" + bomb + "").text("💥");
     }
@@ -75,6 +89,21 @@ function checkForBomb(cellNumber) {
     return true;
   }
 }
+
+/*
+function adjacentBombs(cellNumber) {
+  adjacent = 0;
+  bombCells.has(cellNumber + 1)
+    ? adjacent++
+    : bombCells.has(cellNumber - 1)
+    ? adjacent++
+    : bombCells.has(cellNumber + 9)
+    ? adjacent++
+    : bombCells.has(cellNumber - 9)
+    ? adjacent++
+    : "Test";
+}
+*/
 
 function rightClick() {
   $(document).on("contextmenu", ".ms-cell", function () {
@@ -84,10 +113,12 @@ function rightClick() {
 
 function leftClick() {
   $(document).on("click", ".ms-cell", function () {
-    if (checkForBomb($(this).index() + 1)) {
-      $(this).text("");
-      this.classList.remove("untouched");
-      this.classList.add("empty-cell");
-    }
+    let cellClicked = $(this).index();
+    console.log(
+      "X = " +
+        Math.floor(cellClicked / gameWidth) +
+        " Y = " +
+        Math.floor(cellClicked % gameWidth)
+    );
   });
 }
