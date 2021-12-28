@@ -1,6 +1,5 @@
 const gameArea = document.getElementById("game-area");
-let adjacent = 0;
-const bombCells = [];
+let bombCells = [];
 let gameWidth;
 
 $("document").ready(function () {
@@ -38,7 +37,6 @@ function gameSize(rows, cols) {
     }
     gameBoard.push(row);
   }
-  console.log(gameBoard);
   return gameBoard;
 }
 
@@ -51,18 +49,24 @@ function applyStyle(rows, cols) {
   if (rows == 9 && cols == 9) {
     gameArea.classList.add("beginner");
     gameWidth = cols;
+    bombCells = [];
+    locOfBombs(10, rows, cols);
   } else if (rows == 16 && cols == 16) {
     gameArea.classList.add("intermediate");
     gameWidth = cols;
+    bombCells = [];
+    locOfBombs(40, rows, cols);
   } else if (rows == 16 && cols == 30) {
     gameArea.classList.add("expert");
     gameWidth = cols;
+    bombCells = [];
+    locOfBombs(99, rows, cols);
   }
 }
 
 function locOfBombs(numOfBombs, rows, cols) {
   while (bombCells.length < numOfBombs) {
-    const cell = {
+    let cell = {
       x: Math.floor(Math.random() * rows),
       y: Math.floor(Math.random() * cols),
     };
@@ -80,45 +84,43 @@ function cellMatch(x, y) {
   return x.x === y.x && y.x === y.y;
 }
 
-function checkForBomb(cellNumber) {
-  if (bombCells.includes(cellNumber)) {
-    for (bomb of bombCells) {
-      $(".ms-cell:nth-of-type(" + bomb + "").text("💥");
-    }
-  } else {
-    return true;
-  }
-}
-
-/*
-function adjacentBombs(cellNumber) {
-  adjacent = 0;
-  bombCells.has(cellNumber + 1)
-    ? adjacent++
-    : bombCells.has(cellNumber - 1)
-    ? adjacent++
-    : bombCells.has(cellNumber + 9)
-    ? adjacent++
-    : bombCells.has(cellNumber - 9)
-    ? adjacent++
-    : "Test";
-}
-*/
-
 function rightClick() {
   $(document).on("contextmenu", ".ms-cell", function () {
     $(this).text("🚩");
   });
 }
 
-function leftClick() {
+function leftClick(thisCell) {
   $(document).on("click", ".ms-cell", function () {
     let cellClicked = $(this).index();
-    console.log(
-      "X = " +
-        Math.floor(cellClicked / gameWidth) +
-        " Y = " +
-        Math.floor(cellClicked % gameWidth)
+    this.classList.remove("untouched");
+    this.classList.add("empty-cell");
+    let thisCell = cellCoords(cellClicked);
+
+    let isMine = bombCells.some(
+      (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
     );
+    if (isMine) {
+      revealBombs();
+    } else surroundingCells();
   });
 }
+
+function cellCoords(cellClicked) {
+  let xCell = Math.floor(cellClicked / gameWidth);
+  let yCell = Math.floor(cellClicked % gameWidth);
+  return { x: xCell, y: yCell };
+}
+
+function revealBombs() {
+  let convertedCells = [];
+  for (let i = 0; i < bombCells.length; i++) {
+    let number = bombCells[i].x * gameWidth + (bombCells[i].y + 1);
+    convertedCells.push(number);
+  }
+  for (cell of convertedCells) {
+    $(".ms-cell:nth-of-type(" + cell + "").text("💥");
+  }
+}
+
+function surroundingCells() {}
