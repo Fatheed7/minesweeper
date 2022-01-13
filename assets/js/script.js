@@ -1,6 +1,7 @@
 const gameArea = document.getElementById("game-area");
 let bombCells = [];
 let gameWidth;
+let bombCount = 0;
 
 $("document").ready(function () {
   leftClick();
@@ -122,7 +123,7 @@ function locOfBombs(numOfBombs, rows, cols) {
     }
   }
   console.log(bombCells);
-
+  document.getElementById("bombNo").innerHTML = numOfBombs;
   //checkForBomb(bombCells);
   return bombCells;
 }
@@ -158,11 +159,10 @@ function leftClick() {
     this.classList.remove("untouched");
     this.classList.add("empty-cell");
     let thisCell = cellCoords(cellClicked);
-
-    let isMine = bombCells.some(
+    let isBomb = bombCells.some(
       (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
     );
-    if (isMine) {
+    if (isBomb) {
       revealBombs();
     } else surroundingCells(cellClicked);
   });
@@ -175,6 +175,14 @@ function cellCoords(cellClicked) {
   let xCell = Math.floor(cellClicked / gameWidth);
   let yCell = Math.floor(cellClicked % gameWidth);
   return { x: xCell, y: yCell };
+}
+
+function convertCoords(cellClicked) {
+  let cell =
+    Math.floor(cellClicked.x * gameWidth) +
+    Math.floor(cellClicked.y % gameWidth) +
+    1;
+  return cell;
 }
 
 /**
@@ -191,27 +199,73 @@ function revealBombs() {
   }
 }
 
+function surroundingBombCheck(xCell, yCell) {
+  let isBomb = bombCells.some((bomb) => bomb.x == xCell && bomb.y == yCell);
+  if (isBomb) {
+    bombCount++;
+  }
+}
+
 /**
  * This function checks the surrounding cells for any mines present.
  */
 function surroundingCells(cellClicked) {
-  console.log(cellClicked);
-  // Check if cellClicked is a corner cell
+  let thisCell = cellCoords(cellClicked);
+
   if (
+    // Check if cellClicked is a corner cell
     cellClicked == 0 ||
     cellClicked == 8 ||
     cellClicked == 72 ||
     cellClicked == 80
   ) {
-    // Check if cellClicked is in the top row
   } else if (cellClicked < gameWidth) {
-    // Check if cellClicked is in the bottom row
+    // Check if cellClicked is in the top row
+    bombCount = 0;
+    surroundingBombCheck(thisCell.x, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x, thisCell.y + 1);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
   } else if (cellClicked / gameWidth >= 8) {
-    // Check if cellClicked is in the left column
+    // Check if cellClicked is in the bottom row
+    bombCount = 0;
+    surroundingBombCheck(thisCell.x, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x, thisCell.y + 1);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
   } else if (cellClicked % gameWidth == 0) {
-    // Check if cellClicked is in the right column
+    // Check if cellClicked is in the left column
+    bombCount = 0;
+    surroundingBombCheck(thisCell.x - 1, thisCell.y);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
+    surroundingBombCheck(thisCell.x, thisCell.y + 1);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
   } else if (cellClicked % gameWidth == 8) {
-    // Else cell must be in the inner part of the grid
+    // Check if cellClicked is in the right column
+    bombCount = 0;
+    surroundingBombCheck(thisCell.x - 1, thisCell.y);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
   } else {
+    // Else cell must be in the inner part of the grid
+    bombCount = 0;
+    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y);
+    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
+    surroundingBombCheck(thisCell.x, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x, thisCell.y + 1);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y);
+    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
   }
 }
