@@ -26,6 +26,7 @@ window.addEventListener(
  * @param rows The number of rows required for the game.
  * @param cols The number of columns required for the game.
  */
+
 function newGame(rows, cols) {
   gameSize(rows, cols);
   applyStyle(rows, cols);
