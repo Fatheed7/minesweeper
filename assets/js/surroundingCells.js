@@ -1,7 +1,7 @@
 /**
  * This function checks the surrounding cells for any mines present.
  */
-export function surroundingCells(cellClicked) {
+export default function surroundingCells(cellClicked) {
   let thisCell = cellCoords(cellClicked);
 
   if (
