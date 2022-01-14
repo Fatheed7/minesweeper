@@ -1,4 +1,4 @@
-import surroundingCells from "./surroundingCells";
+import surroundingCells from "./surroundingCells.js";
 
 const gameArea = document.getElementById("game-area");
 let bombCells = [];
