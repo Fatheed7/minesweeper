@@ -3,6 +3,7 @@ let bombCells = [];
 let gameWidth;
 let gameHeight;
 let bombCount = 0;
+let gameState = 1;
 
 $("document").ready(function () {
   leftClick();
@@ -28,6 +29,7 @@ window.addEventListener(
  */
 
 function newGame(rows, cols) {
+  gameState = 1;
   gameSize(rows, cols);
   applyStyle(rows, cols);
 }
@@ -146,7 +148,20 @@ function cellMatch(x, y) {
  */
 function rightClick() {
   $(document).on("contextmenu", ".ms-cell", function () {
-    $(this).text("🚩");
+    if (gameState == 0) {
+      return;
+    } else {
+      let number = $(this).text();
+      if ($(this).text() == "🚩") {
+        $(this).text("");
+      } else if ($(this).text() == "💥") {
+        return;
+      } else if ($.isNumeric(number)) {
+        return;
+      } else {
+        $(this).text("🚩");
+      }
+    }
   });
 }
 
@@ -160,16 +175,20 @@ function rightClick() {
  */
 function leftClick() {
   $(document).on("click", ".ms-cell", function () {
-    let cellClicked = $(this).index();
-    this.classList.remove("untouched");
-    this.classList.add("empty-cell");
-    let thisCell = cellCoords(cellClicked);
-    let isBomb = bombCells.some(
-      (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
-    );
-    if (isBomb) {
-      revealBombs();
-    } else surroundingCells(cellClicked);
+    if (gameState == 0) {
+      return;
+    } else {
+      let cellClicked = $(this).index();
+      this.classList.remove("untouched");
+      this.classList.add("empty-cell");
+      let thisCell = cellCoords(cellClicked);
+      let isBomb = bombCells.some(
+        (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
+      );
+      if (isBomb) {
+        revealBombs();
+      } else surroundingCells(cellClicked);
+    }
   });
 }
 
@@ -202,6 +221,7 @@ function revealBombs() {
   for (cell of convertedCells) {
     $(".ms-cell:nth-of-type(" + cell + "").text("💥");
   }
+  gameState = 0;
 }
 
 function surroundingBombCheck(xCell, yCell) {
