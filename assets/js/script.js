@@ -1,11 +1,13 @@
 const gameArea = document.getElementById("game-area");
 const flagNo = document.getElementById("flagNo");
 const bombNo = document.getElementById("bombNo");
+const gameOutcome = document.getElementById("gameOutcome");
 let bombCells = [];
 let gameWidth;
 let gameHeight;
 let bombCount = 0;
 let gameState = 1;
+let remainingCells = 0;
 
 $("document").ready(function () {
   leftClick();
@@ -32,6 +34,7 @@ window.addEventListener(
 
 function newGame(rows, cols) {
   gameState = 1;
+  document.getElementById("gameOutcome").innerHTML = "";
   gameSize(rows, cols);
   applyStyle(rows, cols);
 }
@@ -97,18 +100,21 @@ function applyStyle(rows, cols) {
     gameHeight = rows;
     gameWidth = cols;
     bombCells = [];
+    remainingCells = rows * cols - 10;
     locOfBombs(10, rows, cols);
   } else if (rows == 16 && cols == 16) {
     gameArea.classList.add("intermediate");
     gameHeight = rows;
     gameWidth = cols;
     bombCells = [];
+    remainingCells = rows * cols - 40;
     locOfBombs(40, rows, cols);
   } else if (rows == 16 && cols == 30) {
     gameArea.classList.add("expert");
     gameHeight = rows;
     gameWidth = cols;
     bombCells = [];
+    remainingCells = rows * cols - 99;
     locOfBombs(99, rows, cols);
   }
 }
@@ -188,6 +194,12 @@ function leftClick() {
       if ($(this).text() == "🚩") {
         flagNo.innerHTML++;
       }
+      if ($(this).hasClass("empty-cell")) {
+        return;
+      } else {
+        remainingCells--;
+      }
+      console.log(remainingCells);
       let cellClicked = $(this).index();
       this.classList.remove("untouched");
       this.classList.add("empty-cell");
@@ -197,7 +209,10 @@ function leftClick() {
       );
       if (isBomb) {
         revealBombs();
-      } else surroundingCells(cellClicked);
+      } else {
+        surroundingCells(cellClicked);
+      }
+      winCheck();
     }
   });
 }
@@ -326,5 +341,12 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x + 1, thisCell.y);
     surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+  }
+}
+
+function winCheck() {
+  if (remainingCells == 0) {
+    gameState = 0;
+    gameOutcome.innerHTML = "You win!";
   }
 }
