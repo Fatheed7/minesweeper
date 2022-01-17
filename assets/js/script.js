@@ -1,4 +1,6 @@
 const gameArea = document.getElementById("game-area");
+const flagNo = document.getElementById("flagNo");
+const bombNo = document.getElementById("bombNo");
 let bombCells = [];
 let gameWidth;
 let gameHeight;
@@ -130,7 +132,8 @@ function locOfBombs(numOfBombs, rows, cols) {
     }
   }
   console.log(bombCells);
-  document.getElementById("bombNo").innerHTML = numOfBombs;
+  bombNo.innerHTML = numOfBombs;
+  flagNo.innerHTML = numOfBombs;
   //checkForBomb(bombCells);
   return bombCells;
 }
@@ -150,16 +153,20 @@ function rightClick() {
   $(document).on("contextmenu", ".ms-cell", function () {
     if (gameState == 0) {
       return;
+    } else if (flagNo.innerHTML == 0) {
+      return;
     } else {
       let number = $(this).text();
       if ($(this).text() == "🚩") {
         $(this).text("");
+        flagNo.innerHTML++;
       } else if ($(this).text() == "💥") {
         return;
       } else if ($.isNumeric(number)) {
         return;
       } else {
         $(this).text("🚩");
+        flagNo.innerHTML--;
       }
     }
   });
@@ -178,6 +185,9 @@ function leftClick() {
     if (gameState == 0) {
       return;
     } else {
+      if ($(this).text() == "🚩") {
+        flagNo.innerHTML++;
+      }
       let cellClicked = $(this).index();
       this.classList.remove("untouched");
       this.classList.add("empty-cell");
@@ -222,6 +232,7 @@ function revealBombs() {
     $(".ms-cell:nth-of-type(" + cell + "").text("💥");
   }
   gameState = 0;
+  document.getElementById("gameOutcome").innerHTML = "You lose!";
 }
 
 function surroundingBombCheck(xCell, yCell) {

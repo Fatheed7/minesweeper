@@ -21,7 +21,9 @@ table {
   margin: auto;
 }
 
-#counter {
+#counter,
+#gameOutcome,
+#flagCounter {
   margin: auto;
   text-align: center;
 }
