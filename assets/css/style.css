@@ -25,6 +25,8 @@ table {
   grid-template-rows: repeat(var(--grid-rows), 1fr);
   grid-template-columns: repeat(var(--grid-cols), 1fr);
   margin: auto;
+  background: rgba(0, 0, 0, 0.7);
+  max-height: 80vh;
 }
 
 #counter,

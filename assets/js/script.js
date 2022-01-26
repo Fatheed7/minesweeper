@@ -34,9 +34,11 @@ window.addEventListener(
 
 function newGame(rows, cols) {
   gameState = 1;
-  document.getElementById("gameOutcome").innerHTML = "";
+  $("#gameOutcome").innerHTML = "";
   gameSize(rows, cols);
   applyStyle(rows, cols);
+  $("#counter").removeClass("d-none");
+  $("#flagCounter").removeClass("d-none");
 }
 
 /**
@@ -102,6 +104,7 @@ function applyStyle(rows, cols) {
     bombCells = [];
     remainingCells = rows * cols - 10;
     locOfBombs(10, rows, cols);
+    $("#game-area").removeClass("col-8").addClass("col-4");
   } else if (rows == 16 && cols == 16) {
     gameArea.classList.add("intermediate");
     gameHeight = rows;
@@ -109,6 +112,7 @@ function applyStyle(rows, cols) {
     bombCells = [];
     remainingCells = rows * cols - 40;
     locOfBombs(40, rows, cols);
+    $("#game-area").removeClass("col-8").addClass("col-4");
   } else if (rows == 16 && cols == 30) {
     gameArea.classList.add("expert");
     gameHeight = rows;
@@ -116,6 +120,7 @@ function applyStyle(rows, cols) {
     bombCells = [];
     remainingCells = rows * cols - 99;
     locOfBombs(99, rows, cols);
+    $("#game-area").removeClass("col-4").addClass("col-8");
   }
 }
 
