@@ -39,6 +39,7 @@ function newGame(rows, cols) {
   applyStyle(rows, cols);
   $("#counter").removeClass("d-none");
   $("#flagCounter").removeClass("d-none");
+  $("#gameOutcome").removeClass("d-none");
 }
 
 /**
