@@ -12,6 +12,7 @@ let remainingCells = 0;
 $("document").ready(function () {
   leftClick();
   rightClick();
+  $("#help").modal("show");
 });
 
 window.addEventListener(
