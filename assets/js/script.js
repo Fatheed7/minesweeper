@@ -46,6 +46,7 @@ function newGame(rows, cols) {
   $("#gameOutcome").innerHTML = "";
   gameSize(rows, cols);
   applyStyle(rows, cols);
+  timer = setInterval(gameTimer, 1000);
   secondCounter = -1;
   gameTimer();
   $("#counters").removeClass("d-none");
@@ -269,6 +270,7 @@ function revealBombs() {
   }
   gameState = 0;
   document.getElementById("gameOutcome").innerHTML = "You lose!";
+  clearInterval(timer);
 }
 
 function surroundingBombCheck(xCell, yCell) {
@@ -369,5 +371,6 @@ function winCheck() {
   if (remainingCells == 0) {
     gameState = 0;
     gameOutcome.innerHTML = "You win!";
+    clearInterval(timer);
   }
 }
