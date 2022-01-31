@@ -9,7 +9,7 @@ let bombCount = 0;
 let gameState = 1;
 let remainingCells = 0;
 let timer = setInterval(gameTimer, 1000);
-let secondCounter = 0;
+let secondCounter = -1;
 
 $("document").ready(function () {
   leftClick();
@@ -46,6 +46,7 @@ function newGame(rows, cols) {
   $("#gameOutcome").innerHTML = "";
   gameSize(rows, cols);
   applyStyle(rows, cols);
+  secondCounter = -1;
   gameTimer();
   $("#counters").removeClass("d-none");
   $("#gameOutcome").removeClass("d-none");
