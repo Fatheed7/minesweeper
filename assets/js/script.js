@@ -8,6 +8,8 @@ let gameHeight;
 let bombCount = 0;
 let gameState = 1;
 let remainingCells = 0;
+let timer = setInterval(gameTimer, 1000);
+let secondCounter = 0;
 
 $("document").ready(function () {
   leftClick();
@@ -22,6 +24,12 @@ window.addEventListener(
   },
   false
 );
+
+function gameTimer() {
+  ++secondCounter;
+  let seconds = secondCounter;
+  document.getElementById("gameTimer").innerHTML = seconds;
+}
 
 /**
  * This function is called by the buttons on the main page.
@@ -38,8 +46,8 @@ function newGame(rows, cols) {
   $("#gameOutcome").innerHTML = "";
   gameSize(rows, cols);
   applyStyle(rows, cols);
-  $("#counter").removeClass("d-none");
-  $("#flagCounter").removeClass("d-none");
+  gameTimer();
+  $("#counters").removeClass("d-none");
   $("#gameOutcome").removeClass("d-none");
 }
 
@@ -167,7 +175,12 @@ function rightClick() {
     if (gameState == 0) {
       return;
     } else if (flagNo.innerHTML == 0) {
-      return;
+      if ($(this).text() == "🚩") {
+        $(this).text("");
+        flagNo.innerHTML++;
+      } else {
+        return;
+      }
     } else {
       let number = $(this).text();
       if ($(this).text() == "🚩") {

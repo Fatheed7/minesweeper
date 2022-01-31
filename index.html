@@ -33,16 +33,22 @@
         Expert
       </button>
     </div>
-    <div class="d-none" id="counter">
-      Number of bombs: <span id="bombNo">0</span>
-    </div>
-    <div class="d-none" id="gameOutcome"></div>
-    <div class="d-none" id="flagCounter">
-      Flags Remaining: <span id="flagNo">0</span>
-    </div>
-    <br />
-    <div class="col-8" id="game-area"></div>
 
+    <div class="d-none" id="gameOutcome"></div>
+
+    <br />
+    <div class="row justify-content-md-center">
+      <div class="col-8" id="game-stats">
+        <div class="d-none" id="counters">
+          Number of bombs: <span id="bombNo">0</span> Flags Remaining:
+          <span id="flagNo">0</span>
+          Game Time:<span id="gameTimer">00:00:00</span>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-12" id="game-area"></div>
+    </div>
     <!-- Modal -->
     <div
       class="modal fade"
@@ -78,9 +84,11 @@
         </div>
       </div>
     </div>
+    <!-- The code for this button was taken from the following codepen - https://codepen.io/androidcss/pen/yOopGp -->
     <a href="" data-bs-toggle="modal" data-bs-target="#help" class="float">
       <i class="fa fa-question my-float"></i>
     </a>
+    <!--                                            End of Button code                                        -->
 
     <!--                                            JQuery Import                                          -->
     <script
