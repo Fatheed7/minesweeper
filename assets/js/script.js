@@ -8,7 +8,7 @@ let gameHeight;
 let bombCount = 0;
 let gameState = 1;
 let remainingCells = 0;
-let timer = setInterval(gameTimer, 1000);
+let timeCounter = "";
 let secondCounter = -1;
 
 $("document").ready(function () {
@@ -43,14 +43,15 @@ function gameTimer() {
 
 function newGame(rows, cols) {
   gameState = 1;
-  $("#gameOutcome").innerHTML = "";
   gameSize(rows, cols);
   applyStyle(rows, cols);
-  timer = setInterval(gameTimer, 1000);
+  clearInterval(timeCounter);
+  timeCounter = setInterval(gameTimer, 1000);
   secondCounter = -1;
   gameTimer();
   $("#counters").removeClass("d-none");
-  $("#gameOutcome").removeClass("d-none");
+  $("#gameOutcome").innerHTML = "";
+  $("#gameOutcome").addClass("d-none");
 }
 
 /**
@@ -269,8 +270,9 @@ function revealBombs() {
     $(".ms-cell:nth-of-type(" + cell + "").text("💥");
   }
   gameState = 0;
+  $("#gameOutcome").removeClass("d-none");
   document.getElementById("gameOutcome").innerHTML = "You lose!";
-  clearInterval(timer);
+  clearInterval(timeCounter);
 }
 
 function surroundingBombCheck(xCell, yCell) {
@@ -294,28 +296,29 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x, thisCell.y + 1);
     surroundingBombCheck(thisCell.x + 1, thisCell.y);
     surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
+    zeroCheck(thisCell);
   } else if (cellClicked == gameWidth - 1) {
     // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
     bombCount = 0;
     surroundingBombCheck(thisCell.x, thisCell.y - 1);
     surroundingBombCheck(thisCell.x + 1, thisCell.y);
     surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else if (cellClicked == gameWidth * (gameWidth - 1)) {
     // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
     bombCount = 0;
     surroundingBombCheck(thisCell.x - 1, thisCell.y);
     surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
     surroundingBombCheck(thisCell.x, thisCell.y + 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else if (cellClicked == gameWidth * gameHeight - 1) {
     // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
     bombCount = 0;
     surroundingBombCheck(thisCell.x - 1, thisCell.y);
     surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
     surroundingBombCheck(thisCell.x, thisCell.y - 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else if (cellClicked < gameWidth) {
     // Check if cellClicked is in the top row
     bombCount = 0;
@@ -324,7 +327,7 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
     surroundingBombCheck(thisCell.x + 1, thisCell.y);
     surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else if (cellClicked / gameWidth >= gameWidth - 1) {
     // Check if cellClicked is in the bottom row
     bombCount = 0;
@@ -333,7 +336,7 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
     surroundingBombCheck(thisCell.x - 1, thisCell.y);
     surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else if (cellClicked % gameWidth == 0) {
     // Check if cellClicked is in the left column
     bombCount = 0;
@@ -342,7 +345,7 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
     surroundingBombCheck(thisCell.x, thisCell.y + 1);
     surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else if (cellClicked % gameWidth == gameWidth - 1) {
     // Check if cellClicked is in the right column
     bombCount = 0;
@@ -351,7 +354,7 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
     surroundingBombCheck(thisCell.x, thisCell.y - 1);
     surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
   } else {
     // Else cell must be in the inner part of the grid
     bombCount = 0;
@@ -363,14 +366,23 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
     surroundingBombCheck(thisCell.x + 1, thisCell.y);
     surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + "").text(bombCount);
+    addNumberToCell(thisCell, bombCount);
+  }
+}
+
+function addNumberToCell(thisCell, bombCount) {
+  if (bombCount == 0) {
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell)).text("");
+  } else {
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell)).text(bombCount);
   }
 }
 
 function winCheck() {
   if (remainingCells == 0) {
     gameState = 0;
+    $("#gameOutcome").removeClass("d-none");
     gameOutcome.innerHTML = "You win!";
-    clearInterval(timer);
+    clearInterval(timeCounter);
   }
 }
