@@ -27,23 +27,33 @@ table {
   grid-template-rows: repeat(var(--grid-rows), 1fr);
   grid-template-columns: repeat(var(--grid-cols), 1fr);
   margin: auto;
-  background: rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
   max-height: 80vh;
+  max-height: 500px;
 }
 
-#counters,
+.transition {
+  transition: all 1s;
+}
+
+.counters,
 #gameOutcome,
 #flagCounter {
   margin: auto;
   text-align: center;
+  width: 100%;
 }
 
-#counters {
+.counters {
   background-color: rgb(173, 171, 171);
   min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .ms-cell {
@@ -66,7 +76,6 @@ table {
     inset -2px -2px 2px rgba(0, 0, 0, 0.4);
   box-shadow: inset 2px 2px 2px rgba(255, 255, 255, 0.4),
     inset -2px -2px 2px rgba(0, 0, 0, 0.4);
-  margin: 1px;
 }
 
 .empty-cell {
@@ -96,7 +105,7 @@ table {
   display: contents;
 }
 
-.float {
+.helpFloat {
   position: fixed;
   width: 60px;
   height: 60px;
@@ -109,7 +118,36 @@ table {
   box-shadow: 2px 2px 3px #999;
   font-size: 30px;
 }
+.motionFloat {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  left: 40px;
+  background-color: green;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  font-size: 30px;
+  margin-top: 30px;
+}
 
-.my-float {
+.float {
   margin-top: 15px;
+}
+
+#gameWrap {
+  background-color: rgb(105, 105, 105);
+  padding: 10px;
+  -webkit-box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.row > * {
+  padding-right: 0;
+  padding-left: 0;
 }

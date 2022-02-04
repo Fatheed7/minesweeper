@@ -10,6 +10,7 @@ let gameState = 1;
 let remainingCells = 0;
 let timeCounter = "";
 let secondCounter = -1;
+let motionToggle = 0;
 
 $("document").ready(function () {
   leftClick();
@@ -24,6 +25,10 @@ window.addEventListener(
   },
   false
 );
+
+function setWrapperWidth() {
+  $(".wrapper").css("min-width", $("#game-stats").scrollWidth);
+}
 
 function gameTimer() {
   ++secondCounter;
@@ -52,6 +57,10 @@ function newGame(rows, cols) {
   $("#counters").removeClass("d-none");
   $("#gameOutcome").innerHTML = "";
   $("#gameOutcome").addClass("d-none");
+  $(".counterContainer").removeClass("d-none");
+  $(".welcome").addClass("d-none");
+  $("#gameWrap").removeClass("d-none").fadeIn(400);
+  setWrapperWidth();
 }
 
 /**
@@ -117,7 +126,6 @@ function applyStyle(rows, cols) {
     bombCells = [];
     remainingCells = rows * cols - 10;
     locOfBombs(10, rows, cols);
-    $("#game-area").removeClass("col-8").addClass("col-4");
   } else if (rows == 16 && cols == 16) {
     gameArea.classList.add("intermediate");
     gameHeight = rows;
@@ -125,7 +133,6 @@ function applyStyle(rows, cols) {
     bombCells = [];
     remainingCells = rows * cols - 40;
     locOfBombs(40, rows, cols);
-    $("#game-area").removeClass("col-8").addClass("col-4");
   } else if (rows == 16 && cols == 30) {
     gameArea.classList.add("expert");
     gameHeight = rows;
@@ -133,7 +140,6 @@ function applyStyle(rows, cols) {
     bombCells = [];
     remainingCells = rows * cols - 99;
     locOfBombs(99, rows, cols);
-    $("#game-area").removeClass("col-4").addClass("col-8");
   }
 }
 
@@ -155,7 +161,6 @@ function locOfBombs(numOfBombs, rows, cols) {
       bombCells.push(cell);
     }
   }
-  console.log(bombCells);
   bombNo.innerHTML = numOfBombs;
   flagNo.innerHTML = numOfBombs;
   //checkForBomb(bombCells);
@@ -167,7 +172,7 @@ function locOfBombs(numOfBombs, rows, cols) {
  * @returns True if bomb coordinates are present within the array.
  */
 function cellMatch(x, y) {
-  return x.x === y.x && y.x === y.y;
+  return x.x === y.x && x.y === y.y;
 }
 
 /**
@@ -222,7 +227,6 @@ function leftClick() {
       } else {
         remainingCells--;
       }
-      console.log(remainingCells);
       let cellClicked = $(this).index();
       this.classList.remove("untouched");
       this.classList.add("empty-cell");
@@ -254,6 +258,11 @@ function convertCoords(cellClicked) {
     Math.floor(cellClicked.x * gameWidth) +
     Math.floor(cellClicked.y % gameWidth) +
     1;
+  return cell;
+}
+
+function convertCoordsBombCheck(xCell, yCell) {
+  let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth) + 1;
   return cell;
 }
 
@@ -297,7 +306,6 @@ function surroundingCells(cellClicked) {
     surroundingBombCheck(thisCell.x + 1, thisCell.y);
     surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
-    zeroCheck(thisCell);
   } else if (cellClicked == gameWidth - 1) {
     // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
     bombCount = 0;
@@ -372,9 +380,9 @@ function surroundingCells(cellClicked) {
 
 function addNumberToCell(thisCell, bombCount) {
   if (bombCount == 0) {
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell)).text("");
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text("");
   } else {
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell)).text(bombCount);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text(bombCount);
   }
 }
 
@@ -386,3 +394,15 @@ function winCheck() {
     clearInterval(timeCounter);
   }
 }
+
+$(".motionFloat").click(function () {
+  if (motionToggle == 0) {
+    $(this).css({ backgroundColor: "red" });
+    $("#game-area").removeClass("transition");
+    motionToggle = 1;
+  } else {
+    $(this).css({ backgroundColor: "green" });
+    $("#game-area").addClass("transition");
+    motionToggle = 0;
+  }
+});

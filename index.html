@@ -38,16 +38,22 @@
 
     <br />
     <div class="row justify-content-md-center">
-      <div class="col-8" id="game-stats">
-        <div class="d-none" id="counters">
-          Number of bombs: <span id="bombNo">0</span> Flags Remaining:
-          <span id="flagNo">0</span>
-          Game Time:<span id="gameTimer">00:00:00</span>
+      <div class="col-10" id="game-stats">
+        <div class="counters">
+          <div class="welcome">Please select a difficulty to get started!</div>
+          <div class="counterContainer d-none counters">
+            Number of bombs: <span id="bombNo">0</span> Flags Remaining:
+            <span id="flagNo">0</span>
+            Game Time:<span id="gameTimer">00:00:00</span>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="row justify-content-md-center">
-      <div class="col-12" id="game-area"></div>
+      <div class="col-10 d-none" id="gameWrap">
+        <div id="game-area" class="transition"></div>
+      </div>
     </div>
     <!-- Modal -->
     <div
@@ -85,15 +91,18 @@
       </div>
     </div>
     <!-- The code for this button was taken from the following codepen - https://codepen.io/androidcss/pen/yOopGp -->
-    <a href="" data-bs-toggle="modal" data-bs-target="#help" class="float">
-      <i class="fa fa-question my-float"></i>
+    <a href="" data-bs-toggle="modal" data-bs-target="#help" class="helpFloat">
+      <i class="fa fa-question float"></i>
     </a>
+    <button type="button" class="btn motionFloat">
+      <i class="fa fa-expand-arrows-alt"></i>
+    </button>
     <!--                                            End of Button code                                        -->
 
     <!--                                            JQuery Import                                          -->
     <script
-      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
       crossorigin="anonymous"
     ></script>
     <!--                                            End of JQuery Import                                          -->
