@@ -21,6 +21,9 @@ table {
   justify-content: space-evenly;
   align-content: center;
   margin-bottom: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 10px;
 }
 #game-area {
   display: grid;
@@ -32,10 +35,11 @@ table {
   box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
   max-height: 80vh;
   max-height: 500px;
+  background-color: black;
 }
 
 .transition {
-  transition: all 1s;
+  transition: all 2s;
 }
 
 .counters,
@@ -46,12 +50,16 @@ table {
   width: 100%;
 }
 
-.counters {
+.counters,
+.buttons {
   background-color: rgb(173, 171, 171);
   min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.counters {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
@@ -139,12 +147,10 @@ table {
 
 #gameWrap {
   background-color: rgb(105, 105, 105);
-  padding: 10px;
+  padding: 20px;
   -webkit-box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
   -moz-box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
   box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
 }
 
 .row > * {

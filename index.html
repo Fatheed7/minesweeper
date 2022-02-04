@@ -19,21 +19,9 @@
       crossorigin="anonymous"
     />
 
-    <title>Document</title>
+    <title>Minesweeper</title>
   </head>
   <body>
-    <div class="buttons">
-      <button type="button" class="btn btn-primary" onclick="newGame(9, 9)">
-        Beginner
-      </button>
-      <button type="button" class="btn btn-primary" onclick="newGame(16, 16)">
-        Intermediate
-      </button>
-      <button type="button" class="btn btn-primary" onclick="newGame(16, 30)">
-        Expert
-      </button>
-    </div>
-
     <div class="d-none" id="gameOutcome"></div>
 
     <br />
@@ -53,6 +41,29 @@
     <div class="row justify-content-md-center">
       <div class="col-10 d-none" id="gameWrap">
         <div id="game-area" class="transition"></div>
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-10" class="gameBottom">
+        <div class="buttons">
+          <button type="button" class="btn btn-primary" onclick="newGame(9, 9)">
+            Beginner
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="newGame(16, 16)"
+          >
+            Intermediate
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="newGame(16, 30)"
+          >
+            Expert
+          </button>
+        </div>
       </div>
     </div>
     <!-- Modal -->
