@@ -228,8 +228,8 @@ function leftClick() {
         remainingCells--;
       }
       let cellClicked = $(this).index();
-      this.classList.remove("untouched");
-      this.classList.add("empty-cell");
+      $(this).removeClass("untouched");
+      $(this).addClass("empty-cell");
       let thisCell = cellCoords(cellClicked);
       let isBomb = bombCells.some(
         (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
@@ -399,10 +399,12 @@ $(".motionFloat").click(function () {
   if (motionToggle == 0) {
     $(this).css({ backgroundColor: "red" });
     $("#game-area").removeClass("transition");
+    $(".modal").removeClass("fade");
     motionToggle = 1;
   } else {
     $(this).css({ backgroundColor: "green" });
     $("#game-area").addClass("transition");
+    $(".modal").addClass("fade");
     motionToggle = 0;
   }
 });
