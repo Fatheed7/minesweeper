@@ -63,6 +63,7 @@ table {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom: 1px solid;
+  font-family: "Press Start 2P", sans-serif;
 }
 
 .ms-cell {
@@ -159,6 +160,24 @@ table {
   padding-left: 0;
 }
 
-.gameBottom {
+#gameBottom {
   border-top: 1px solid;
+}
+
+#smallScreen {
+  border-radius: 20px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #smallScreen {
+    background-color: rgb(211, 211, 211);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 20px;
+    width: 75%;
+  }
 }
