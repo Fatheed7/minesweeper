@@ -59,7 +59,7 @@ function newGame(rows, cols) {
   $("#gameOutcome").addClass("d-none");
   $(".counterContainer").removeClass("d-none");
   $(".welcome").addClass("d-none");
-  $("#gameWrap").removeClass("d-none").fadeIn(400);
+  $("#gameWrap").removeClass("d-none");
   setWrapperWidth();
 }
 
