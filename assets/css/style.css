@@ -57,13 +57,13 @@ table {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  font-family: "Press Start 2P", sans-serif;
 }
 
 .counters {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom: 1px solid;
-  font-family: "Press Start 2P", sans-serif;
 }
 
 .ms-cell {
@@ -180,4 +180,13 @@ table {
     border-radius: 20px;
     width: 75%;
   }
+}
+
+.modal-dialog {
+  font-family: "Press Start 2P", sans-serif;
+  font-size: 14px;
+}
+
+.listSpacer {
+  padding-bottom: 20px;
 }
