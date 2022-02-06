@@ -39,7 +39,7 @@ function gameTimer() {
 }
 
 /**
- * This function is called by the buttons on the main page.
+ * Is called by the buttons on the main page.
  *
  * This function calls the gameSize function to generate the playing area, then calls
  * the applyStyle function to ensure the correct style is applied.
@@ -64,7 +64,7 @@ function newGame(rows, cols) {
 }
 
 /**
- * This function generates the game area when called from newGame
+ * Generates the game area when called from newGame
  *
  * The function first calls the clearGame function.
  *
@@ -102,14 +102,14 @@ function gameSize(rows, cols) {
 }
 
 /**
- * This function clears the gameArea of all HTML to ensure the right game size grid is displayed.
+ * Clears the gameArea of all HTML to ensure the right game size grid is displayed.
  */
 function clearGame() {
   gameArea.innerHTML = "";
 }
 
 /**
- * This function applies the required style to the game area, depending on which button is clicked.
+ * Applies the required style to the game area, depending on which button is clicked.
  *
  * All styles are initially removed, before the new style is applied.
  *
@@ -144,7 +144,7 @@ function applyStyle(rows, cols) {
 }
 
 /**
- * This function is called by applyStyle and populates the bombCells array
+ * Is called by applyStyle and populates the bombCells array
  * with unique bomb coordinates for all the bombs required in the game.
  * @param {*} numOfBombs The number of bombs within the game.
  * @param {*} rows The number of rows within the game.
@@ -168,7 +168,7 @@ function locOfBombs(numOfBombs, rows, cols) {
 }
 
 /**
- * This function checks if the generated bomb coordinates are present within the array.
+ * Checks if the generated bomb coordinates are present within the array.
  * @returns True if bomb coordinates are present within the array.
  */
 function cellMatch(x, y) {
@@ -176,7 +176,7 @@ function cellMatch(x, y) {
 }
 
 /**
- * This function detects the user right clicking on the game area and sets the cell content to a flag.
+ * Detects the user right clicking on the game area and sets the cell content to a flag.
  */
 function rightClick() {
   $(document).on("contextmenu", ".ms-cell", function () {
@@ -207,7 +207,7 @@ function rightClick() {
 }
 
 /**
- * This function detects the user left clicking on the game area and defines cellClicked as the cell number clicked.
+ * Detects the user left clicking on the game area and defines cellClicked as the cell number clicked.
  *
  * It then removes the  * class "untouched" and adds the class "empty-cell" the the cell clicked.
  *
@@ -245,7 +245,7 @@ function leftClick() {
 }
 
 /**
- * This function is given the number of the cell clicked and converts it to an X & Y coordinate
+ * Is given the number of the cell clicked and converts it to an X & Y coordinate
  */
 function cellCoords(cellClicked) {
   let xCell = Math.floor(cellClicked / gameWidth);
@@ -272,7 +272,7 @@ function clearAreaCheck(xCell, yCell) {
 }
 
 /**
- * This function reveals all bombs on the game grid.
+ * Reveals all bombs on the game grid.
  */
 function revealBombs() {
   let convertedCells = [];
@@ -305,7 +305,7 @@ function surroundingBombCheck() {
 }
 
 /**
- * This function checks the surrounding cells for any mines present.
+ * Checks the surrounding cells for any mines present.
  */
 function surroundingCells(cellClicked) {
   let thisCell = cellCoords(cellClicked);
@@ -402,84 +402,104 @@ function surroundingCells(cellClicked) {
 
 function addNumberToCell(thisCell, bombCount) {
   let cellClicked = clearAreaCheck(thisCell.x, thisCell.y);
-
+  console.log(thisCell);
+  console.log(checkedCells);
   if (bombCount == 0) {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text("");
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").removeClass(
-      "untouched"
-    );
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").addClass(
-      "empty-cell"
-    );
     if (
-      // Check if cellClicked is a top left corner (or Cell 0)
-      cellClicked == 0
+      $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").hasClass(
+        "untouched"
+      )
     ) {
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-    } else if (this == gameWidth - 1) {
-      // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-    } else if (cellClicked == gameWidth * (gameWidth - 1)) {
-      // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-    } else if (cellClicked == gameWidth * gameHeight - 1) {
-      // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-    } else if (cellClicked < gameWidth) {
-      // Check if cellClicked is in the top row
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-    } else if (cellClicked / gameWidth >= gameWidth - 1) {
-      // Check if cellClicked is in the bottom row
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-    } else if (cellClicked % gameWidth == 0) {
-      // Check if cellClicked is in the left column
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-    } else if (cellClicked % gameWidth == gameWidth - 1) {
-      // Check if cellClicked is in the right column
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
+      $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")")
+        .removeClass("untouched")
+        .addClass("empty-cell");
+    }
+    let isChecked = checkedCells.some(
+      (cell) => cell.x == thisCell.x && cell.y == thisCell.y
+    );
+    if (isChecked) {
+      return;
     } else {
-      // Else cell must be in the inner part of the grid
-      bombCount = 0;
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-      surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
+      if (
+        // Check if cellClicked is a top left corner (or Cell 0)
+        cellClicked == 0
+      ) {
+        bombCount = 0;
+        console.log("Problem with top left corner.");
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
+      } else if (this == gameWidth - 1) {
+        // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
+        bombCount = 0;
+        console.log("Problem with top right corner.");
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
+      } else if (cellClicked == gameWidth * (gameWidth - 1)) {
+        // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
+        bombCount = 0;
+        console.log("Problem with bottom left corner.");
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
+      } else if (cellClicked == gameWidth * gameHeight - 1) {
+        // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
+        bombCount = 0;
+        console.log("Problem with bottom right corner.");
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
+      } else if (cellClicked < gameWidth) {
+        // Check if cellClicked is in the top row
+        bombCount = 0;
+        console.log("Problem with top row.");
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
+      } else if (cellClicked / gameWidth >= gameWidth - 1) {
+        // Check if cellClicked is in the bottom row
+        bombCount = 0;
+        console.log("Problem with bottom row.");
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
+      } else if (cellClicked % gameWidth == 0) {
+        // Check if cellClicked is in the left column
+        bombCount = 0;
+        console.log("Problem with left column.");
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
+      } else if (cellClicked % gameWidth == gameWidth - 1) {
+        // Check if cellClicked is in the right column
+        bombCount = 0;
+        console.log("Problem with right column.");
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
+      } else {
+        // Else cell must be in the inner part of the grid
+        bombCount = 0;
+        console.log("Problem is within inner grid.");
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
+        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
+      }
     }
   } else {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text(bombCount);
@@ -492,7 +512,7 @@ function addNumberToCell(thisCell, bombCount) {
   }
   let x = thisCell.x;
   let y = thisCell.y;
-  cellsToCheck.push({ x, y });
+  cellsToCheck.push({ x: x, y: y });
   if (cellsToCheck.length == 0) {
     return;
   } else {
