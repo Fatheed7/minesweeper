@@ -291,7 +291,6 @@ function revealBombs() {
 
 function checkCells(x, y) {
   cellsToCheck.push({ x, y });
-  checkedCells.push({ x, y });
   surroundingBombCheck();
 }
 
@@ -310,85 +309,95 @@ function surroundingBombCheck() {
  */
 function surroundingCells(cellClicked) {
   let thisCell = cellCoords(cellClicked);
-  if (
-    // Check if cellClicked is a top left corner (or Cell 0)
-    cellClicked == 0
-  ) {
-    bombCount = 0;
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked == gameWidth - 1) {
-    // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
-    bombCount = 0;
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked == gameWidth * (gameWidth - 1)) {
-    // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
-    bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked == gameWidth * gameHeight - 1) {
-    // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
-    bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y - 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked < gameWidth) {
-    // Check if cellClicked is in the top row
-    bombCount = 0;
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked / gameWidth >= gameWidth - 1) {
-    // Check if cellClicked is in the bottom row
-    bombCount = 0;
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked % gameWidth == 0) {
-    // Check if cellClicked is in the left column
-    bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
-    addNumberToCell(thisCell, bombCount);
-  } else if (cellClicked % gameWidth == gameWidth - 1) {
-    // Check if cellClicked is in the right column
-    bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
-    addNumberToCell(thisCell, bombCount);
+  let isChecked = checkedCells.some(
+    (cell) => cell.x == thisCell.x && cell.y == thisCell.y
+  );
+  if (isChecked) {
+    return;
   } else {
-    // Else cell must be in the inner part of the grid
-    bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
-    addNumberToCell(thisCell, bombCount);
+    if (
+      // Check if cellClicked is a top left corner (or Cell 0)
+      cellClicked == 0
+    ) {
+      bombCount = 0;
+      checkCells(thisCell.x, thisCell.y + 1);
+      checkCells(thisCell.x + 1, thisCell.y);
+      checkCells(thisCell.x + 1, thisCell.y + 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked == gameWidth - 1) {
+      // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
+      bombCount = 0;
+      checkCells(thisCell.x, thisCell.y - 1);
+      checkCells(thisCell.x + 1, thisCell.y);
+      checkCells(thisCell.x + 1, thisCell.y - 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked == gameWidth * (gameWidth - 1)) {
+      // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
+      bombCount = 0;
+      checkCells(thisCell.x - 1, thisCell.y);
+      checkCells(thisCell.x - 1, thisCell.y + 1);
+      checkCells(thisCell.x, thisCell.y + 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked == gameWidth * gameHeight - 1) {
+      // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
+      bombCount = 0;
+      checkCells(thisCell.x - 1, thisCell.y);
+      checkCells(thisCell.x - 1, thisCell.y - 1);
+      checkCells(thisCell.x, thisCell.y - 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked < gameWidth) {
+      // Check if cellClicked is in the top row
+      bombCount = 0;
+      checkCells(thisCell.x, thisCell.y - 1);
+      checkCells(thisCell.x, thisCell.y + 1);
+      checkCells(thisCell.x + 1, thisCell.y - 1);
+      checkCells(thisCell.x + 1, thisCell.y);
+      checkCells(thisCell.x + 1, thisCell.y + 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked / gameWidth >= gameWidth - 1) {
+      // Check if cellClicked is in the bottom row
+      bombCount = 0;
+      checkCells(thisCell.x, thisCell.y - 1);
+      checkCells(thisCell.x, thisCell.y + 1);
+      checkCells(thisCell.x - 1, thisCell.y - 1);
+      checkCells(thisCell.x - 1, thisCell.y);
+      checkCells(thisCell.x - 1, thisCell.y + 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked % gameWidth == 0) {
+      // Check if cellClicked is in the left column
+      bombCount = 0;
+      checkCells(thisCell.x - 1, thisCell.y);
+      checkCells(thisCell.x + 1, thisCell.y);
+      checkCells(thisCell.x - 1, thisCell.y + 1);
+      checkCells(thisCell.x, thisCell.y + 1);
+      checkCells(thisCell.x + 1, thisCell.y + 1);
+      addNumberToCell(thisCell, bombCount);
+    } else if (cellClicked % gameWidth == gameWidth - 1) {
+      // Check if cellClicked is in the right column
+      bombCount = 0;
+      checkCells(thisCell.x - 1, thisCell.y);
+      checkCells(thisCell.x + 1, thisCell.y);
+      checkCells(thisCell.x - 1, thisCell.y - 1);
+      checkCells(thisCell.x, thisCell.y - 1);
+      checkCells(thisCell.x + 1, thisCell.y - 1);
+      addNumberToCell(thisCell, bombCount);
+    } else {
+      // Else cell must be in the inner part of the grid
+      bombCount = 0;
+      checkCells(thisCell.x - 1, thisCell.y - 1);
+      checkCells(thisCell.x - 1, thisCell.y);
+      checkCells(thisCell.x - 1, thisCell.y + 1);
+      checkCells(thisCell.x, thisCell.y - 1);
+      checkCells(thisCell.x, thisCell.y + 1);
+      checkCells(thisCell.x + 1, thisCell.y - 1);
+      checkCells(thisCell.x + 1, thisCell.y);
+      checkCells(thisCell.x + 1, thisCell.y + 1);
+      addNumberToCell(thisCell, bombCount);
+    }
   }
+  let x = thisCell.x;
+  let y = thisCell.y;
+  checkedCells.push({ x, y });
 }
 
 function addNumberToCell(thisCell, bombCount) {
@@ -396,6 +405,12 @@ function addNumberToCell(thisCell, bombCount) {
 
   if (bombCount == 0) {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text("");
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").removeClass(
+      "untouched"
+    );
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").addClass(
+      "empty-cell"
+    );
     if (
       // Check if cellClicked is a top left corner (or Cell 0)
       cellClicked == 0
@@ -404,28 +419,24 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (this == gameWidth - 1) {
       // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
       bombCount = 0;
       surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (cellClicked == gameWidth * (gameWidth - 1)) {
       // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
       bombCount = 0;
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
       surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (cellClicked == gameWidth * gameHeight - 1) {
       // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
       bombCount = 0;
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (cellClicked < gameWidth) {
       // Check if cellClicked is in the top row
       bombCount = 0;
@@ -434,7 +445,6 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (cellClicked / gameWidth >= gameWidth - 1) {
       // Check if cellClicked is in the bottom row
       bombCount = 0;
@@ -443,7 +453,6 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (cellClicked % gameWidth == 0) {
       // Check if cellClicked is in the left column
       bombCount = 0;
@@ -452,7 +461,6 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
       surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      addNumberToCell(thisCell, bombCount);
     } else if (cellClicked % gameWidth == gameWidth - 1) {
       // Check if cellClicked is in the right column
       bombCount = 0;
@@ -461,7 +469,6 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-      addNumberToCell(thisCell, bombCount);
     } else {
       // Else cell must be in the inner part of the grid
       bombCount = 0;
@@ -473,10 +480,15 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      addNumberToCell(thisCell, bombCount);
     }
   } else {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text(bombCount);
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").removeClass(
+      "untouched"
+    );
+    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").addClass(
+      "empty-cell"
+    );
   }
   let x = thisCell.x;
   let y = thisCell.y;
