@@ -392,12 +392,11 @@ function surroundingCells(cellClicked) {
 }
 
 function addNumberToCell(thisCell, bombCount) {
-  let cellClicked = clearAreaCheck(clearAreaCheck(thisCell));
-  console.log(cellClicked);
+  let cellClicked = clearAreaCheck(thisCell.x, thisCell.y);
 
   if (bombCount == 0) {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text("");
-    /* if (
+    if (
       // Check if cellClicked is a top left corner (or Cell 0)
       cellClicked == 0
     ) {
@@ -475,7 +474,7 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
       addNumberToCell(thisCell, bombCount);
-    } */
+    }
   } else {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text(bombCount);
   }
