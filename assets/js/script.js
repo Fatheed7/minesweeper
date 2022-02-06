@@ -11,6 +11,7 @@ let remainingCells = 0;
 let timeCounter = "";
 let secondCounter = -1;
 let motionToggle = 0;
+let cellsToCheck = [];
 
 $("document").ready(function () {
   leftClick();
@@ -284,11 +285,19 @@ function revealBombs() {
   clearInterval(timeCounter);
 }
 
-function surroundingBombCheck(xCell, yCell) {
-  let isBomb = bombCells.some((bomb) => bomb.x == xCell && bomb.y == yCell);
-  if (isBomb) {
-    bombCount++;
-  }
+function surroundingBombCheck() {
+  cellsToCheck.forEach(({ x, y }) => {
+    let isBomb = bombCells.some((bomb) => bomb.x == x && bomb.y == y);
+    if (isBomb) {
+      bombCount++;
+    }
+    cellsToCheck.pop([0]);
+  });
+}
+
+function checkCells(x, y) {
+  cellsToCheck.push({ x, y });
+  surroundingBombCheck();
 }
 
 /**
@@ -302,78 +311,78 @@ function surroundingCells(cellClicked) {
     cellClicked == 0
   ) {
     bombCount = 0;
-    surroundingBombCheck(thisCell.x, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked == gameWidth - 1) {
     // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
     bombCount = 0;
-    surroundingBombCheck(thisCell.x, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked == gameWidth * (gameWidth - 1)) {
     // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
     bombCount = 0;
-    surroundingBombCheck(thisCell.x - 1, thisCell.y);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked == gameWidth * gameHeight - 1) {
     // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
     bombCount = 0;
-    surroundingBombCheck(thisCell.x - 1, thisCell.y);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y - 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked < gameWidth) {
     // Check if cellClicked is in the top row
     bombCount = 0;
-    surroundingBombCheck(thisCell.x, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked / gameWidth >= gameWidth - 1) {
     // Check if cellClicked is in the bottom row
     bombCount = 0;
-    surroundingBombCheck(thisCell.x, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked % gameWidth == 0) {
     // Check if cellClicked is in the left column
     bombCount = 0;
-    surroundingBombCheck(thisCell.x - 1, thisCell.y);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
   } else if (cellClicked % gameWidth == gameWidth - 1) {
     // Check if cellClicked is in the right column
     bombCount = 0;
-    surroundingBombCheck(thisCell.x - 1, thisCell.y);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
     addNumberToCell(thisCell, bombCount);
   } else {
     // Else cell must be in the inner part of the grid
     bombCount = 0;
-    surroundingBombCheck(thisCell.x - 1, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y);
-    surroundingBombCheck(thisCell.x - 1, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x, thisCell.y + 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y - 1);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y);
-    surroundingBombCheck(thisCell.x + 1, thisCell.y + 1);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
     addNumberToCell(thisCell, bombCount);
   }
 }
