@@ -1,7 +1,6 @@
 const gameArea = document.getElementById("game-area");
 const flagNo = document.getElementById("flagNo");
 const bombNo = document.getElementById("bombNo");
-const gameOutcome = document.getElementById("gameOutcome");
 let bombCells = [];
 let gameWidth;
 let gameHeight;
@@ -17,6 +16,7 @@ let checkedCells = [];
 $("document").ready(function () {
   leftClick();
   rightClick();
+  helpContent();
   $("#help").modal("show");
 });
 
@@ -57,8 +57,6 @@ function newGame(rows, cols) {
   secondCounter = -1;
   gameTimer();
   $("#counters").removeClass("d-none");
-  $("#gameOutcome").innerHTML = "";
-  $("#gameOutcome").addClass("d-none");
   $(".counterContainer").removeClass("d-none");
   $(".welcome").addClass("d-none");
   $("#gameWrap").removeClass("d-none");
@@ -286,8 +284,8 @@ function revealBombs() {
     $(".ms-cell:nth-of-type(" + cell + "").text("💥");
   }
   gameState = 0;
-  $("#gameOutcome").removeClass("d-none");
-  document.getElementById("gameOutcome").innerHTML = "You lose!";
+  loseContent();
+  $("#help").modal("show");
   clearInterval(timeCounter);
 }
 
@@ -399,7 +397,7 @@ function addNumberToCell(thisCell, bombCount) {
 
   if (bombCount == 0) {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text("");
-    if (
+    /* if (
       // Check if cellClicked is a top left corner (or Cell 0)
       cellClicked == 0
     ) {
@@ -477,7 +475,7 @@ function addNumberToCell(thisCell, bombCount) {
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
       surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
       addNumberToCell(thisCell, bombCount);
-    }
+    } */
   } else {
     $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text(bombCount);
   }
@@ -494,9 +492,9 @@ function addNumberToCell(thisCell, bombCount) {
 function winCheck() {
   if (remainingCells == 0) {
     gameState = 0;
-    $("#gameOutcome").removeClass("d-none");
-    gameOutcome.innerHTML = "You win!";
     clearInterval(timeCounter);
+    winContent();
+    $("#help").modal("show");
   }
 }
 
@@ -513,3 +511,27 @@ $(".motionFloat").click(function () {
     motionToggle = 0;
   }
 });
+
+$(".helpFloat").click(function () {
+  helpContent();
+});
+
+function helpContent() {
+  $(".modal-title").text("How to play Minesweeper!");
+  $(".modal-body").html(
+    "<h5>Help clear all the mines!</h5><ul><li>Click on a cell to reveal it.</li><li>If it's empty, you'll see how many of the neighbouring cells contain bombs. </li><li class='listSpacer'> But beware! If it's a bomb, all the bombs will explode!  </li>    <li>     Right click to place a flag on a cell you suspect to be a bomb.    </li>    <li class=listSpacer'>Right click again to remove it.</li> <li>When only cells containing bombs remain, you win!</li>    <li class='listSpacer'>      If you make the mines explode, you lose!    </li>    <li>The top bar of the game page shows:</li>    <li>Bombs - How many bombs the current difficulty contains.</li>    <li>      Flag - How many flags you have left (You start with a flag for each bomb). </li>   <li class='listSpacer'>      Time - How long you've been playing (in seconds).    </li>    <li>      The bar at the bottom of the page shows difficulty settings,      which are:    </li>    <li>Beginner - A 9 x 9 grid containing 10 bombs.</li>    <li>Intermediate - A 16 x 16 grid containing 40 bombs.</li>    <li class='listSpacer'>      Expert - A 30 x 16 grid containing 99 bombs.    </li>    <li>      Click the <i class='fa fa-expand-arrows-alt'></i> icon in the      bottom left corner to disable any animation effects.   </li>    <li>      Click the <i class='fa fa-question'></i> icon in the bottom      right corner to view these instructions again.    </li>  </ul>"
+  );
+  $(".modalButton").text("Lets play!");
+}
+
+function winContent() {
+  $(".modal-title").text("Congratulations!");
+  $(".modal-body").html("You win! 😀");
+  $(".modalButton").text("Play again?");
+}
+
+function loseContent() {
+  $(".modal-title").text("Kaboom!");
+  $(".modal-body").html("You lost! 😞");
+  $(".modalButton").text("Play again?");
+}
