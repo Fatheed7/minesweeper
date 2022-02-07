@@ -136,6 +136,7 @@ const applyStyle = (rows, cols) => {
   }
   gameHeight = rows;
   gameWidth = cols;
+  mapCells(rows, cols);
 };
 
 /**
@@ -162,9 +163,9 @@ const locOfBombs = (numOfBombs, rows, cols) => {
   return bombCells;
 };
 
-const mapCells = () => {
+const mapCells = (rows, cols) => {
   cellMap = [];
-  for (let i = 0; i < 9 * 9; i++) {
+  for (let i = 0; i < rows * cols; i++) {
     let cells = surroundingCells(i);
     cellMap.push(cells);
   }
@@ -239,7 +240,6 @@ const leftClick = () => {
     if (isBomb) {
       revealBombs();
     } else {
-      mapCells();
       revealCell(cellClicked + 1);
     }
     winCheck();
@@ -265,11 +265,6 @@ const convertCoords = (cellClicked) => {
 
 const convertCoordsBombCheck = (xCell, yCell) => {
   let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth) + 1;
-  return cell;
-};
-
-const clearAreaCheck = (xCell, yCell) => {
-  let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth);
   return cell;
 };
 
@@ -369,8 +364,7 @@ const surroundingCells = (cellClicked) => {
 };
 
 const revealCell = (cellClicked) => {
-  let count = cellMap[cellClicked];
-  if (count == 0) {
+  if (cellMap[cellClicked] == 0) {
     $(".ms-cell:nth-of-type(" + cellClicked + "").text("");
   } else {
     $(".ms-cell:nth-of-type(" + cellClicked + "").text(cellMap[cellClicked]);
