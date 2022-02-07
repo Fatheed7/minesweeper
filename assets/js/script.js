@@ -163,6 +163,7 @@ const locOfBombs = (numOfBombs, rows, cols) => {
 };
 
 const mapCells = () => {
+  cellMap = [];
   for (let i = 0; i < 9 * 9; i++) {
     let cells = { [i]: surroundingCells(i) };
     cellMap.push(cells);
@@ -239,6 +240,7 @@ const leftClick = () => {
       revealBombs();
     } else {
       mapCells();
+      revealCell(cellClicked + 1);
     }
     winCheck();
   });
@@ -314,80 +316,60 @@ const surroundingCells = (cellClicked) => {
     cellClicked == 0
   ) {
     bombCount = 0;
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
+    bottomRightSearch(thisCell);
     return bombCount;
   } else if (cellClicked == gameWidth - 1) {
     // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
     bombCount = 0;
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
+    bottomLeftSearch(thisCell);
     return bombCount;
   } else if (cellClicked == gameWidth * (gameWidth - 1)) {
     // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
     bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    checkCells(thisCell.x, thisCell.y + 1);
+    topRightSearch(thisCell);
     return bombCount;
   } else if (cellClicked == gameWidth * gameHeight - 1) {
     // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
     bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y - 1);
+    topLeftSearch(thisCell);
     return bombCount;
   } else if (cellClicked < gameWidth) {
     // Check if cellClicked is in the top row
     bombCount = 0;
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
+    bottomLeftSearch(thisCell);
+    bottomRightSearch(thisCell);
     return bombCount;
   } else if (cellClicked / gameWidth >= gameWidth - 1) {
     // Check if cellClicked is in the bottom row
     bombCount = 0;
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
+    topLeftSearch(thisCell);
+    topRightSearch(thisCell);
     return bombCount;
   } else if (cellClicked % gameWidth == 0) {
     // Check if cellClicked is in the left column
     bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
+    topRightSearch(thisCell);
+    bottomRightSearch(thisCell);
     return bombCount;
   } else if (cellClicked % gameWidth == gameWidth - 1) {
     // Check if cellClicked is in the right column
     bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
+    topLeftSearch(thisCell);
+    bottomLeftSearch(thisCell);
     return bombCount;
   } else {
     // Else cell must be in the inner part of the grid
     bombCount = 0;
-    checkCells(thisCell.x - 1, thisCell.y - 1);
-    checkCells(thisCell.x - 1, thisCell.y);
-    checkCells(thisCell.x - 1, thisCell.y + 1);
-    checkCells(thisCell.x, thisCell.y - 1);
-    checkCells(thisCell.x, thisCell.y + 1);
-    checkCells(thisCell.x + 1, thisCell.y - 1);
-    checkCells(thisCell.x + 1, thisCell.y);
-    checkCells(thisCell.x + 1, thisCell.y + 1);
+    topLeftSearch(thisCell);
+    topRightSearch(thisCell);
+    bottomLeftSearch(thisCell);
+    bottomRightSearch(thisCell);
     return bombCount;
   }
+};
+
+const revealCell = (cellClicked) => {
+  $(".ms-cell:nth-of-type(" + cellClicked + "").text(cellMap[cellClicked[0]]);
 };
 
 const winCheck = () => {
@@ -397,6 +379,58 @@ const winCheck = () => {
     winContent();
     $("#help").modal("show");
   }
+};
+
+//
+// Search Patterns
+//
+
+/**
+ * Searches the following pattern
+ *  XX-
+ *  X--
+ *  ---
+ */
+const topLeftSearch = (thisCell) => {
+  checkCells(thisCell.x - 1, thisCell.y);
+  checkCells(thisCell.x - 1, thisCell.y - 1);
+  checkCells(thisCell.x, thisCell.y - 1);
+};
+
+/**
+ * Searches the following pattern
+ *  -XX
+ *  --X
+ *  ---
+ */
+const topRightSearch = (thisCell) => {
+  checkCells(thisCell.x - 1, thisCell.y);
+  checkCells(thisCell.x - 1, thisCell.y + 1);
+  checkCells(thisCell.x, thisCell.y + 1);
+};
+
+/**
+ * Searches the following pattern
+ *  ---
+ *  X--
+ *  XX-
+ */
+const bottomLeftSearch = (thisCell) => {
+  checkCells(thisCell.x, thisCell.y - 1);
+  checkCells(thisCell.x + 1, thisCell.y);
+  checkCells(thisCell.x + 1, thisCell.y - 1);
+};
+
+/**
+ * Searches the following pattern
+ *  ---
+ *  --X
+ *  -XX
+ */
+const bottomRightSearch = (thisCell) => {
+  checkCells(thisCell.x, thisCell.y + 1);
+  checkCells(thisCell.x + 1, thisCell.y);
+  checkCells(thisCell.x + 1, thisCell.y + 1);
 };
 
 //
