@@ -1,19 +1,20 @@
+const bombNo = document.getElementById("bombNo");
 const gameArea = document.getElementById("game-area");
 const flagNo = document.getElementById("flagNo");
-const bombNo = document.getElementById("bombNo");
 let bombCells = [];
-let gameWidth;
-let gameHeight;
 let bombCount = 0;
-let gameState = 1;
-let remainingCells = 0;
-let timeCounter = "";
-let secondCounter = -1;
-let motionToggle = 0;
+let cellMap = [];
 let cellsToCheck = [];
 let checkedCells = [];
+let gameHeight;
+let gameState = 1;
+let gameWidth;
+let motionToggle = 0;
+let remainingCells = 0;
+let secondCounter = -1;
+let timeCounter = "";
 
-$("document").ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   leftClick();
   rightClick();
   helpContent();
@@ -117,31 +118,25 @@ function clearGame() {
  *
  * The bombCells array is also cleared in preperation for new bomb coordinates to be added.
  */
-function applyStyle(rows, cols) {
+const applyStyle = (rows, cols) => {
   gameArea.classList.remove("beginner", "intermediate", "expert");
+  bombCells = [];
   if (rows == 9 && cols == 9) {
     gameArea.classList.add("beginner");
-    gameHeight = rows;
-    gameWidth = cols;
-    bombCells = [];
     remainingCells = rows * cols - 10;
     locOfBombs(10, rows, cols);
   } else if (rows == 16 && cols == 16) {
     gameArea.classList.add("intermediate");
-    gameHeight = rows;
-    gameWidth = cols;
-    bombCells = [];
     remainingCells = rows * cols - 40;
     locOfBombs(40, rows, cols);
   } else if (rows == 16 && cols == 30) {
     gameArea.classList.add("expert");
-    gameHeight = rows;
-    gameWidth = cols;
-    bombCells = [];
     remainingCells = rows * cols - 99;
     locOfBombs(99, rows, cols);
   }
-}
+  gameHeight = rows;
+  gameWidth = cols;
+};
 
 /**
  * Is called by applyStyle and populates the bombCells array
@@ -151,7 +146,7 @@ function applyStyle(rows, cols) {
  * @param {*} cols The number of columns within the game.
  * @returns An array of the X & Y coordinates for all the bombs in a game.
  */
-function locOfBombs(numOfBombs, rows, cols) {
+const locOfBombs = (numOfBombs, rows, cols) => {
   while (bombCells.length < numOfBombs) {
     let cell = {
       x: Math.floor(Math.random() * rows),
@@ -165,20 +160,27 @@ function locOfBombs(numOfBombs, rows, cols) {
   flagNo.innerHTML = numOfBombs;
   //checkForBomb(bombCells);
   return bombCells;
-}
+};
+
+const mapCells = () => {
+  for (let i = 0; i < 9 * 9; i++) {
+    let cells = { [i]: surroundingCells(i) };
+    cellMap.push(cells);
+  }
+};
 
 /**
  * Checks if the generated bomb coordinates are present within the array.
  * @returns True if bomb coordinates are present within the array.
  */
-function cellMatch(x, y) {
+const cellMatch = (x, y) => {
   return x.x === y.x && x.y === y.y;
-}
+};
 
 /**
  * Detects the user right clicking on the game area and sets the cell content to a flag.
  */
-function rightClick() {
+const rightClick = () => {
   $(document).on("contextmenu", ".ms-cell", function () {
     if (gameState == 0) {
       return;
@@ -204,7 +206,7 @@ function rightClick() {
       }
     }
   });
-}
+};
 
 /**
  * Detects the user left clicking on the game area and defines cellClicked as the cell number clicked.
@@ -214,67 +216,65 @@ function rightClick() {
  * The function then passes the cell number to the cellCoords function to convert it to X & Y coordinates, which is
  * checked against the bombCells array. If a matching bomb is found, isMine is called, otherwise surroundingCells is called.
  */
-function leftClick() {
+const leftClick = () => {
   $(document).on("click", ".ms-cell", function () {
     if (gameState == 0) {
       return;
-    } else {
-      if ($(this).text() == "🚩") {
-        flagNo.innerHTML++;
-      }
-      if ($(this).hasClass("empty-cell")) {
-        return;
-      } else {
-        remainingCells--;
-      }
-      let cellClicked = $(this).index();
-      $(this).removeClass("untouched");
-      $(this).addClass("empty-cell");
-      let thisCell = cellCoords(cellClicked);
-      let isBomb = bombCells.some(
-        (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
-      );
-      if (isBomb) {
-        revealBombs();
-      } else {
-        surroundingCells(cellClicked);
-      }
-      winCheck();
     }
+    if ($(this).text() == "🚩") {
+      flagNo.innerHTML++;
+    }
+    if ($(this).hasClass("empty-cell")) {
+      return;
+    }
+    remainingCells--;
+    let cellClicked = $(this).index();
+    $(this).removeClass("untouched");
+    $(this).addClass("empty-cell");
+    let thisCell = cellCoords(cellClicked);
+    let isBomb = bombCells.some(
+      (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
+    );
+    if (isBomb) {
+      revealBombs();
+    } else {
+      mapCells();
+    }
+    winCheck();
   });
-}
+};
 
 /**
  * Is given the number of the cell clicked and converts it to an X & Y coordinate
  */
-function cellCoords(cellClicked) {
+const cellCoords = (cellClicked) => {
   let xCell = Math.floor(cellClicked / gameWidth);
   let yCell = Math.floor(cellClicked % gameWidth);
   return { x: xCell, y: yCell };
-}
+};
 
-function convertCoords(cellClicked) {
+const convertCoords = (cellClicked) => {
   let cell =
     Math.floor(cellClicked.x * gameWidth) +
     Math.floor(cellClicked.y % gameWidth) +
     1;
   return cell;
-}
+};
 
-function convertCoordsBombCheck(xCell, yCell) {
+const convertCoordsBombCheck = (xCell, yCell) => {
   let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth) + 1;
   return cell;
-}
+};
 
-function clearAreaCheck(xCell, yCell) {
+const clearAreaCheck = (xCell, yCell) => {
   let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth);
   return cell;
-}
+};
 
 /**
  * Reveals all bombs on the game grid.
  */
-function revealBombs() {
+const revealBombs = () => {
   let convertedCells = [];
   for (let i = 0; i < bombCells.length; i++) {
     let number = bombCells[i].x * gameWidth + (bombCells[i].y + 1);
@@ -287,14 +287,14 @@ function revealBombs() {
   loseContent();
   $("#help").modal("show");
   clearInterval(timeCounter);
-}
+};
 
-function checkCells(x, y) {
+const checkCells = (x, y) => {
   cellsToCheck.push({ x, y });
   surroundingBombCheck();
-}
+};
 
-function surroundingBombCheck() {
+const surroundingBombCheck = () => {
   cellsToCheck.forEach(({ x, y }) => {
     let isBomb = bombCells.some((bomb) => bomb.x == x && bomb.y == y);
     if (isBomb) {
@@ -302,233 +302,106 @@ function surroundingBombCheck() {
     }
     cellsToCheck.pop([0]);
   });
-}
+};
 
 /**
  * Checks the surrounding cells for any mines present.
  */
-function surroundingCells(cellClicked) {
+const surroundingCells = (cellClicked) => {
   let thisCell = cellCoords(cellClicked);
-  let isChecked = checkedCells.some(
-    (cell) => cell.x == thisCell.x && cell.y == thisCell.y
-  );
-  if (isChecked) {
-    return;
+  if (
+    // Check if cellClicked is a top left corner (or Cell 0)
+    cellClicked == 0
+  ) {
+    bombCount = 0;
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
+    return bombCount;
+  } else if (cellClicked == gameWidth - 1) {
+    // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
+    bombCount = 0;
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
+    return bombCount;
+  } else if (cellClicked == gameWidth * (gameWidth - 1)) {
+    // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
+    bombCount = 0;
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    return bombCount;
+  } else if (cellClicked == gameWidth * gameHeight - 1) {
+    // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
+    bombCount = 0;
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    return bombCount;
+  } else if (cellClicked < gameWidth) {
+    // Check if cellClicked is in the top row
+    bombCount = 0;
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
+    return bombCount;
+  } else if (cellClicked / gameWidth >= gameWidth - 1) {
+    // Check if cellClicked is in the bottom row
+    bombCount = 0;
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    return bombCount;
+  } else if (cellClicked % gameWidth == 0) {
+    // Check if cellClicked is in the left column
+    bombCount = 0;
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
+    return bombCount;
+  } else if (cellClicked % gameWidth == gameWidth - 1) {
+    // Check if cellClicked is in the right column
+    bombCount = 0;
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
+    return bombCount;
   } else {
-    if (
-      // Check if cellClicked is a top left corner (or Cell 0)
-      cellClicked == 0
-    ) {
-      bombCount = 0;
-      checkCells(thisCell.x, thisCell.y + 1);
-      checkCells(thisCell.x + 1, thisCell.y);
-      checkCells(thisCell.x + 1, thisCell.y + 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked == gameWidth - 1) {
-      // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
-      bombCount = 0;
-      checkCells(thisCell.x, thisCell.y - 1);
-      checkCells(thisCell.x + 1, thisCell.y);
-      checkCells(thisCell.x + 1, thisCell.y - 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked == gameWidth * (gameWidth - 1)) {
-      // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
-      bombCount = 0;
-      checkCells(thisCell.x - 1, thisCell.y);
-      checkCells(thisCell.x - 1, thisCell.y + 1);
-      checkCells(thisCell.x, thisCell.y + 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked == gameWidth * gameHeight - 1) {
-      // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
-      bombCount = 0;
-      checkCells(thisCell.x - 1, thisCell.y);
-      checkCells(thisCell.x - 1, thisCell.y - 1);
-      checkCells(thisCell.x, thisCell.y - 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked < gameWidth) {
-      // Check if cellClicked is in the top row
-      bombCount = 0;
-      checkCells(thisCell.x, thisCell.y - 1);
-      checkCells(thisCell.x, thisCell.y + 1);
-      checkCells(thisCell.x + 1, thisCell.y - 1);
-      checkCells(thisCell.x + 1, thisCell.y);
-      checkCells(thisCell.x + 1, thisCell.y + 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked / gameWidth >= gameWidth - 1) {
-      // Check if cellClicked is in the bottom row
-      bombCount = 0;
-      checkCells(thisCell.x, thisCell.y - 1);
-      checkCells(thisCell.x, thisCell.y + 1);
-      checkCells(thisCell.x - 1, thisCell.y - 1);
-      checkCells(thisCell.x - 1, thisCell.y);
-      checkCells(thisCell.x - 1, thisCell.y + 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked % gameWidth == 0) {
-      // Check if cellClicked is in the left column
-      bombCount = 0;
-      checkCells(thisCell.x - 1, thisCell.y);
-      checkCells(thisCell.x + 1, thisCell.y);
-      checkCells(thisCell.x - 1, thisCell.y + 1);
-      checkCells(thisCell.x, thisCell.y + 1);
-      checkCells(thisCell.x + 1, thisCell.y + 1);
-      addNumberToCell(thisCell, bombCount);
-    } else if (cellClicked % gameWidth == gameWidth - 1) {
-      // Check if cellClicked is in the right column
-      bombCount = 0;
-      checkCells(thisCell.x - 1, thisCell.y);
-      checkCells(thisCell.x + 1, thisCell.y);
-      checkCells(thisCell.x - 1, thisCell.y - 1);
-      checkCells(thisCell.x, thisCell.y - 1);
-      checkCells(thisCell.x + 1, thisCell.y - 1);
-      addNumberToCell(thisCell, bombCount);
-    } else {
-      // Else cell must be in the inner part of the grid
-      bombCount = 0;
-      checkCells(thisCell.x - 1, thisCell.y - 1);
-      checkCells(thisCell.x - 1, thisCell.y);
-      checkCells(thisCell.x - 1, thisCell.y + 1);
-      checkCells(thisCell.x, thisCell.y - 1);
-      checkCells(thisCell.x, thisCell.y + 1);
-      checkCells(thisCell.x + 1, thisCell.y - 1);
-      checkCells(thisCell.x + 1, thisCell.y);
-      checkCells(thisCell.x + 1, thisCell.y + 1);
-      addNumberToCell(thisCell, bombCount);
-    }
+    // Else cell must be in the inner part of the grid
+    bombCount = 0;
+    checkCells(thisCell.x - 1, thisCell.y - 1);
+    checkCells(thisCell.x - 1, thisCell.y);
+    checkCells(thisCell.x - 1, thisCell.y + 1);
+    checkCells(thisCell.x, thisCell.y - 1);
+    checkCells(thisCell.x, thisCell.y + 1);
+    checkCells(thisCell.x + 1, thisCell.y - 1);
+    checkCells(thisCell.x + 1, thisCell.y);
+    checkCells(thisCell.x + 1, thisCell.y + 1);
+    return bombCount;
   }
-  let x = thisCell.x;
-  let y = thisCell.y;
-  checkedCells.push({ x, y });
-}
+};
 
-function addNumberToCell(thisCell, bombCount) {
-  let cellClicked = clearAreaCheck(thisCell.x, thisCell.y);
-  console.log(thisCell);
-  console.log(checkedCells);
-  if (bombCount == 0) {
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text("");
-    if (
-      $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").hasClass(
-        "untouched"
-      )
-    ) {
-      $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")")
-        .removeClass("untouched")
-        .addClass("empty-cell");
-    }
-    let isChecked = checkedCells.some(
-      (cell) => cell.x == thisCell.x && cell.y == thisCell.y
-    );
-    if (isChecked) {
-      return;
-    } else {
-      if (
-        // Check if cellClicked is a top left corner (or Cell 0)
-        cellClicked == 0
-      ) {
-        bombCount = 0;
-        console.log("Problem with top left corner.");
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      } else if (this == gameWidth - 1) {
-        // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
-        bombCount = 0;
-        console.log("Problem with top right corner.");
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-      } else if (cellClicked == gameWidth * (gameWidth - 1)) {
-        // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
-        bombCount = 0;
-        console.log("Problem with bottom left corner.");
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-      } else if (cellClicked == gameWidth * gameHeight - 1) {
-        // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
-        bombCount = 0;
-        console.log("Problem with bottom right corner.");
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-      } else if (cellClicked < gameWidth) {
-        // Check if cellClicked is in the top row
-        bombCount = 0;
-        console.log("Problem with top row.");
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      } else if (cellClicked / gameWidth >= gameWidth - 1) {
-        // Check if cellClicked is in the bottom row
-        bombCount = 0;
-        console.log("Problem with bottom row.");
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-      } else if (cellClicked % gameWidth == 0) {
-        // Check if cellClicked is in the left column
-        bombCount = 0;
-        console.log("Problem with left column.");
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      } else if (cellClicked % gameWidth == gameWidth - 1) {
-        // Check if cellClicked is in the right column
-        bombCount = 0;
-        console.log("Problem with right column.");
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-      } else {
-        // Else cell must be in the inner part of the grid
-        bombCount = 0;
-        console.log("Problem is within inner grid.");
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x - 1, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x, thisCell.y + 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y - 1));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y));
-        surroundingCells(clearAreaCheck(thisCell.x + 1, thisCell.y + 1));
-      }
-    }
-  } else {
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").text(bombCount);
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").removeClass(
-      "untouched"
-    );
-    $(".ms-cell:nth-of-type(" + convertCoords(thisCell) + ")").addClass(
-      "empty-cell"
-    );
-  }
-  let x = thisCell.x;
-  let y = thisCell.y;
-  cellsToCheck.push({ x: x, y: y });
-  if (cellsToCheck.length == 0) {
-    return;
-  } else {
-    surroundingBombCheck();
-  }
-}
-
-function winCheck() {
+const winCheck = () => {
   if (remainingCells == 0) {
     gameState = 0;
     clearInterval(timeCounter);
     winContent();
     $("#help").modal("show");
   }
-}
+};
 
+//
+// Floating Button Code
+//
 $(".motionFloat").click(function () {
   if (motionToggle == 0) {
     $(this).css({ backgroundColor: "red" });
@@ -547,22 +420,25 @@ $(".helpFloat").click(function () {
   helpContent();
 });
 
-function helpContent() {
+//
+// Modal Content
+//
+const helpContent = () => {
   $(".modal-title").text("How to play Minesweeper!");
   $(".modal-body").html(
     "<h5>Help clear all the mines!</h5><ul><li>Click on a cell to reveal it.</li><li>If it's empty, you'll see how many of the neighbouring cells contain bombs. </li><li class='listSpacer'> But beware! If it's a bomb, all the bombs will explode!  </li>    <li>     Right click to place a flag on a cell you suspect to be a bomb.    </li>    <li class=listSpacer'>Right click again to remove it.</li> <li>When only cells containing bombs remain, you win!</li>    <li class='listSpacer'>      If you make the mines explode, you lose!    </li>    <li>The top bar of the game page shows:</li>    <li>Bombs - How many bombs the current difficulty contains.</li>    <li>      Flag - How many flags you have left (You start with a flag for each bomb). </li>   <li class='listSpacer'>      Time - How long you've been playing (in seconds).    </li>    <li>      The bar at the bottom of the page shows difficulty settings,      which are:    </li>    <li>Beginner - A 9 x 9 grid containing 10 bombs.</li>    <li>Intermediate - A 16 x 16 grid containing 40 bombs.</li>    <li class='listSpacer'>      Expert - A 30 x 16 grid containing 99 bombs.    </li>    <li>      Click the <i class='fa fa-expand-arrows-alt'></i> icon in the      bottom left corner to disable any animation effects.   </li>    <li>      Click the <i class='fa fa-question'></i> icon in the bottom      right corner to view these instructions again.    </li>  </ul>"
   );
   $(".modalButton").text("Lets play!");
-}
+};
 
-function winContent() {
+const winContent = () => {
   $(".modal-title").text("Congratulations!");
   $(".modal-body").html("You win! 😀");
   $(".modalButton").text("Play again?");
-}
+};
 
-function loseContent() {
+const loseContent = () => {
   $(".modal-title").text("Kaboom!");
   $(".modal-body").html("You lost! 😞");
   $(".modalButton").text("Play again?");
-}
+};
