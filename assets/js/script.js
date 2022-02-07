@@ -165,7 +165,7 @@ const locOfBombs = (numOfBombs, rows, cols) => {
 const mapCells = () => {
   cellMap = [];
   for (let i = 0; i < 9 * 9; i++) {
-    let cells = { [i]: surroundingCells(i) };
+    let cells = surroundingCells(i);
     cellMap.push(cells);
   }
 };
@@ -369,7 +369,12 @@ const surroundingCells = (cellClicked) => {
 };
 
 const revealCell = (cellClicked) => {
-  $(".ms-cell:nth-of-type(" + cellClicked + "").text(cellMap[cellClicked[0]]);
+  let count = cellMap[cellClicked];
+  if (count == 0) {
+    $(".ms-cell:nth-of-type(" + cellClicked + "").text("");
+  } else {
+    $(".ms-cell:nth-of-type(" + cellClicked + "").text(cellMap[cellClicked]);
+  }
 };
 
 const winCheck = () => {
@@ -382,13 +387,13 @@ const winCheck = () => {
 };
 
 //
-// Search Patterns
+// Search Patterns (X = Cells checked, O = Cell clicked)
 //
 
 /**
  * Searches the following pattern
  *  XX-
- *  X--
+ *  XO-
  *  ---
  */
 const topLeftSearch = (thisCell) => {
@@ -400,7 +405,7 @@ const topLeftSearch = (thisCell) => {
 /**
  * Searches the following pattern
  *  -XX
- *  --X
+ *  -OX
  *  ---
  */
 const topRightSearch = (thisCell) => {
@@ -412,7 +417,7 @@ const topRightSearch = (thisCell) => {
 /**
  * Searches the following pattern
  *  ---
- *  X--
+ *  XO-
  *  XX-
  */
 const bottomLeftSearch = (thisCell) => {
@@ -424,7 +429,7 @@ const bottomLeftSearch = (thisCell) => {
 /**
  * Searches the following pattern
  *  ---
- *  --X
+ *  -OX
  *  -XX
  */
 const bottomRightSearch = (thisCell) => {
