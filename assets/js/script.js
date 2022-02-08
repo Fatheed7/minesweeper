@@ -29,15 +29,15 @@ window.addEventListener(
   false
 );
 
-function setWrapperWidth() {
+const setWrapperWidth = () => {
   $(".wrapper").css("min-width", $("#game-stats").scrollWidth);
-}
+};
 
-function gameTimer() {
+const gameTimer = () => {
   ++secondCounter;
   let seconds = secondCounter;
   document.getElementById("gameTimer").innerHTML = seconds;
-}
+};
 
 /**
  * Is called by the buttons on the main page.
@@ -49,7 +49,7 @@ function gameTimer() {
  * @param cols The number of columns required for the game.
  */
 
-function newGame(rows, cols) {
+const newGame = (rows, cols) => {
   gameState = 1;
   gameSize(rows, cols);
   applyStyle(rows, cols);
@@ -57,12 +57,14 @@ function newGame(rows, cols) {
   timeCounter = setInterval(gameTimer, 1000);
   secondCounter = -1;
   gameTimer();
-  $("#counters").removeClass("d-none");
-  $(".counterContainer").removeClass("d-none");
-  $(".welcome").addClass("d-none");
-  $("#gameWrap").removeClass("d-none");
+  document.getElementsByClassName("counters")[1].classList.remove("d-none");
+  document
+    .getElementsByClassName("counterContainer")[0]
+    .classList.remove("d-none");
+  document.getElementsByClassName("welcome")[0].classList.add("d-none");
+  document.getElementById("gameWrap").classList.remove("d-none");
   setWrapperWidth();
-}
+};
 
 /**
  * Generates the game area when called from newGame
@@ -82,7 +84,7 @@ function newGame(rows, cols) {
  * @param cols The number of columns required for the game.
  * @returns The completed game area HTML.
  */
-function gameSize(rows, cols) {
+const gameSize = (rows, cols) => {
   clearGame();
   const gameBoard = [];
   for (let x = 0; x < rows; x++) {
@@ -100,14 +102,14 @@ function gameSize(rows, cols) {
     gameBoard.push(row);
   }
   return gameBoard;
-}
+};
 
 /**
  * Clears the gameArea of all HTML to ensure the right game size grid is displayed.
  */
-function clearGame() {
+const clearGame = () => {
   gameArea.innerHTML = "";
-}
+};
 
 /**
  * Applies the required style to the game area, depending on which button is clicked.
@@ -121,19 +123,20 @@ function clearGame() {
 const applyStyle = (rows, cols) => {
   gameArea.classList.remove("beginner", "intermediate", "expert");
   bombCells = [];
+  let bombValue = 0;
   if (rows == 9 && cols == 9) {
     gameArea.classList.add("beginner");
-    remainingCells = rows * cols - 10;
-    locOfBombs(10, rows, cols);
+    bombValue = 10;
   } else if (rows == 16 && cols == 16) {
     gameArea.classList.add("intermediate");
-    remainingCells = rows * cols - 40;
-    locOfBombs(40, rows, cols);
+    bombValue = 40;
   } else if (rows == 16 && cols == 30) {
     gameArea.classList.add("expert");
     remainingCells = rows * cols - 99;
-    locOfBombs(99, rows, cols);
+    bombValue = 99;
   }
+  remainingCells = rows * cols - bombValue;
+  locOfBombs(bombValue, rows, cols);
   gameHeight = rows;
   gameWidth = cols;
   mapCells(rows, cols);
@@ -180,37 +183,6 @@ const cellMatch = (x, y) => {
 };
 
 /**
- * Detects the user right clicking on the game area and sets the cell content to a flag.
- */
-const rightClick = () => {
-  $(document).on("contextmenu", ".ms-cell", function () {
-    if (gameState == 0) {
-      return;
-    } else if (flagNo.innerHTML == 0) {
-      if ($(this).text() == "🚩") {
-        $(this).text("");
-        flagNo.innerHTML++;
-      } else {
-        return;
-      }
-    } else {
-      let number = $(this).text();
-      if ($(this).text() == "🚩") {
-        $(this).text("");
-        flagNo.innerHTML++;
-      } else if ($(this).text() == "💥") {
-        return;
-      } else if ($.isNumeric(number)) {
-        return;
-      } else {
-        $(this).text("🚩");
-        flagNo.innerHTML--;
-      }
-    }
-  });
-};
-
-/**
  * Detects the user left clicking on the game area and defines cellClicked as the cell number clicked.
  *
  * It then removes the  * class "untouched" and adds the class "empty-cell" the the cell clicked.
@@ -231,18 +203,48 @@ const leftClick = () => {
     }
     remainingCells--;
     let cellClicked = $(this).index();
-    $(this).removeClass("untouched");
-    $(this).addClass("empty-cell");
+    this.classList.remove("untouched");
+    this.classList.add("empty-cell");
     let thisCell = cellCoords(cellClicked);
     let isBomb = bombCells.some(
       (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
     );
-    if (isBomb) {
-      revealBombs();
-    } else {
-      revealCell(cellClicked);
-    }
+    isBomb ? revealBombs() : revealCell(cellClicked);
     winCheck();
+  });
+};
+
+/**
+ * Detects the user right clicking on the game area and sets the cell content to a flag.
+ */
+const rightClick = () => {
+  $(document).on("contextmenu", ".ms-cell", function () {
+    if (gameState == 0) {
+      return;
+    }
+    if (flagNo.innerHTML == 0) {
+      if ($(this).text() == "🚩") {
+        $(this).text("");
+        flagNo.innerHTML++;
+      } else {
+        return;
+      }
+    } else {
+      let number = $(this).text();
+      if ($(this).text() == "🚩") {
+        $(this).text("❓");
+        flagNo.innerHTML++;
+      } else if ($(this).text() == "❓") {
+        $(this).text("");
+      } else if ($(this).text() == "💥") {
+        return;
+      } else if ($.isNumeric(number)) {
+        return;
+      } else {
+        $(this).text("🚩");
+        flagNo.innerHTML--;
+      }
+    }
   });
 };
 
@@ -373,13 +375,11 @@ const surroundingCells = (cellClicked) => {
 };
 
 const revealCell = (cellClicked) => {
-  if (cellMap[cellClicked] == 0) {
-    $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text("");
-  } else {
-    $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text(
-      cellMap[cellClicked]
-    );
-  }
+  cellMap[cellClicked] == 0
+    ? $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text("")
+    : $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text(
+        cellMap[cellClicked]
+      );
 };
 
 const winCheck = () => {
