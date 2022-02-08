@@ -1,18 +1,19 @@
+import { surroundingCells } from "./util/surroundingCells.mjs";
+
 const bombNo = document.getElementById("bombNo");
 const gameArea = document.getElementById("game-area");
 const flagNo = document.getElementById("flagNo");
 let bombCells = [];
-let bombCount = 0;
 let cellMap = [];
 let cellsToCheck = [];
-let checkedCells = [];
 let gameHeight;
 let gameState = 1;
-let gameWidth;
+export let gameWidth;
 let motionToggle = 0;
 let remainingCells = 0;
 let secondCounter = -1;
 let timeCounter = "";
+export let bombCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
   leftClick();
@@ -49,7 +50,7 @@ const gameTimer = () => {
  * @param cols The number of columns required for the game.
  */
 
-const newGame = (rows, cols) => {
+const newGame = (window.newGame = (rows, cols) => {
   gameState = 1;
   gameSize(rows, cols);
   applyStyle(rows, cols);
@@ -64,7 +65,7 @@ const newGame = (rows, cols) => {
   document.getElementsByClassName("welcome")[0].classList.add("d-none");
   document.getElementById("gameWrap").classList.remove("d-none");
   setWrapperWidth();
-};
+});
 
 /**
  * Generates the game area when called from newGame
@@ -169,6 +170,7 @@ const locOfBombs = (numOfBombs, rows, cols) => {
 const mapCells = (rows, cols) => {
   cellMap = [];
   for (let i = 0; i < rows * cols; i++) {
+    bombCount = 0;
     let cells = surroundingCells(i);
     cellMap.push(cells);
   }
@@ -203,13 +205,11 @@ const leftClick = () => {
     }
     remainingCells--;
     let cellClicked = $(this).index();
-    this.classList.remove("untouched");
-    this.classList.add("empty-cell");
     let thisCell = cellCoords(cellClicked);
     let isBomb = bombCells.some(
       (bomb) => bomb.x == thisCell.x && bomb.y == thisCell.y
     );
-    isBomb ? revealBombs() : revealCell(cellClicked);
+    isBomb ? revealBombs() : fill(cellClicked);
     winCheck();
   });
 };
@@ -251,10 +251,15 @@ const rightClick = () => {
 /**
  * Is given the number of the cell clicked and converts it to an X & Y coordinate
  */
-const cellCoords = (cellClicked) => {
-  let xCell = Math.floor(cellClicked / gameWidth);
-  let yCell = Math.floor(cellClicked % gameWidth);
-  return { x: xCell, y: yCell };
+export const cellCoords = (cellClicked) => {
+  if (cellClicked < 0 || cellClicked > gameWidth * gameArea) return null;
+  return {
+    x: Math.floor(cellClicked / gameWidth),
+    y: Math.floor(cellClicked % gameWidth),
+  };
+  //let xCell = Math.floor(cellClicked / gameWidth);
+  //let yCell = Math.floor(cellClicked % gameWidth);
+  //return { x: xCell, y: yCell };
 };
 
 const convertCoords = (cellClicked) => {
@@ -288,92 +293,6 @@ const revealBombs = () => {
   clearInterval(timeCounter);
 };
 
-/**
- * Checks the surrounding cells for any mines present.
- */
-const surroundingCells = (cellClicked) => {
-  let thisCell = cellCoords(cellClicked);
-  if (
-    // Check if cellClicked is a top left corner (or Cell 0)
-    cellClicked == 0
-  ) {
-    bombCount = 0;
-    middleRightSearch(thisCell);
-    bottomRightSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked == gameWidth - 1) {
-    // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
-    bombCount = 0;
-    middleLeftSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked == gameWidth * (gameWidth - 1)) {
-    // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked == gameWidth * gameHeight - 1) {
-    // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topLeftSearch(thisCell);
-    middleLeftSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked < gameWidth) {
-    // Check if cellClicked is in the top row
-    bombCount = 0;
-    middleLeftSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    bottomRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked / gameWidth >= gameWidth - 1) {
-    // Check if cellClicked is in the bottom row
-    bombCount = 0;
-    middleLeftSearch(thisCell);
-    topLeftSearch(thisCell);
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked % gameWidth == 0) {
-    // Check if cellClicked is in the left column
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    bottomRightSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked % gameWidth == gameWidth - 1) {
-    // Check if cellClicked is in the right column
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topLeftSearch(thisCell);
-    middleLeftSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else {
-    // Else cell must be in the inner part of the grid
-    bombCount = 0;
-    topLeftSearch(thisCell);
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleLeftSearch(thisCell);
-    middleRightSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    bottomRightSearch(thisCell);
-    return bombCount;
-  }
-};
-
 const revealCell = (cellClicked) => {
   cellMap[cellClicked] == 0
     ? $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text("")
@@ -391,62 +310,109 @@ const winCheck = () => {
   }
 };
 
+//Test Code
+const getIndex = (x, y) => {
+  if (x < 0 || x >= gameHeight || y < 0 || y >= gameWidth) return null;
+  return y * gameWidth + x;
+};
+
+const $mscell = document.getElementsByClassName(`ms-cell`);
+
+const fill = (cellClicked) => {
+  cellsToCheck = [cellClicked];
+  const cellsAlreadyChecked = [];
+
+  while (cellsToCheck.length > 0) {
+    const cellIndex = cellsToCheck.pop();
+    const { x, y } = cellCoords(cellIndex);
+    cellsAlreadyChecked.push(cellIndex);
+
+    let cellState = cellMap[cellIndex];
+    if (cellState == 0) continue;
+
+    // Cell is off, lets turn it on
+    //console.log($mscell[candidateIndex].innerHTML);
+    let isBomb = bombCells.some((bomb) => bomb.x == x && bomb.y == y);
+    if (!isBomb) {
+      $mscell[cellIndex].classList.remove("untouched");
+      $mscell[cellIndex].classList.add("empty-cell");
+      $mscell[cellIndex].innerHTML = cellMap[cellIndex];
+    }
+
+    // Lets check the neighbours
+
+    const neighbouringIndexes = [
+      getIndex(x + 1, y),
+      getIndex(x - 1, y),
+      getIndex(x, y + 1),
+      getIndex(x, y - 1),
+    ];
+
+    neighbouringIndexes.forEach((i) => {
+      if (i !== null && !cellsAlreadyChecked.includes(i)) {
+        cellsToCheck.push(i);
+      }
+    });
+  }
+};
+//
+
 //
 // Search Patterns
 
 /**
  * Searches only the top left cell.
  */
-const topLeftSearch = (thisCell) => {
+export const topLeftSearch = (thisCell) => {
   checkCells(thisCell.x - 1, thisCell.y - 1);
 };
 
 /**
  * Searches only the top middle cell.
  */
-const topMiddleSearch = (thisCell) => {
+export const topMiddleSearch = (thisCell) => {
   checkCells(thisCell.x - 1, thisCell.y);
 };
 
 /**
  * Searches only the top right cell.
  */
-const topRightSearch = (thisCell) => {
+export const topRightSearch = (thisCell) => {
   checkCells(thisCell.x - 1, thisCell.y + 1);
 };
 
 /**
  * Searches only the left middle cell.
  */
-const middleLeftSearch = (thisCell) => {
+export const middleLeftSearch = (thisCell) => {
   checkCells(thisCell.x, thisCell.y - 1);
 };
 
 /**
  * Searches only the left right cell.
  */
-const middleRightSearch = (thisCell) => {
+export const middleRightSearch = (thisCell) => {
   checkCells(thisCell.x, thisCell.y + 1);
 };
 
 /**
  * Searches only the bottom left cell.
  */
-const bottomLeftSearch = (thisCell) => {
+export const bottomLeftSearch = (thisCell) => {
   checkCells(thisCell.x + 1, thisCell.y - 1);
 };
 
 /**
  * Searches only the bottom middle cell.
  */
-const bottomMiddleSearch = (thisCell) => {
+export const bottomMiddleSearch = (thisCell) => {
   checkCells(thisCell.x + 1, thisCell.y);
 };
 
 /**
  * Searches only the bottom right cell.
  */
-const bottomRightSearch = (thisCell) => {
+export const bottomRightSearch = (thisCell) => {
   checkCells(thisCell.x + 1, thisCell.y + 1);
 };
 
