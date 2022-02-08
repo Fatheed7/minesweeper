@@ -1,19 +1,17 @@
-import { surroundingCells } from "./util/surroundingCells.mjs";
-
 const bombNo = document.getElementById("bombNo");
 const gameArea = document.getElementById("game-area");
 const flagNo = document.getElementById("flagNo");
 let bombCells = [];
 let cellMap = [];
 let cellsToCheck = [];
-export let gameHeight;
+let gameHeight;
 let gameState = 1;
-export let gameWidth;
+let gameWidth;
 let motionToggle = 0;
 let remainingCells = 0;
 let secondCounter = -1;
 let timeCounter = "";
-export let bombCount = 0;
+let bombCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
   leftClick();
@@ -473,4 +471,87 @@ const loseContent = () => {
   $(".modal-title").text("Kaboom!");
   $(".modal-body").html("You lost! 😞");
   $(".modalButton").text("Play again?");
+};
+
+const surroundingCells = (cellClicked) => {
+  let thisCell = cellCoords(cellClicked);
+  if (
+    // Check if cellClicked is a top left corner (or Cell 0)
+    cellClicked == 0
+  ) {
+    bombCount = 0;
+    middleRightSearch(thisCell);
+    bottomRightSearch(thisCell);
+    bottomMiddleSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked == gameWidth - 1) {
+    // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
+    bombCount = 0;
+    middleLeftSearch(thisCell);
+    bottomLeftSearch(thisCell);
+    bottomMiddleSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked == gameWidth * (gameWidth - 1)) {
+    // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
+    bombCount = 0;
+    topMiddleSearch(thisCell);
+    topRightSearch(thisCell);
+    middleRightSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked == gameWidth * gameHeight - 1) {
+    // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
+    bombCount = 0;
+    topMiddleSearch(thisCell);
+    topLeftSearch(thisCell);
+    middleLeftSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked < gameWidth) {
+    // Check if cellClicked is in the top row
+    bombCount = 0;
+    middleLeftSearch(thisCell);
+    bottomLeftSearch(thisCell);
+    bottomMiddleSearch(thisCell);
+    bottomRightSearch(thisCell);
+    middleRightSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked / gameWidth >= gameWidth - 1) {
+    // Check if cellClicked is in the bottom row
+    bombCount = 0;
+    middleLeftSearch(thisCell);
+    topLeftSearch(thisCell);
+    topMiddleSearch(thisCell);
+    topRightSearch(thisCell);
+    middleRightSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked % gameWidth == 0) {
+    // Check if cellClicked is in the left column
+    bombCount = 0;
+    topMiddleSearch(thisCell);
+    topRightSearch(thisCell);
+    middleRightSearch(thisCell);
+    bottomRightSearch(thisCell);
+    bottomMiddleSearch(thisCell);
+    return bombCount;
+  } else if (cellClicked % gameWidth == gameWidth - 1) {
+    // Check if cellClicked is in the right column
+    bombCount = 0;
+    topMiddleSearch(thisCell);
+    topLeftSearch(thisCell);
+    middleLeftSearch(thisCell);
+    bottomLeftSearch(thisCell);
+    bottomMiddleSearch(thisCell);
+    return bombCount;
+  } else {
+    // Else cell must be in the inner part of the grid
+    bombCount = 0;
+    topLeftSearch(thisCell);
+    topMiddleSearch(thisCell);
+    topRightSearch(thisCell);
+    middleLeftSearch(thisCell);
+    middleRightSearch(thisCell);
+    bottomLeftSearch(thisCell);
+    bottomMiddleSearch(thisCell);
+    bottomRightSearch(thisCell);
+    return bombCount;
+  }
 };
