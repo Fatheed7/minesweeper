@@ -326,7 +326,7 @@ const fill = (cellClicked) => {
     cellsAlreadyChecked.push(cellIndex);
 
     let cellState = cellMap[cellIndex];
-    if (cellState == 0) continue;
+    if (cellState !== 0) continue;
 
     // Cell is off, lets turn it on
     //console.log($mscell[candidateIndex].innerHTML);
