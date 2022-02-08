@@ -6,7 +6,7 @@ const flagNo = document.getElementById("flagNo");
 let bombCells = [];
 let cellMap = [];
 let cellsToCheck = [];
-let gameHeight;
+export let gameHeight;
 let gameState = 1;
 export let gameWidth;
 let motionToggle = 0;
