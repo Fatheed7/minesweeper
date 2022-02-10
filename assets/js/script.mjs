@@ -255,11 +255,9 @@ export const cellCoords = (cellClicked) => {
     x: Math.floor(cellClicked / gameWidth),
     y: Math.floor(cellClicked % gameWidth),
   };
-  //let xCell = Math.floor(cellClicked / gameWidth);
-  //let yCell = Math.floor(cellClicked % gameWidth);
-  //return { x: xCell, y: yCell };
 };
 
+/*
 const convertCoords = (cellClicked) => {
   let cell =
     Math.floor(cellClicked.x * gameWidth) +
@@ -272,6 +270,7 @@ const convertCoordsBombCheck = (xCell, yCell) => {
   let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth) + 1;
   return cell;
 };
+*/
 
 /**
  * Reveals all bombs on the game grid.
@@ -282,9 +281,9 @@ const revealBombs = () => {
     let number = bombCells[i].x * gameWidth + (bombCells[i].y + 1);
     convertedCells.push(number);
   }
-  for (cell of convertedCells) {
+  convertedCells.forEach((cell) => {
     $(".ms-cell:nth-of-type(" + cell + "").text("💥");
-  }
+  });
   gameState = 0;
   loseContent();
   $("#help").modal("show");
@@ -324,9 +323,6 @@ const fill = (cellClicked) => {
     const cellIndex = cellsToCheck.pop();
     const { x, y } = cellCoords(cellIndex);
     cellsAlreadyChecked.push(cellIndex);
-
-    let cellState = cellMap[cellIndex];
-    if (cellState !== 0) continue;
 
     // Cell is off, lets turn it on
     //console.log($mscell[candidateIndex].innerHTML);
