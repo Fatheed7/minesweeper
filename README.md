@@ -62,7 +62,35 @@ The was created as my second portfolio project for Code Institute's Diploma in W
 
   ## Wireframes
 
-  The wireframes for this site were created using Balasmiq, with each section and subsection noted.
+  The wireframes for this site were created using Balasmiq, with each section and subsection noted. I endeavoured to create a single page website with the use of modals to display the rules of the game. Wireframes are available for desktop view, tablet view and, for mobile, both landscape and portrait few.
+  This was added as the game is likely to be difficult to view on low resolution width devices.
+
+  The directory containing the wireframe images can be found [here](https://github.com/Fatheed7/minesweeper/tree/main/asset/docs/wireframes).
+
+    <details>
+
+    <summary>Desktop Wireframe</summary>
+
+  ![Desktop Wireframe Image](assets/docs/wireframes/desktop_wireframe.png)
+    </details>
+
+     <details>
+    <summary>Tablet Wireframe</summary>
+
+  ![Tablet Wireframe Image](assets/docs/wireframes/tablet_wireframe.png)
+    </details>
+
+     <details>
+    <summary>Mobile Wireframe - Portrait</summary>
+
+  ![Mobile Wireframe Image](assets/docs/wireframes/mobile_wireframe_portrait.png)
+    </details>
+
+    <details>
+    <summary>Mobile Wireframe - Landscape</summary>
+
+  ![Mobile Wireframe Image](assets/docs/wireframes/mobile_wireframe_landscape.png)
+    </details>
 
 #
 
@@ -160,7 +188,5 @@ The site was created using Visual Studio Code and GitHub, and deployed to GitHub
   - [WAVE](https://wave.webaim.org/) - Used for Accessibility evaluation.
 
 - ## Images
-
-  #
 
   The emoji graphic used for the favicon is from the open source project [Twemoji](https://twemoji.twitter.com/). The graphics are copyright 2020 Twitter, Inc and other contributors. The graphics are licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
