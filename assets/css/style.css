@@ -70,7 +70,7 @@ table {
   border: 1px solid #ddd;
   min-height: 10px;
   min-width: 10px;
-  aspect-ratio: 1;
+  aspect-ratio: 1/1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,8 +182,8 @@ table {
   }
 }
 
-.modal-dialog {
-  font-family: "Press Start 2P", sans-serif;
+.modal-title {
+  font-family: "Noto Sans", sans-serif;
   font-size: 14px;
 }
 
@@ -193,4 +193,8 @@ table {
 
 .top {
   margin-top: 15px;
+}
+
+.counterStat {
+  width: 33%;
 }

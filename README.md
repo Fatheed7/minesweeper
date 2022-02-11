@@ -4,6 +4,7 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
 
 ## Table of Contents
 
+- [Objective](#objective)
 - [UX and UI](#ux-and-ui)
   - [Site Owner Goals](#site-owner-goals)
   - [User Stories](#user-stories)
@@ -25,15 +26,23 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
   - [Images](#images)
   - [Content](#content)
 
+## Objective
+
+To design an interactive version of Minesweeper with, and to demonstrate competency with, HTML, CSS & Javascript.
+
+The was created as my second portfolio project for Code Institute's Diploma in Web Application Development.
+
+#
+
 ## UX and UI
 
 - ### Site Owner Goals
 
   The goal of the site for the owner is to:
 
-  1.
-  2.
-  3.
+  1. Create a fun and interactive game of Minesweeper.
+  2. Allow users to customise their experience in a number of ways, including disabling animations and remembering settings set my the customer previously.
+  3. Create a simple structure on a single page, to prevent errors and encourage a user to play.
 
 #
 
@@ -41,15 +50,14 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
 
   - #### First Time Visitor Goals
 
-    1.
-    2.
-    3.
+    1. As a first time user, I want to immediately understand the purpose of the website.
+    2. As a first time user, I want the option to be shown instructions on how the game works, but also to skip this if I'm already familiar with the game itself.
+    3. As a first time user, I want to understand how to easily start a game, and for it to be obvious how to customise settings.
 
   - #### Returning Visitor Goals
 
-    1.
-    2.
-    3.
+    1. As a returning user, I want the site to remember any settings set previously to prevent me needing to read the instructions again.
+    2. As a returning user, I want the option to easily update any settings set previously.
 
   #
 
@@ -59,9 +67,11 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
 
 ## Design
 
-- ## Imagery
+- ## Colours
 
-  - ## Colours
+- ![#ababab](https://via.placeholder.com/15/adabab/000000?text=+) `RGB(173, 171, 171)`
+- ![#696969](https://via.placeholder.com/15/696969/000000?text=+) `RGB(105, 105, 105)`
+- ![#d3d3d3](https://via.placeholder.com/15/d3d3d3/000000?text=+) `RGB(211, 211, 211)`
 
 - ## Fonts
 

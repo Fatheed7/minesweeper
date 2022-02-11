@@ -2,7 +2,6 @@ const bombNo = document.getElementById("bombNo");
 const gameArea = document.getElementById("game-area");
 const flagNo = document.getElementById("flagNo");
 let bombCells = [];
-let cellMap = [];
 let cellsToCheck = [];
 let gameHeight;
 let gameState = 1;
@@ -138,7 +137,6 @@ const applyStyle = (rows, cols) => {
   locOfBombs(bombValue, rows, cols);
   gameHeight = rows;
   gameWidth = cols;
-  mapCells(rows, cols);
 };
 
 /**
@@ -163,15 +161,6 @@ const locOfBombs = (numOfBombs, rows, cols) => {
   flagNo.innerHTML = numOfBombs;
   //checkForBomb(bombCells);
   return bombCells;
-};
-
-const mapCells = (rows, cols) => {
-  cellMap = [];
-  for (let i = 0; i < rows * cols; i++) {
-    bombCount = 0;
-    let cells = surroundingCells(i);
-    cellMap.push(cells);
-  }
 };
 
 /**
@@ -249,28 +238,13 @@ const rightClick = () => {
 /**
  * Is given the number of the cell clicked and converts it to an X & Y coordinate
  */
-export const cellCoords = (cellClicked) => {
+const cellCoords = (cellClicked) => {
   if (cellClicked < 0 || cellClicked > gameWidth * gameArea) return null;
   return {
     x: Math.floor(cellClicked / gameWidth),
     y: Math.floor(cellClicked % gameWidth),
   };
 };
-
-/*
-const convertCoords = (cellClicked) => {
-  let cell =
-    Math.floor(cellClicked.x * gameWidth) +
-    Math.floor(cellClicked.y % gameWidth) +
-    1;
-  return cell;
-};
-
-const convertCoordsBombCheck = (xCell, yCell) => {
-  let cell = Math.floor(xCell * gameWidth) + Math.floor(yCell % gameWidth) + 1;
-  return cell;
-};
-*/
 
 /**
  * Reveals all bombs on the game grid.
@@ -288,14 +262,6 @@ const revealBombs = () => {
   loseContent();
   $("#help").modal("show");
   clearInterval(timeCounter);
-};
-
-const revealCell = (cellClicked) => {
-  cellMap[cellClicked] == 0
-    ? $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text("")
-    : $(".ms-cell:nth-of-type(" + (cellClicked + 1) + "").text(
-        cellMap[cellClicked]
-      );
 };
 
 const winCheck = () => {
@@ -321,26 +287,39 @@ const fill = (cellClicked) => {
 
   while (cellsToCheck.length > 0) {
     const cellIndex = cellsToCheck.pop();
+    if (cellCoords(cellIndex) >= 0) continue;
     const { x, y } = cellCoords(cellIndex);
     cellsAlreadyChecked.push(cellIndex);
 
-    // Cell is off, lets turn it on
-    //console.log($mscell[candidateIndex].innerHTML);
+    const neighbouringIndexes = [
+      { x: x + 1, y: y },
+      { x: x - 1, y: y },
+      { x: x, y: y + 1 },
+      { x: x, y: y - 1 },
+      { x: x - 1, y: y - 1 },
+      { x: x - 1, y: y + 1 },
+      { x: x + 1, y: y - 1 },
+      { x: x + 1, y: y + 1 },
+    ];
+
+    console.log(neighbouringIndexes);
+
+    neighbouringIndexes.forEach((i) => {
+      if (
+        bombCells.some(
+          (bomb) =>
+            bomb.x == neighbouringIndexes.x && bomb.y == neighbouringIndexes.y
+        )
+      ) {
+        bombCount++;
+      }
+    });
     let isBomb = bombCells.some((bomb) => bomb.x == x && bomb.y == y);
     if (!isBomb) {
       $mscell[cellIndex].classList.remove("untouched");
       $mscell[cellIndex].classList.add("empty-cell");
-      $mscell[cellIndex].innerHTML = cellMap[cellIndex];
+      $mscell[cellIndex].innerHTML = bombCount;
     }
-
-    // Lets check the neighbours
-
-    const neighbouringIndexes = [
-      getIndex(x + 1, y),
-      getIndex(x - 1, y),
-      getIndex(x, y + 1),
-      getIndex(x, y - 1),
-    ];
 
     neighbouringIndexes.forEach((i) => {
       if (i !== null && !cellsAlreadyChecked.includes(i)) {
@@ -348,81 +327,6 @@ const fill = (cellClicked) => {
       }
     });
   }
-};
-//
-
-//
-// Search Patterns
-
-/**
- * Searches only the top left cell.
- */
-export const topLeftSearch = (thisCell) => {
-  checkCells(thisCell.x - 1, thisCell.y - 1);
-};
-
-/**
- * Searches only the top middle cell.
- */
-export const topMiddleSearch = (thisCell) => {
-  checkCells(thisCell.x - 1, thisCell.y);
-};
-
-/**
- * Searches only the top right cell.
- */
-export const topRightSearch = (thisCell) => {
-  checkCells(thisCell.x - 1, thisCell.y + 1);
-};
-
-/**
- * Searches only the left middle cell.
- */
-export const middleLeftSearch = (thisCell) => {
-  checkCells(thisCell.x, thisCell.y - 1);
-};
-
-/**
- * Searches only the left right cell.
- */
-export const middleRightSearch = (thisCell) => {
-  checkCells(thisCell.x, thisCell.y + 1);
-};
-
-/**
- * Searches only the bottom left cell.
- */
-export const bottomLeftSearch = (thisCell) => {
-  checkCells(thisCell.x + 1, thisCell.y - 1);
-};
-
-/**
- * Searches only the bottom middle cell.
- */
-export const bottomMiddleSearch = (thisCell) => {
-  checkCells(thisCell.x + 1, thisCell.y);
-};
-
-/**
- * Searches only the bottom right cell.
- */
-export const bottomRightSearch = (thisCell) => {
-  checkCells(thisCell.x + 1, thisCell.y + 1);
-};
-
-const checkCells = (x, y) => {
-  cellsToCheck.push({ x, y });
-  surroundingBombCheck();
-};
-
-const surroundingBombCheck = () => {
-  cellsToCheck.forEach(({ x, y }) => {
-    let isBomb = bombCells.some((bomb) => bomb.x == x && bomb.y == y);
-    if (isBomb) {
-      bombCount++;
-    }
-    cellsToCheck.pop([0]);
-  });
 };
 
 //
@@ -450,7 +354,7 @@ $(".helpFloat").click(function () {
 // Modal Content
 //
 const helpContent = () => {
-  $(".modal-title").text("How to play Minesweeper!");
+  $(".modal-title").text("Welcome to Minesweeper!");
   $(".modal-body").html(
     "<h5>Help clear all the mines!</h5><ul><li>Click on a cell to reveal it.</li><li>If it's empty, you'll see how many of the neighbouring cells contain bombs. </li><li class='listSpacer'> But beware! If it's a bomb, all the bombs will explode!  </li>    <li>     Right click to place a flag on a cell you suspect to be a bomb.    </li>    <li class=listSpacer'>Right click again to remove it.</li> <li>When only cells containing bombs remain, you win!</li>    <li class='listSpacer'>      If you make the mines explode, you lose!    </li>    <li>The top bar of the game page shows:</li>    <li>Bombs - How many bombs the current difficulty contains.</li>    <li>      Flag - How many flags you have left (You start with a flag for each bomb). </li>   <li class='listSpacer'>      Time - How long you've been playing (in seconds).    </li>    <li>      The bar at the bottom of the page shows difficulty settings,      which are:    </li>    <li>Beginner - A 9 x 9 grid containing 10 bombs.</li>    <li>Intermediate - A 16 x 16 grid containing 40 bombs.</li>    <li class='listSpacer'>      Expert - A 30 x 16 grid containing 99 bombs.    </li>    <li>      Click the <i class='fa fa-expand-arrows-alt'></i> icon in the      bottom left corner to disable any animation effects.   </li>    <li>      Click the <i class='fa fa-question'></i> icon in the bottom      right corner to view these instructions again.    </li>  </ul>"
   );
@@ -467,87 +371,4 @@ const loseContent = () => {
   $(".modal-title").text("Kaboom!");
   $(".modal-body").html("You lost! 😞");
   $(".modalButton").text("Play again?");
-};
-
-const surroundingCells = (cellClicked) => {
-  let thisCell = cellCoords(cellClicked);
-  if (
-    // Check if cellClicked is a top left corner (or Cell 0)
-    cellClicked == 0
-  ) {
-    bombCount = 0;
-    middleRightSearch(thisCell);
-    bottomRightSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked == gameWidth - 1) {
-    // Check if cellClicked is a top right corner (or Cell of number gameWidth minus one)
-    bombCount = 0;
-    middleLeftSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked == gameWidth * (gameWidth - 1)) {
-    // Check if cellClicked is a bottom left corner (or Cell of number gameWidth multiplied by gameWidth minus one)
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked == gameWidth * gameHeight - 1) {
-    // Check if cellClicked is a bottom right corner (or Cell of number gameWidth multiplied by gameHeight minus one)
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topLeftSearch(thisCell);
-    middleLeftSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked < gameWidth) {
-    // Check if cellClicked is in the top row
-    bombCount = 0;
-    middleLeftSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    bottomRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked / gameWidth >= gameWidth - 1) {
-    // Check if cellClicked is in the bottom row
-    bombCount = 0;
-    middleLeftSearch(thisCell);
-    topLeftSearch(thisCell);
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked % gameWidth == 0) {
-    // Check if cellClicked is in the left column
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleRightSearch(thisCell);
-    bottomRightSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else if (cellClicked % gameWidth == gameWidth - 1) {
-    // Check if cellClicked is in the right column
-    bombCount = 0;
-    topMiddleSearch(thisCell);
-    topLeftSearch(thisCell);
-    middleLeftSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    return bombCount;
-  } else {
-    // Else cell must be in the inner part of the grid
-    bombCount = 0;
-    topLeftSearch(thisCell);
-    topMiddleSearch(thisCell);
-    topRightSearch(thisCell);
-    middleLeftSearch(thisCell);
-    middleRightSearch(thisCell);
-    bottomLeftSearch(thisCell);
-    bottomMiddleSearch(thisCell);
-    bottomRightSearch(thisCell);
-    return bombCount;
-  }
 };
