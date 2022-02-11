@@ -64,19 +64,30 @@ The was created as my second portfolio project for Code Institute's Diploma in W
 
   The wireframes for this site were created using Balasmiq, with each section and subsection noted.
 
+#
+
 ## Design
 
 - ## Colours
 
-- ![#ababab](https://via.placeholder.com/15/adabab/000000?text=+) `RGB(173, 171, 171)`
-- ![#696969](https://via.placeholder.com/15/696969/000000?text=+) `RGB(105, 105, 105)`
-- ![#d3d3d3](https://via.placeholder.com/15/d3d3d3/000000?text=+) `RGB(211, 211, 211)`
+  - ![#ababab](https://via.placeholder.com/15/adabab/000000?text=+) `RGB(173, 171, 171)` - This colour was chosen for the Counters and Buttons section of the game, and for the cells within the game. The colour was chosen as it is consistent with colour of the cells in the original version of the game released by Microsoft. The colour was applied to the Counters & Buttons sections for consistency with the rest of the game, but also due to it's contrast against the background of the game area and the page in general.
+  - ![#696969](https://via.placeholder.com/15/696969/000000?text=+) `RGB(105, 105, 105)` - This colour was chosen as the background of the game area as it contrasts well with the other colours chosen and draws the users eye to the brighter game elements in the center of the page. The gray tone of this colour is also in keeping with the overall theme of Minesweeper.
+  - ![#d3d3d3](https://via.placeholder.com/15/d3d3d3/000000?text=+) `RGB(211, 211, 211)` - This colour was chosen as the background of the 'low screen resolution' section. This colour contrasts against the colourful background of the page well and a small gray tone was added to keep within the overall Minesweeper theme.
+  - ![#008000](https://via.placeholder.com/15/008000?text=+) `Green` - This colour was chosen for the floating buttons at the bottom of the page. The main reason for the use of this colour was due to the contrast against the background, and that it does not feature anywhere else on the site.
+
+#
 
 - ## Fonts
 
-- ## Favicon
+The fonts Noto Sans & Press Start 2P were chosen from the options available from Google Fonts.
 
-#
+[Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans) was chosen as font for the main content in the help modal. This was chosen as it was not enjoyable to read large sections of text in the font Press Start 2P and this font is a lot more readable in that sense.
+
+[Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P) was chosen due to retro style of the font and was primarily used for the headings of modals, the buttons and the text in the counters. As mentioned above, although the font was not enjoyable to read in large amounts, it is a lot easier in small doses.
+
+These fonts were chosen with user accessibility and readability in mind, with a backup on sans-serif chosen for any instances where these fonts may not be available.
+
+- ## Favicon
 
 The website [Favicon.io](https://favicon.io/) was used to generate the favicon image for the website. The Unicode emoji for collision, 💥, was chosen as the icon as it is relative to the theme of the game and is recognisable due to the popularity of emojis in general.
 

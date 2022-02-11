@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Minesweeper - A Javascript project." />
+    <meta
+      name="keywords"
+      content="Minesweeper, Javascript, game, mine sweeper"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -130,10 +135,15 @@
       </div>
     </div>
     <!-- The code for this button was taken from the following codepen - https://codepen.io/androidcss/pen/yOopGp -->
-    <a href="" data-bs-toggle="modal" data-bs-target="#help" class="helpFloat">
+    <button
+      data-bs-toggle="modal"
+      data-bs-target="#help"
+      class="helpFloat"
+      aria-label="Help Button"
+    >
       <i class="fa-solid fa-question float"></i>
-    </a>
-    <button type="button" class="btn motionFloat">
+    </button>
+    <button type="button" class="btn motionFloat" aria-label="Settings Button">
       <i class="fa-solid fa-screwdriver-wrench"></i>
     </button>
     <!--                                            End of Button code                                        -->
