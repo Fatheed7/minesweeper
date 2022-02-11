@@ -24,7 +24,6 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
   - [Languages](#languages)
   - [Frameworks, Libraries and Tools](#frameworks-libraries-and-tools)
   - [Images](#images)
-  - [Content](#content)
 
 ## Objective
 
@@ -79,6 +78,8 @@ The was created as my second portfolio project for Code Institute's Diploma in W
 
 #
 
+The website [Favicon.io](https://favicon.io/) was used to generate the favicon image for the website. The Unicode emoji for collision, 💥, was chosen as the icon as it is relative to the theme of the game and is recognisable due to the popularity of emojis in general.
+
 ## Features
 
 #
@@ -124,6 +125,7 @@ The site was created using Visual Studio Code and GitHub, and deployed to GitHub
   - [HTML5](https://en.wikipedia.org/wiki/HTML5)
   - [CSS](https://en.wikipedia.org/wiki/CSS)
   - [Javascript](https://en.wikipedia.org/wiki/JavaScript)
+  - [JQuery](https://en.wikipedia.org/wiki/JQuery)
 
 - ## Frameworks, Libraries and Tools
 
@@ -133,14 +135,15 @@ The site was created using Visual Studio Code and GitHub, and deployed to GitHub
   - [Chrome Dev Tools](https://developer.chrome.com/docs/devtools/) - Used for overall development and tweaking, including testing responsiveness and performance.
   - [Colour Contrast Analyser](https://www.tpgi.com/color-contrast-checker/) - Used to check colour contrast to ensure usability for users with visual impairements.
   - [Favicon.io](https://favicon.io) - Used to generate Favicon image.
-  - [Font Awesome](https://fontawesome.com/) - Used for Social Media icons in footer.
+  - [Font Awesome](https://fontawesome.com/) - Used for icons on floating buttons.
   - [GitHub](https://github.com/) - Used for version control and hosting.
   - [Google Fonts](https://fonts.google.com/) - Used to import and alter fonts on the page.
-  - [JQuery](https://en.wikipedia.org/wiki/JQuery) - Used to override default submit functionality and display modal instead.
+  - [JQuery](https://en.wikipedia.org/wiki/JQuery) - Used to simplify definition of DOM elements, but used minimally with a preference for vanilla Javascript.
   - [LambdaTest](https://www.lambdatest.com/) - Used for Cross Site Browser Testing.
-  - [Lite-Server](https://www.npmjs.com/package/lite-server) - Used to host website locally to aid testing before updates were commited to GitHub.
+  - [Parcel](https://www.npmjs.com/package/parcel) - Used to host website locally to aid testing before updates were commited to GitHub.
   - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Used for consistent code formatting.
   - [Slack](https://slack.com/) - Used for support and advice from the Code Insitute Community.
+  - [SVG Backgrounds](https://www.svgbackgrounds.com/) - Used to style the background for the site due to low file size and responsiveness.
   - [Visual Studio Code](https://code.visualstudio.com/) - Application used for development of this site.
   - [W3C](https://www.w3.org/) - Used for HTML & CSS Validation.
   - [WAVE](https://wave.webaim.org/) - Used for Accessibility evaluation.
@@ -149,6 +152,4 @@ The site was created using Visual Studio Code and GitHub, and deployed to GitHub
 
   #
 
-- ## Content
-
-  -
+  The emoji graphic used for the favicon is from the open source project [Twemoji](https://twemoji.twitter.com/). The graphics are copyright 2020 Twitter, Inc and other contributors. The graphics are licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
