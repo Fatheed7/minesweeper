@@ -65,7 +65,7 @@ The was created as my second portfolio project for Code Institute's Diploma in W
   The wireframes for this site were created using Balasmiq, with each section and subsection noted. I endeavoured to create a single page website with the use of modals to display the rules of the game. Wireframes are available for desktop view, tablet view and, for mobile, both landscape and portrait few.
   This was added as the game is likely to be difficult to view on low resolution width devices.
 
-  The directory containing the wireframe images can be found [here](https://github.com/Fatheed7/minesweeper/tree/main/asset/docs/wireframes).
+  The directory containing the wireframe images can be found [here](https://github.com/Fatheed7/minesweeper/tree/main/assets/docs/wireframes).
 
     <details>
 
