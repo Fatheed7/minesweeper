@@ -361,7 +361,7 @@ $(".helpFloat").click(function () {
 //
 const helpContent = () => {
   $(".modal-title").text("Welcome to Minesweeper!");
-  $(".modal-body").html("/assets/html/helpContent.html");
+  $(".modal-body").load("/assets/html/helpContent.html");
   $(".modalButton").text("Lets play!");
 };
 
