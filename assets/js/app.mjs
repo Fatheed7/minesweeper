@@ -1,4 +1,4 @@
-import $ from "jquery";
+import $ from "../../node_modules/jquery";
 import { getCoords, getIndex } from "./lib";
 
 // Holds all the cells in a left to right, top to bottom order.
