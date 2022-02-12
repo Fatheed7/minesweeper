@@ -338,18 +338,8 @@ const fill = (cellClicked) => {
 //
 // Floating Button Code
 //
-$(".motionFloat").click(function () {
-  if (motionToggle == 0) {
-    $(this).css({ backgroundColor: "red" });
-    $("#game-area").removeClass("transition");
-    $(".modal").removeClass("fade");
-    motionToggle = 1;
-  } else {
-    $(this).css({ backgroundColor: "green" });
-    $("#game-area").addClass("transition");
-    $(".modal").addClass("fade");
-    motionToggle = 0;
-  }
+$(".settingsFloat").click(function () {
+  settings();
 });
 
 $(".helpFloat").click(function () {
@@ -364,6 +354,18 @@ const helpContent = () => {
   $(".modal-body").load("assets/html/helpContent.html");
   $(".modalButton").text("Lets play!");
 };
+
+const settings = () => {
+  $(".modal-title").text("Welcome to Minesweeper!");
+  $(".modal-body").load("assets/html/settings.html");
+  $(".modalButton").text("Lets play!");
+};
+
+$("#deleteCookies").click(function () {
+  $(this).fadeOut(function () {
+    $("#hideConfirm").fadeIn();
+  });
+});
 
 const winContent = () => {
   $(".modal-title").text("Congratulations!");
