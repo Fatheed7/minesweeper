@@ -10,7 +10,6 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
   - [User Stories](#user-stories)
   - [Wireframes](#wireframes)
 - [Design](#design)
-  - [Imagery](#imagery)
   - [Colours](#colours)
   - [Fonts](#fonts)
   - [Favicon](#favicon)
