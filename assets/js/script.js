@@ -356,7 +356,7 @@ const helpContent = () => {
 };
 
 const settings = () => {
-  $(".modal-title").text("Welcome to Minesweeper!");
+  $(".modal-title").text("Customise your settings!");
   $(".modal-body").load("assets/html/settings.html");
   $(".modalButton").text("Lets play!");
 };
