@@ -73,21 +73,17 @@
     <div class="row justify-content-center">
       <div class="col-10" id="gameBottom">
         <div class="buttons">
-          <button type="button" class="btn btn-primary" onclick="newGame(9, 9)">
+          <button type="button" class="btn btn-primary" id="newgame-beginner">
             Beginner
           </button>
           <button
             type="button"
             class="btn btn-primary"
-            onclick="newGame(16, 16)"
+            id="newgame-intermediate"
           >
             Intermediate
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="newGame(16, 30)"
-          >
+          <button type="button" class="btn btn-primary" id="newgame-expert">
             Expert
           </button>
         </div>
@@ -168,6 +164,6 @@
       crossorigin="anonymous"
     ></script>
     <!--                                            End of Bootstrap Import                                          -->
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/app.mjs" type="module"></script>
   </body>
 </html>

@@ -1,1 +1,6 @@
-dist/
+dist
+.idea
+.vscode
+node_modules
+*.log
+.parcel-cache
