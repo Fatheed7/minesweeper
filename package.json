@@ -4,7 +4,8 @@
   "description": "The website can be [found here](https://fatheed7.github.io/minesweeper/).",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel index.html"
+    "dev": "parcel index.html",
+    "format": "prettier --write \"**/*.{mjs,html,css}\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/Fatheed7/minesweeper/issues"
   },
-  "homepage": "https://github.com/Fatheed7/minesweeper#readme"
+  "homepage": "https://github.com/Fatheed7/minesweeper#readme",
+  "devDependencies": {
+    "jquery": "^3.6.0",
+    "parcel": "^2.3.1",
+    "prettier": "^2.5.1"
+  },
+  "prettier": {
+    "htmlWhitespaceSensitivity": "ignore",
+    "tabWidth": 4,
+    "printWidth": 120
+  }
 }
