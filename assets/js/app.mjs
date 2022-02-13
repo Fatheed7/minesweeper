@@ -14,8 +14,8 @@ const cells = [
 ];
 
 const game = {
-    width: 10,
-    height: 10,
+    width: 9,
+    height: 9,
     bombCount: 10,
 };
 
@@ -47,40 +47,8 @@ $(() => {
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
-    rightClick();
     newGame(9, 9, 10);
 });
-
-const rightClick = () => {
-    $(document).on("contextmenu", ".grid-cell", function () {
-        if (gameState == 0) {
-            return;
-        }
-        if (flagNo.innerHTML == 0) {
-            if ($(this).text() == "🚩") {
-                $(this).text("");
-                flagNo.innerHTML++;
-            } else {
-                return;
-            }
-        } else {
-            let number = $(this).text();
-            if ($(this).text() == "🚩") {
-                $(this).text("❓");
-                flagNo.innerHTML++;
-            } else if ($(this).text() == "❓") {
-                $(this).text("");
-            } else if ($(this).text() == "💥") {
-                return;
-            } else if ($.isNumeric(number)) {
-                return;
-            } else {
-                $(this).text("🚩");
-                flagNo.innerHTML--;
-            }
-        }
-    });
-};
 
 window.addEventListener(
     "contextmenu",
@@ -95,6 +63,10 @@ const newGame = (width, height, bombCount) => {
     game.width = width;
     game.height = height;
     game.bombCount = bombCount;
+    document.getElementsByClassName("counters")[1].classList.remove("d-none");
+    document.getElementsByClassName("counterContainer")[0].classList.remove("d-none");
+    document.getElementsByClassName("welcome")[0].classList.add("d-none");
+    document.getElementById("gameWrap").classList.remove("d-none");
 
     for (let i = 0; i < width * height; i++) {
         cells.push({
@@ -114,6 +86,7 @@ const newGame = (width, height, bombCount) => {
 };
 
 const drawGrid = () => {
+    if (gameState == 0) return;
     const grid = $(`#grid`);
     grid.css(`grid-template-columns`, `repeat(${game.width}, 1fr)`);
     grid.empty();
@@ -121,13 +94,14 @@ const drawGrid = () => {
     for (let [i, cell] of cells.entries()) {
         const $cell = $(`<div class="grid-cell untouched"></div>`);
         $cell.click(() => clickCell(i));
+
         if (cell.revealed) {
             // add some classes to visual the cell state
             if (cell.isBomb) {
-                $cell.text(`💣`);
+                $cell.text(`💥`);
                 gameState = 0;
-            } else if (cell.hasFlag) $cell.text(`🚩`);
-            else if (cell.surroundingBombs > 0) {
+                alert("You lose!");
+            } else if (cell.surroundingBombs > 0) {
                 $cell.text(cell.surroundingBombs);
                 $cell.addClass("empty-cell");
             } else {
@@ -136,6 +110,7 @@ const drawGrid = () => {
             }
         }
 
+        if (cell.hasFlag) $cell.text(`🚩`);
         grid.append($cell);
     }
 };
