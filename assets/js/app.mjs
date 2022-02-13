@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { getCoords, getIndex } from "./lib";
+let gameState = 0;
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -30,22 +31,64 @@ $(() => {
         newGame(9, 9, 10);
         $("#grid").css("width", "45%");
         document.getElementById("gameWrap").classList.remove("d-none");
+        gameState = 1;
     });
     $(`#newgame-intermediate`).click(() => {
         newGame(16, 16, 40);
         $("#grid").css("width", "45%");
         $("gameWrap").removeClass("d-none");
         document.getElementById("gameWrap").classList.remove("d-none");
+        gameState = 1;
     });
     $(`#newgame-expert`).click(() => {
         newGame(30, 16, 99);
         $("#grid").css("width", "75%");
         $("gameWrap").removeClass("d-none");
         document.getElementById("gameWrap").classList.remove("d-none");
+        gameState = 1;
     });
-
-    newGame(10, 10, 10);
+    rightClick();
+    newGame(9, 9, 10);
 });
+
+const rightClick = () => {
+    $(document).on("contextmenu", ".grid-cell", function () {
+        if (gameState == 0) {
+            return;
+        }
+        if (flagNo.innerHTML == 0) {
+            if ($(this).text() == "🚩") {
+                $(this).text("");
+                flagNo.innerHTML++;
+            } else {
+                return;
+            }
+        } else {
+            let number = $(this).text();
+            if ($(this).text() == "🚩") {
+                $(this).text("❓");
+                flagNo.innerHTML++;
+            } else if ($(this).text() == "❓") {
+                $(this).text("");
+            } else if ($(this).text() == "💥") {
+                return;
+            } else if ($.isNumeric(number)) {
+                return;
+            } else {
+                $(this).text("🚩");
+                flagNo.innerHTML--;
+            }
+        }
+    });
+};
+
+window.addEventListener(
+    "contextmenu",
+    function (e) {
+        e.preventDefault();
+    },
+    false
+);
 
 const newGame = (width, height, bombCount) => {
     cells.length = 0;
@@ -80,10 +123,17 @@ const drawGrid = () => {
         $cell.click(() => clickCell(i));
         if (cell.revealed) {
             // add some classes to visual the cell state
-            if (cell.isBomb) $cell.text(`💣`);
-            else if (cell.hasFlag) $cell.text(`🚩`);
-            else if (cell.surroundingBombs > 0) $cell.text(cell.surroundingBombs);
-            else $cell.text(`0`);
+            if (cell.isBomb) {
+                $cell.text(`💣`);
+                gameState = 0;
+            } else if (cell.hasFlag) $cell.text(`🚩`);
+            else if (cell.surroundingBombs > 0) {
+                $cell.text(cell.surroundingBombs);
+                $cell.addClass("empty-cell");
+            } else {
+                $cell.text(``);
+                $cell.addClass("empty-cell");
+            }
         }
 
         grid.append($cell);
