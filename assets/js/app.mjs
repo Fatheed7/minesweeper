@@ -1,6 +1,10 @@
 import $ from "jquery";
 import { getCoords, getIndex } from "./lib";
+const bombNo = document.getElementById("bombNo");
+const flagNo = document.getElementById("flagNo");
 let gameState = 0;
+let secondCounter = -1;
+let timeCounter = "";
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -65,12 +69,16 @@ const newGame = (width, height, bombCount) => {
     game.width = width;
     game.height = height;
     game.bombCount = bombCount;
-    $("#bombNo").text(bombCount);
-    $("#flagNo").text(bombCount);
+    $(bombNo).text(bombCount);
+    $(flagNo).text(bombCount);
     document.getElementsByClassName("counters")[1].classList.remove("d-none");
     document.getElementsByClassName("counterContainer")[0].classList.remove("d-none");
     document.getElementsByClassName("welcome")[0].classList.add("d-none");
     document.getElementById("gameWrap").classList.remove("d-none");
+    clearInterval(timeCounter);
+    timeCounter = setInterval(gameTimer, 1000);
+    secondCounter = -1;
+    gameTimer();
 
     for (let i = 0; i < width * height; i++) {
         cells.push({
@@ -88,6 +96,12 @@ const newGame = (width, height, bombCount) => {
     drawGrid();
 
     // make a function called renderStats() which updates the stats on the page
+};
+
+const gameTimer = () => {
+    ++secondCounter;
+    let seconds = secondCounter;
+    document.getElementById("gameTimer").innerHTML = seconds;
 };
 
 const drawGrid = () => {
@@ -152,15 +166,16 @@ const rightClick = () => {
         if (cells[i].revealed) return;
 
         if (cells[i].hasFlag) {
+            flagNo.innerHTML++;
             cells[i].hasFlag = false;
             cells[i].hasQuestion = true;
         } else if (cells[i].hasQuestion) {
             cells[i].hasQuestion = false;
         } else {
             cells[i].hasFlag = true;
+            flagNo.innerHTML--;
         }
         drawGrid();
-        console.log(cells);
     });
 };
 
@@ -169,6 +184,7 @@ const revealBombs = (cell, $cell) => {
         if (cells[i].isBomb) {
             $cell.text(`💥`);
             $cell.revealed = true;
+            clearInterval(timeCounter);
         }
     }
 };
