@@ -65,7 +65,8 @@ const newGame = (width, height, bombCount) => {
     game.width = width;
     game.height = height;
     game.bombCount = bombCount;
-    document.getElementsByClassName("flagNo").innerHTML(flagNo);
+    $("#bombNo").text(bombCount);
+    $("#flagNo").text(bombCount);
     document.getElementsByClassName("counters")[1].classList.remove("d-none");
     document.getElementsByClassName("counterContainer")[0].classList.remove("d-none");
     document.getElementsByClassName("welcome")[0].classList.add("d-none");
@@ -107,9 +108,11 @@ const drawGrid = () => {
             else if (cell.surroundingBombs > 0) {
                 $cell.text(cell.surroundingBombs);
                 $cell.addClass("empty-cell");
+                $cell.removeClass("untouched");
             } else {
                 $cell.text(``);
                 $cell.addClass("empty-cell");
+                $cell.removeClass("untouched");
             }
         }
 
