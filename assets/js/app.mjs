@@ -9,6 +9,7 @@ const cells = [
     //     revealed: false,
     //     isBomb: false,
     //     hasFlag: false,
+    //     hasQuestion: false
     //     surroundingBombs: 0,
     // }
 ];
@@ -47,7 +48,8 @@ $(() => {
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
-    newGame(9, 9, 10);
+
+    rightClick();
 });
 
 window.addEventListener(
@@ -63,6 +65,7 @@ const newGame = (width, height, bombCount) => {
     game.width = width;
     game.height = height;
     game.bombCount = bombCount;
+    document.getElementsByClassName("flagNo").innerHTML(flagNo);
     document.getElementsByClassName("counters")[1].classList.remove("d-none");
     document.getElementsByClassName("counterContainer")[0].classList.remove("d-none");
     document.getElementsByClassName("welcome")[0].classList.add("d-none");
@@ -73,6 +76,7 @@ const newGame = (width, height, bombCount) => {
             revealed: false,
             isBomb: Math.random() < 0.1,
             hasFlag: false,
+            hasQuestion: false,
             surroundingBombs: 0,
         });
     }
@@ -98,10 +102,9 @@ const drawGrid = () => {
         if (cell.revealed) {
             // add some classes to visual the cell state
             if (cell.isBomb) {
-                $cell.text(`💥`);
-                gameState = 0;
-                alert("You lose!");
-            } else if (cell.surroundingBombs > 0) {
+                revealBombs(cell, $cell);
+            } else if (cell.hasFlag) $cell.text(`🚩`);
+            else if (cell.surroundingBombs > 0) {
                 $cell.text(cell.surroundingBombs);
                 $cell.addClass("empty-cell");
             } else {
@@ -111,6 +114,7 @@ const drawGrid = () => {
         }
 
         if (cell.hasFlag) $cell.text(`🚩`);
+        if (cell.hasQuestion) $cell.text(`❓`);
         grid.append($cell);
     }
 };
@@ -118,6 +122,10 @@ const drawGrid = () => {
 const clickCell = (index) => {
     const cell = cells[index];
 
+    if (cell.hasFlag || cell.hasQuestion) {
+        cell.hasFlag == false;
+        cell.hasQuestion == false;
+    }
     if (cell.revealed) return;
 
     if (cell.isBomb) {
@@ -132,6 +140,34 @@ const clickCell = (index) => {
     }
 
     drawGrid();
+};
+
+const rightClick = () => {
+    $(document).on("contextmenu", ".grid-cell", function () {
+        const i = $(this).index();
+
+        if (cells[i].revealed) return;
+
+        if (cells[i].hasFlag) {
+            cells[i].hasFlag = false;
+            cells[i].hasQuestion = true;
+        } else if (cells[i].hasQuestion) {
+            cells[i].hasQuestion = false;
+        } else {
+            cells[i].hasFlag = true;
+        }
+        drawGrid();
+        console.log(cells);
+    });
+};
+
+const revealBombs = (cell, $cell) => {
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].isBomb) {
+            $cell.text(`💥`);
+            $cell.revealed = true;
+        }
+    }
 };
 
 /**
