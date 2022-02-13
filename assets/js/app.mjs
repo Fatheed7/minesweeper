@@ -1,4 +1,4 @@
-import $ from "./jquery";
+import $ from "jquery";
 import { getCoords, getIndex } from "./lib";
 
 // Holds all the cells in a left to right, top to bottom order.
@@ -26,9 +26,23 @@ const game = {
  * On document load, add functionality to the newgame buttons
  */
 $(() => {
-    $(`#newgame-beginner`).click(() => newGame(9, 9, 10));
-    $(`#newgame-intermediate`).click(() => newGame(13, 13, 20));
-    $(`#newgame-expert`).click(() => newGame(25, 25, 30));
+    $(`#newgame-beginner`).click(() => {
+        newGame(9, 9, 10);
+        $("#grid").css("width", "45%");
+        document.getElementById("gameWrap").classList.remove("d-none");
+    });
+    $(`#newgame-intermediate`).click(() => {
+        newGame(16, 16, 40);
+        $("#grid").css("width", "45%");
+        $("gameWrap").removeClass("d-none");
+        document.getElementById("gameWrap").classList.remove("d-none");
+    });
+    $(`#newgame-expert`).click(() => {
+        newGame(30, 16, 99);
+        $("#grid").css("width", "75%");
+        $("gameWrap").removeClass("d-none");
+        document.getElementById("gameWrap").classList.remove("d-none");
+    });
 
     newGame(10, 10, 10);
 });
@@ -62,7 +76,7 @@ const drawGrid = () => {
     grid.empty();
 
     for (let [i, cell] of cells.entries()) {
-        const $cell = $(`<div class="grid-cell"></div>`);
+        const $cell = $(`<div class="grid-cell untouched"></div>`);
         $cell.click(() => clickCell(i));
         if (cell.revealed) {
             // add some classes to visual the cell state
@@ -71,11 +85,6 @@ const drawGrid = () => {
             else if (cell.surroundingBombs > 0) $cell.text(cell.surroundingBombs);
             else $cell.text(`0`);
         }
-
-        // Just for debugging
-        // $cell.text(cell.surroundingBombs);
-        // if (cell.isBomb) $cell.text(`💣`);
-        // cell.contextmenu(cellRightClicked);
 
         grid.append($cell);
     }
@@ -88,10 +97,9 @@ const clickCell = (index) => {
 
     if (cell.isBomb) {
         // Cell is a bomb, just reveal it
-        // Fatheed can add gameover stuff here
         cell.revealed = true;
     } else if (cell.surroundingBombs > 0) {
-        // Cell is not a bomb but has a nearby bomb. Reveal it and fuck off
+        // Cell is not a bomb but has a nearby bomb. Reveal it.
         cell.revealed = true;
     } else {
         // Cell has no neighbouring bombs. Start exploring!
@@ -120,16 +128,6 @@ const calculateSurroundings = () => {
 };
 
 const revealArea = (index) => {
-    // list of candidates (indexes)
-    // list of visited (indexes)
-    // add the clicked cell to candidates
-    // start looping over candidates, until the list is empty
-    // for each cell:
-    // - check the state, if false, set it to true
-    // - if already true, stop
-    // - add neighbours to candidates, IF they`re not already in visited
-    // - move self to visited
-
     const candidates = [index];
     const visited = [];
 
@@ -145,7 +143,7 @@ const revealArea = (index) => {
         const candidate = cells[candidateIndex];
         console.log(candidateIndex, candidate);
 
-        // Cell is already revealed, we dont need to check its neighbours and shit
+        // Cell is already revealed, we dont need to check its neighbours
         if (candidate.revealed) continue;
 
         // Cell is hidden, lets turn it on
@@ -157,11 +155,10 @@ const revealArea = (index) => {
         // Lets check the neighbours
         const { x, y } = getCoords(candidateIndex, game.width, game.height);
 
-        // However, we are efficient boyse. We just get a bunch of indexes and loop through them
         const neighbouringIndexes = [
-            getIndex(x + 1, y, game.width, game.height), // right // number OR null if OOB
-            getIndex(x - 1, y, game.width, game.height), // left
-            getIndex(x, y + 1, game.width, game.height), // etc
+            getIndex(x + 1, y, game.width, game.height),
+            getIndex(x - 1, y, game.width, game.height),
+            getIndex(x, y + 1, game.width, game.height),
             getIndex(x, y - 1, game.width, game.height),
             getIndex(x - 1, y - 1, game.width, game.height),
             getIndex(x - 1, y + 1, game.width, game.height),
@@ -169,18 +166,54 @@ const revealArea = (index) => {
             getIndex(x + 1, y + 1, game.width, game.height),
         ];
 
-        // Does the same thing with fewer lines of code, but far less readable
-        // const neighbouringIndexes = [];
-        // for (let xx = -1; xx <= 1; xx++) {
-        //   for (let yy = -1; yy <= 1; yy++) {
-        //     neighbouringIndexes.push(getIndex(x + xx, y + yy));
-        //   }
-        // }
-
         neighbouringIndexes.forEach((i) => {
             if (i !== null && !visited.includes(i)) {
                 candidates.push(i);
             }
         });
     }
+};
+
+//
+// Floating Button Code
+//
+$(".settingsFloat").click(function () {
+    settings();
+});
+
+$(".helpFloat").click(function () {
+    helpContent();
+});
+
+//
+// Modal Content
+//
+const helpContent = () => {
+    $(".modal-title").text("Welcome to Minesweeper!");
+    $(".modal-body").load("assets/html/helpContent.html");
+    $(".modalButton").text("Lets play!");
+};
+
+const settings = () => {
+    $(".modal-title").text("Customise your settings!");
+    $(".modal-body").load("assets/html/settings.html");
+    $(".modalButton").text("Lets play!");
+};
+
+$("#deleteCookies").click(function () {
+    $(this).fadeOut(function () {
+        $("#hideConfirm").fadeIn();
+    });
+});
+
+const winContent = () => {
+    $(".modal-title").text("Congratulations!");
+    $(".modal-body").html("You win! 😀");
+    $(".modalButton").text("Play again?");
+};
+
+const loseContent = () => {
+    $(".modal-title").text("Kaboom!");
+    $(".modal-body").html("You lost! 😞");
+    $(".modalButton").text("Play again?");
 };

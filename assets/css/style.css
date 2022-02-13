@@ -37,19 +37,6 @@ table {
     padding: 10px;
 }
 
-#game-area {
-    display: grid;
-    grid-template-rows: repeat(var(--grid-rows), 1fr);
-    grid-template-columns: repeat(var(--grid-cols), 1fr);
-    margin: auto;
-    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-    max-height: 80vh;
-    max-height: 600px;
-    background-color: black;
-}
-
 #gameWrap {
     background-color: rgb(105, 105, 105);
     padding: 20px;
@@ -90,12 +77,34 @@ table {
     width: 100%;
 }
 
-.ms-cell {
+#grid {
+    display: grid;
+    grid-gap: 5px;
+    max-height: 80vh;
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+    margin: auto;
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    background-color: black;
+}
+
+#grid .width-40 {
+    width: 40%;
+}
+
+#grid .width-50 {
+    width: 50%;
+}
+
+.grid-cell {
+    background: #aaa;
+    display: flex;
     border: 1px solid #ddd;
     min-height: 10px;
     min-width: 10px;
     aspect-ratio: 1/1;
-    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2em;
@@ -117,24 +126,6 @@ table {
 }
 
 /* End of CSS for cells within the game area */
-
-.beginner {
-    --grid-rows: 9;
-    --grid-cols: 9;
-    width: 25%;
-}
-
-.intermediate {
-    --grid-rows: 16;
-    --grid-cols: 16;
-    width: 40%;
-}
-
-.expert {
-    --grid-rows: 16;
-    --grid-cols: 30;
-    width: 65%;
-}
 
 .modal-footer {
     display: contents;
@@ -162,7 +153,7 @@ table {
     box-shadow: 2px 2px 3px #999;
     font-size: 30px;
 }
-.motionFloat {
+.settingsFloat {
     position: fixed;
     width: 60px;
     height: 60px;
@@ -201,17 +192,4 @@ table {
         border-radius: 20px;
         width: 75%;
     }
-}
-
-#grid {
-    display: grid;
-    grid-gap: 5px;
-}
-
-.grid-cell {
-    aspect-ratio: 1;
-    background: #aaa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
