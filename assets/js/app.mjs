@@ -125,18 +125,16 @@ const drawGrid = () => {
         $cell.click(() => clickCell(i));
 
         if (cell.revealed) {
+            $cell.addClass("empty-cell");
+            $cell.removeClass("untouched");
             // add some classes to visual the cell state
             if (cell.isBomb) {
                 revealBombs(cell, $cell);
             } else if (cell.hasFlag) $cell.text(`🚩`);
             else if (cell.surroundingBombs > 0) {
                 $cell.text(cell.surroundingBombs);
-                $cell.addClass("empty-cell");
-                $cell.removeClass("untouched");
             } else {
                 $cell.text(``);
-                $cell.addClass("empty-cell");
-                $cell.removeClass("untouched");
             }
         }
 
@@ -149,12 +147,12 @@ const drawGrid = () => {
 const clickCell = (index) => {
     const cell = cells[index];
 
-    if (cell.hasFlag || cell.hasQuestion) {
-        cell.hasFlag == false;
-        cell.hasQuestion == false;
-    }
     if (cell.revealed) return;
 
+    if (cell.hasFlag || cell.hasQuestion) {
+        cell.hasFlag = false;
+        cell.hasQuestion = false;
+    }
     if (cell.isBomb) {
         // Cell is a bomb, just reveal it
         cell.revealed = true;
@@ -165,7 +163,7 @@ const clickCell = (index) => {
         // Cell has no neighbouring bombs. Start exploring!
         revealArea(index);
     }
-
+    console.log(cell);
     drawGrid();
 };
 
@@ -189,13 +187,14 @@ const rightClick = () => {
     });
 };
 
-const revealBombs = (cell, $cell) => {
+const revealBombs = (_cell, $cell) => {
     for (let i = 0; i < cells.length; i++) {
         if (cells[i].isBomb) {
             $cell.hasFlag = false;
             $cell.hasQuestion = false;
-            $cell.text(`💥`);
             $cell.revealed = true;
+            $cell.text(`💥`);
+
             clearInterval(timeCounter);
         }
     }
@@ -287,7 +286,7 @@ const helpContent = () => {
 
 const settings = () => {
     $(".modal-title").text("Customise your settings!");
-    $(".modal-body").load("assets/html/settings.html");
+    $(".modal-body").load("assets/html/settings.html ");
     $(".modalButton").text("Lets play!");
 };
 
