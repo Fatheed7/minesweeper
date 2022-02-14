@@ -4,7 +4,7 @@
     "description": "The website can be [found here](https://fatheed7.github.io/minesweeper/).",
     "scripts": {
         "dev": "parcel index.html",
-        "build": "parcel build index.html",
+        "build": "parcel build index.html assets/html/helpContent.html assets/html/settings.html",
         "format": "prettier --write \"**/*.{mjs,html,css}\""
     },
     "repository": {

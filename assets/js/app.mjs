@@ -52,7 +52,6 @@ $(() => {
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
-
     rightClick();
 });
 
@@ -83,19 +82,30 @@ const newGame = (width, height, bombCount) => {
     for (let i = 0; i < width * height; i++) {
         cells.push({
             revealed: false,
-            isBomb: Math.random() < 0.1,
+            isBomb: false,
             hasFlag: false,
             hasQuestion: false,
             surroundingBombs: 0,
         });
     }
 
-    // make a function called plantBombs(bombCount) which randomly adds bombs, until that amount has been reached
-
+    plantBombs(bombCount);
     calculateSurroundings();
     drawGrid();
 
     // make a function called renderStats() which updates the stats on the page
+};
+
+const plantBombs = (bombCount) => {
+    const bombCells = [];
+
+    while (bombCells.length < bombCount) {
+        let bomb = Math.floor(Math.random() * (game.width * game.height));
+        if (bombCells.indexOf(bomb) === -1) bombCells.push(bomb);
+    }
+    for (let i = 0; i < bombCells.length; i++) {
+        cells[bombCells[i]].isBomb = true;
+    }
 };
 
 const gameTimer = () => {
@@ -221,7 +231,6 @@ const revealArea = (index) => {
         if (candidateIndex === null) continue;
 
         const candidate = cells[candidateIndex];
-        console.log(candidateIndex, candidate);
 
         // Cell is already revealed, we dont need to check its neighbours
         if (candidate.revealed) continue;
