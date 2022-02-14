@@ -192,6 +192,8 @@ const rightClick = () => {
 const revealBombs = (cell, $cell) => {
     for (let i = 0; i < cells.length; i++) {
         if (cells[i].isBomb) {
+            $cell.hasFlag = false;
+            $cell.hasQuestion = false;
             $cell.text(`💥`);
             $cell.revealed = true;
             clearInterval(timeCounter);
