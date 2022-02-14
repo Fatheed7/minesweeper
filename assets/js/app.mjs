@@ -5,6 +5,7 @@ const flagNo = document.getElementById("flagNo");
 let gameState = 0;
 let secondCounter = -1;
 let timeCounter = "";
+const bombCells = [];
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -92,13 +93,9 @@ const newGame = (width, height, bombCount) => {
     plantBombs(bombCount);
     calculateSurroundings();
     drawGrid();
-
-    // make a function called renderStats() which updates the stats on the page
 };
 
 const plantBombs = (bombCount) => {
-    const bombCells = [];
-
     while (bombCells.length < bombCount) {
         let bomb = Math.floor(Math.random() * (game.width * game.height));
         if (bombCells.indexOf(bomb) === -1) bombCells.push(bomb);
@@ -115,7 +112,6 @@ const gameTimer = () => {
 };
 
 const drawGrid = () => {
-    if (gameState == 0) return;
     const grid = $(`#grid`);
     grid.css(`grid-template-columns`, `repeat(${game.width}, 1fr)`);
     grid.empty();
@@ -129,7 +125,10 @@ const drawGrid = () => {
             $cell.removeClass("untouched");
             // add some classes to visual the cell state
             if (cell.isBomb) {
-                revealBombs(cell, $cell);
+                $cell.hasFlag = false;
+                $cell.hasQuestion = false;
+                $cell.text(`💥`);
+                $cell.revealed = true;
             } else if (cell.hasFlag) $cell.text(`🚩`);
             else if (cell.surroundingBombs > 0) {
                 $cell.text(cell.surroundingBombs);
@@ -145,6 +144,7 @@ const drawGrid = () => {
 };
 
 const clickCell = (index) => {
+    if (gameState == 0) return;
     const cell = cells[index];
 
     if (cell.revealed) return;
@@ -154,8 +154,10 @@ const clickCell = (index) => {
         cell.hasQuestion = false;
     }
     if (cell.isBomb) {
-        // Cell is a bomb, just reveal it
         cell.revealed = true;
+        clearInterval(timeCounter);
+        gameState = 0;
+        loseGame();
     } else if (cell.surroundingBombs > 0) {
         // Cell is not a bomb but has a nearby bomb. Reveal it.
         cell.revealed = true;
@@ -163,11 +165,11 @@ const clickCell = (index) => {
         // Cell has no neighbouring bombs. Start exploring!
         revealArea(index);
     }
-    console.log(cell);
     drawGrid();
 };
 
 const rightClick = () => {
+    if (gameState == 0) return;
     $(document).on("contextmenu", ".grid-cell", function () {
         const i = $(this).index();
 
@@ -187,18 +189,9 @@ const rightClick = () => {
     });
 };
 
-const revealBombs = (_cell, $cell) => {
-    for (let i = 0; i < cells.length; i++) {
-        if (cells[i].isBomb) {
-            $cell.hasFlag = false;
-            $cell.hasQuestion = false;
-            $cell.revealed = true;
-            $cell.text(`💥`);
-
-            clearInterval(timeCounter);
-        }
-    }
-};
+function loseGame() {
+    loseContent();
+}
 
 /**
  * Calculate the amount of surrounding bombs for a given cell index

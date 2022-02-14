@@ -192,3 +192,7 @@ table {
         width: 75%;
     }
 }
+
+.form-check {
+    padding: 10px;
+}
