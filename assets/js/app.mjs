@@ -198,13 +198,13 @@ const rightClick = () => {
 
 function loseGame() {
     loseContent();
-    $(".modal").modal("show");
+    $(".helpModal").modal("show");
 }
 
 function winGame() {
     gameState = 0;
     winContent();
-    $(".modal").modal("show");
+    $(".helpModal").modal("show");
 }
 
 function showAllBombs() {
