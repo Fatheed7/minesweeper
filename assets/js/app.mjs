@@ -283,12 +283,12 @@ const revealArea = (index) => {
 //
 // Floating Button Code
 //
-$(".settingsFloat").click(function () {
-    settings();
-});
-
 $(".helpFloat").click(function () {
     helpContent();
+});
+
+$(".settingsFloat").click(function () {
+    settings();
 });
 
 //
@@ -296,24 +296,30 @@ $(".helpFloat").click(function () {
 //
 const helpContent = () => {
     $(".modal-title").text("Welcome to Minesweeper!");
-    $(".modal-body").load("assets/html/helpContent.html");
+    $("#helpModalBody").load("assets/html/helpContent.html");
     $(".modalButton").text("Lets play!");
 };
 
 const settings = () => {
+    $("#deleteStorage").removeClass("d-none");
+    $("#storageConfirm").addClass("d-none");
     $(".modal-title").text("Customise your settings!");
-    $(".modal-body").load("assets/html/settings.html ");
     $(".modalButton").text("Lets play!");
 };
 
 const winContent = () => {
     $(".modal-title").text("Congratulations!");
-    $(".modal-body").html("You win! 😀");
+    $("#helpModalBody").html("You win! 😀");
     $(".modalButton").text("Play again?");
 };
 
 const loseContent = () => {
     $(".modal-title").text("Kaboom!");
-    $(".modal-body").html("You lost! 😞");
+    $("#helpModalBody").html("You lost! 😞");
     $(".modalButton").text("Play again?");
 };
+
+$("#deleteStorage").click(function () {
+    $("#deleteStorage").addClass("d-none");
+    $("#storageConfirm").removeClass("d-none");
+});

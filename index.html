@@ -12,7 +12,6 @@
         <link rel="icon" type="image/png" sizes="32x32" href="./assets/img/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="./assets/img/favicon-16x16.png" />
         <link rel="prefetch" href="./assets/html/helpContent.html" />
-        <link rel="prefetch" href="./assets/html/settings.html" />
 
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -80,7 +79,7 @@
                 Please consider rotating your device.
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Help Modal -->
         <div
             class="modal fade"
             id="modal"
@@ -96,7 +95,7 @@
                         <h4 class="modal-title" id="modalLabel">Welcome to Minesweeper!</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body"></div>
+                    <div class="modal-body" id="helpModalBody"></div>
                     <div class="modal-footer">
                         <button
                             type="button"
@@ -110,11 +109,115 @@
                 </div>
             </div>
         </div>
+        <!-- End of Help Modal -->
+        <!-- Settings Modal -->
+        <div
+            class="modal fade"
+            id="settingsModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="modalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalLabel">Welcome to Minesweeper!</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <form>
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            role="switch"
+                                            id="flexSwitchCheckDefault"
+                                        />
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">
+                                            Default switch checkbox input
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            role="switch"
+                                            id="flexSwitchCheckChecked"
+                                        />
+                                        <label class="form-check-label" for="flexSwitchCheckChecked">
+                                            Checked switch checkbox input
+                                        </label>
+                                    </div>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <button type="button" class="btn btn-success" aria-label="Save Settings">
+                                            Save Settings
+                                        </button>
+                                    </div>
+                                </form>
+                                <hr />
+                                <div class="form-check d-flex justify-content-center">
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        id="deleteStorage"
+                                        aria-label="Delete Locally Stored Settings"
+                                    >
+                                        Delete Locally Stored Settings
+                                    </button>
+                                </div>
+                                <div class="d-flex justify-content-center d-none" id="storageConfirm">
+                                    <div id="hideConfirm">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success"
+                                            id="cookiesYes"
+                                            aria-label="Delete Cookies - Yes"
+                                        >
+                                            Yes
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger"
+                                            id="cookiesNo"
+                                            aria-label="Delete Cookies - No"
+                                        >
+                                            No
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-primary modalButton"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            Let's play!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End of Settings Modal-->
+
         <!-- The code for this button was taken from the following codepen - https://codepen.io/androidcss/pen/yOopGp -->
         <button data-bs-toggle="modal" data-bs-target="#modal" class="helpFloat" aria-label="Help Button">
             <i class="fa-solid fa-question float"></i>
         </button>
-        <button data-bs-toggle="modal" data-bs-target="#modal" class="settingsFloat" aria-label="Settings Button">
+        <button
+            data-bs-toggle="modal"
+            data-bs-target="#settingsModal"
+            class="settingsFloat"
+            aria-label="Settings Button"
+        >
             <i class="fa-solid fa-screwdriver-wrench"></i>
         </button>
         <!--                                            End of Button code                                        -->
