@@ -143,7 +143,6 @@ const drawGrid = () => {
 };
 
 const clickCell = (index) => {
-    console.log(bombCells);
     if (gameState == 0) return;
     const cell = cells[index];
 
@@ -157,14 +156,20 @@ const clickCell = (index) => {
         cell.revealed = true;
         clearInterval(timeCounter);
         gameState = 0;
-        showAllBombs();
-        loseGame();
     } else if (cell.surroundingBombs > 0) {
         // Cell is not a bomb but has a nearby bomb. Reveal it.
         cell.revealed = true;
     } else {
         // Cell has no neighbouring bombs. Start exploring!
         revealArea(index);
+    }
+    if (gameState !== 0) {
+        if (cells.filter((c) => c.revealed).length == game.width * game.height - game.bombCount) {
+            winGame();
+        }
+    } else {
+        showAllBombs();
+        loseGame();
     }
     drawGrid();
 };
@@ -191,7 +196,13 @@ const rightClick = () => {
 };
 
 function loseGame() {
+    alert("Lose");
     loseContent();
+}
+
+function winGame() {
+    gameState = 0;
+    alert("Win");
 }
 
 function showAllBombs() {
