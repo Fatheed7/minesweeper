@@ -170,8 +170,8 @@ const clickCell = (index) => {
 };
 
 const rightClick = () => {
-    if (gameState == 0) return;
     $(document).on("contextmenu", ".grid-cell", function () {
+        if (gameState == 0) return;
         const i = $(this).index();
 
         if (cells[i].revealed) return;
