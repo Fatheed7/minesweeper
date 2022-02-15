@@ -186,21 +186,25 @@ const rightClick = () => {
         } else if (cells[i].hasQuestion) {
             cells[i].hasQuestion = false;
         } else {
-            cells[i].hasFlag = true;
-            flagNo.innerHTML--;
+            if (flagNo.innerHTML == 0) return;
+            else {
+                cells[i].hasFlag = true;
+                flagNo.innerHTML--;
+            }
         }
         drawGrid();
     });
 };
 
 function loseGame() {
-    alert("Lose");
     loseContent();
+    $(".modal").modal("show");
 }
 
 function winGame() {
     gameState = 0;
-    alert("Win");
+    winContent();
+    $(".modal").modal("show");
 }
 
 function showAllBombs() {
@@ -301,12 +305,6 @@ const settings = () => {
     $(".modal-body").load("assets/html/settings.html ");
     $(".modalButton").text("Lets play!");
 };
-
-$("#deleteCookies").click(function () {
-    $(this).fadeOut(function () {
-        $("#hideConfirm").fadeIn();
-    });
-});
 
 const winContent = () => {
     $(".modal-title").text("Congratulations!");
