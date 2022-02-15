@@ -5,7 +5,7 @@ const flagNo = document.getElementById("flagNo");
 let gameState = 0;
 let secondCounter = -1;
 let timeCounter = "";
-const bombCells = [];
+let bombCells = [];
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -65,6 +65,7 @@ window.addEventListener(
 );
 
 const newGame = (width, height, bombCount) => {
+    bombCells = [];
     cells.length = 0;
     game.width = width;
     game.height = height;
