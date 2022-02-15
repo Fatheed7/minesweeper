@@ -1,7 +1,6 @@
-import * as $ from "jquery";
 import { getCoords, getIndex } from "./lib";
-const bombNo = document.getElementById("bombNo");
-const flagNo = document.getElementById("flagNo");
+let bombNo = document.getElementById("bombNo");
+let flagNo = document.getElementById("flagNo");
 let gameState = 0;
 let secondCounter = -1;
 let timeCounter = "";
@@ -24,8 +23,6 @@ const game = {
     height: 9,
     bombCount: 10,
 };
-
-cells.filter((c) => c.isBomb).length;
 
 /**
  * On document load, add functionality to the newgame buttons
@@ -166,6 +163,7 @@ const clickCell = (index) => {
     if (gameState !== 0) {
         if (cells.filter((c) => c.revealed).length == game.width * game.height - game.bombCount) {
             winGame();
+            clearInterval(timeCounter);
         }
     } else {
         showAllBombs();
