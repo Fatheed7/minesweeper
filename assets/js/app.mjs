@@ -25,9 +25,7 @@ const game = {
     bombCount: 10,
 };
 
-// Get flag count
-// cells.filter((c) => c.hasFlag).length;
-// cells.filter((c) => c.isBomb).length;
+cells.filter((c) => c.isBomb).length;
 
 /**
  * On document load, add functionality to the newgame buttons
@@ -145,6 +143,7 @@ const drawGrid = () => {
 };
 
 const clickCell = (index) => {
+    console.log(bombCells);
     if (gameState == 0) return;
     const cell = cells[index];
 
@@ -158,6 +157,7 @@ const clickCell = (index) => {
         cell.revealed = true;
         clearInterval(timeCounter);
         gameState = 0;
+        showAllBombs();
         loseGame();
     } else if (cell.surroundingBombs > 0) {
         // Cell is not a bomb but has a nearby bomb. Reveal it.
@@ -192,6 +192,15 @@ const rightClick = () => {
 
 function loseGame() {
     loseContent();
+}
+
+function showAllBombs() {
+    bombCells.forEach((bomb) => {
+        (cells[bomb].hasFlag = false),
+            ((cells[bomb].hasQuestion = false),
+            $(".grid-cell:nth-of-type(" + bomb + ")").text(`💥`),
+            (cells[bomb].revealed = true));
+    });
 }
 
 /**
