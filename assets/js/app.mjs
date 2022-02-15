@@ -1,4 +1,4 @@
-import $ from "jquery";
+import $ from "/jquery";
 import { getCoords, getIndex } from "./lib";
 const bombNo = document.getElementById("bombNo");
 const flagNo = document.getElementById("flagNo");
