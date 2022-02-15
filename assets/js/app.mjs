@@ -1,4 +1,4 @@
-import { getCoords, getIndex } from "./lib";
+import { getCoords, getIndex } from "./lib.mjs";
 let bombNo = document.getElementById("bombNo");
 let flagNo = document.getElementById("flagNo");
 let gameState = 0;
