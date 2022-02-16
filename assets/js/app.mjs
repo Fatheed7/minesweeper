@@ -6,6 +6,7 @@ let secondCounter = -1;
 let timeCounter = "";
 let bombCells = [];
 let storage = window.localStorage;
+let hide = JSON.parse(storage.getItem("Hide"));
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     rightClick();
 
     //If Hide setting is not true, then show welcome modal.
-    if (!storage.getItem("Hide")) {
+    if (!hide) {
         welcome();
         $(".helpModal").modal("show");
     }
@@ -361,8 +362,6 @@ $("#saveSettings").click(function () {
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
     storage.setItem("Hide", document.getElementById("welcomeCheckbox").checked);
-    storage.setItem("Animation", document.getElementById("animationCheckbox").checked);
-    loadSettings();
     applySettingsStyle();
 });
 
@@ -383,10 +382,10 @@ $(".modalButton").click(function () {
 function loadSettings() {
     document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
-    if (storage.getItem("Hide")) {
-        $("#welcomeCheckbox").checked = true;
+    if (hide == true) {
+        document.getElementById("welcomeCheckbox").checked = true;
     } else {
-        $("#welcomeCheckbox").checked = false;
+        document.getElementById("welcomeCheckbox").checked = false;
     }
 }
 
