@@ -5,6 +5,7 @@ let gameState = 0;
 let secondCounter = -1;
 let timeCounter = "";
 let bombCells = [];
+let storage = window.localStorage;
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -27,7 +28,7 @@ const game = {
 /**
  * On document load, add functionality to the newgame buttons
  */
-$(() => {
+document.addEventListener("DOMContentLoaded", function () {
     $(`#newgame-beginner`).click(() => {
         newGame(9, 9, 10);
         $("#grid").css("width", "45%");
@@ -37,17 +38,16 @@ $(() => {
     $(`#newgame-intermediate`).click(() => {
         newGame(16, 16, 40);
         $("#grid").css("width", "45%");
-        $("gameWrap").removeClass("d-none");
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
     $(`#newgame-expert`).click(() => {
         newGame(30, 16, 99);
         $("#grid").css("width", "75%");
-        $("gameWrap").removeClass("d-none");
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
+    loadSettings();
     rightClick();
 });
 
@@ -137,6 +137,7 @@ const drawGrid = () => {
         if (cell.hasQuestion) $cell.text(`❓`);
         grid.append($cell);
     }
+    applySettingsStyle();
 };
 
 const clickCell = (index) => {
@@ -304,7 +305,9 @@ const settings = () => {
     $("#deleteStorage").removeClass("d-none");
     $("#storageConfirm").addClass("d-none");
     $(".modal-title").text("Customise your settings!");
-    $(".modalButton").text("Lets play!");
+    $(".modalButton").text("Close window!");
+    document.getElementById("unrevealedColour").value = storage.Unrevealed;
+    document.getElementById("emptyColour").value = storage.Empty;
 };
 
 const winContent = () => {
@@ -323,3 +326,42 @@ $("#deleteStorage").click(function () {
     $("#deleteStorage").addClass("d-none");
     $("#storageConfirm").removeClass("d-none");
 });
+
+$("#storageYes").click(function () {
+    storage.setItem("Unrevealed", "#ababab");
+    storage.setItem("Empty", "#d3d3d3");
+    console.log(storage);
+    $("#deleteStorage").removeClass("d-none");
+    $("#storageConfirm").addClass("d-none");
+    document.getElementById("unrevealedColour").value = storage.Unrevealed;
+    document.getElementById("emptyColour").value = storage.Empty;
+    applySettingsStyle();
+});
+
+$("#storageNo").click(function () {
+    $("#deleteStorage").removeClass("d-none");
+    $("#storageConfirm").addClass("d-none");
+});
+
+$("#saveSettings").click(function () {
+    console.log(storage);
+    storage.setItem("Unrevealed", unrevealedColour.value);
+    storage.setItem("Empty", emptyColour.value);
+    applySettingsStyle();
+});
+
+function loadSettings() {
+    document.getElementById("unrevealedColour").value = storage.unrevealedColour;
+    document.getElementById("emptyColour").value = storage.Empty;
+}
+
+function applySettingsStyle() {
+    let untouched = document.querySelectorAll(".untouched");
+    for (let i = 0; i < untouched.length; i++) {
+        untouched[i].style.backgroundColor = storage.Unrevealed;
+    }
+    let empty = document.querySelectorAll(".empty-cell");
+    for (let i = 0; i < empty.length; i++) {
+        empty[i].style.backgroundColor = storage.Empty;
+    }
+}
