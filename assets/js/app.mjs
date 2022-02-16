@@ -47,8 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
+
+    if (storage.getItem("Hide") === null) {
+        defaultSettings();
+    }
     loadSettings();
     rightClick();
+
+    if (storage.getItem("Hide")) {
+        welcome();
+        $(".helpModal").modal("show");
+    }
 });
 
 window.addEventListener(
@@ -297,7 +306,7 @@ $(".settingsFloat").click(function () {
 // Modal Content
 //
 const helpContent = () => {
-    $(".modal-title").text("Welcome to Minesweeper!");
+    $(".modal-title").text("How to play Minesweeper!");
     $("#helpModalBody").load("assets/html/helpContent.html");
     $(".modalButton").text("Close Help!");
 };
@@ -305,10 +314,13 @@ const helpContent = () => {
 const settings = () => {
     $("#deleteStorage").removeClass("d-none");
     $("#storageConfirm").addClass("d-none");
-    $(".modal-title").text("Customise your settings!");
+    loadSettings();
+};
+
+const welcome = () => {
+    $(".modal-title").text("Welcome to Minesweeper!");
+    $("#helpModalBody").load("assets/html/welcomeContent.html");
     $(".modalButton").text("Close window!");
-    document.getElementById("unrevealedColour").value = storage.Unrevealed;
-    document.getElementById("emptyColour").value = storage.Empty;
 };
 
 const winContent = () => {
@@ -329,13 +341,9 @@ $("#deleteStorage").click(function () {
 });
 
 $("#storageYes").click(function () {
-    storage.setItem("Unrevealed", "#ababab");
-    storage.setItem("Empty", "#d3d3d3");
-    console.log(storage);
     $("#deleteStorage").removeClass("d-none");
     $("#storageConfirm").addClass("d-none");
-    document.getElementById("unrevealedColour").value = storage.Unrevealed;
-    document.getElementById("emptyColour").value = storage.Empty;
+    defaultSettings();
     applySettingsStyle();
 });
 
@@ -345,27 +353,52 @@ $("#storageNo").click(function () {
 });
 
 $("#saveSettings").click(function () {
-    console.log(storage);
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
+    storage.setItem("Hide", document.getElementById("welcomeCheckbox").checked);
     applySettingsStyle();
 });
 
 $(".modalButton").click(function () {
-    if ($(".modalButton").text("Play again?")) {
-        if (game.width == 9) {
-            newGame(9, 9, 10);
-        } else if (game.width == 16) {
-            newGame(16, 16, 40);
-        } else {
-            newGame(30, 16, 99);
+    if (gameState == 0) {
+        if (document.getElementById("grid").innerHTML.length > 0) {
+            if (game.width == 9) {
+                newGame(9, 9, 10);
+            } else if (game.width == 16) {
+                newGame(16, 16, 40);
+            } else {
+                newGame(30, 16, 99);
+            }
         }
     }
 });
 
 function loadSettings() {
-    document.getElementById("unrevealedColour").value = storage.unrevealedColour;
+    document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
+    console.log(storage);
+    if (storage.getItem("Hide")) {
+        $("#welcomeCheckbox").checked = true;
+    } else {
+        $("#welcomeCheckbox").checked = false;
+    }
+    if (storage.getItem("Animation")) {
+        $("#animationCheckbox").checked = true;
+    } else {
+        $("#animationCheckbox").checked = false;
+    }
+}
+
+function defaultSettings() {
+    storage.clear();
+    storage.setItem("Unrevealed", "#ababab");
+    storage.setItem("Empty", "#d3d3d3");
+    storage.setItem("Hide", false);
+    storage.setItem("Animation", false);
+    document.getElementById("unrevealedColour").value = storage.Unrevealed;
+    document.getElementById("emptyColour").value = storage.Empty;
+    document.getElementById("welcomeCheckbox").checked = false;
+    document.getElementById("animationCheckbox").checked = false;
 }
 
 function applySettingsStyle() {
@@ -378,3 +411,5 @@ function applySettingsStyle() {
         empty[i].style.backgroundColor = storage.Empty;
     }
 }
+
+// End of Modal Content

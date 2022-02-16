@@ -103,7 +103,7 @@
                             data-bs-dismiss="modal"
                             aria-label="Close"
                         >
-                            Let's play!
+                            Close Help!
                         </button>
                     </div>
                 </div>
@@ -122,8 +122,8 @@
         >
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modalLabel">Welcome to Minesweeper!</h4>
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title" id="modalLabel">Customise your settings!</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -141,14 +141,25 @@
                                             Hide Welcome Screen on Page Load
                                         </label>
                                     </div>
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            role="switch"
+                                            id="animationCheckbox"
+                                        />
+                                        <label class="form-check-label" for="animationCheckbox">
+                                            Disable Animations
+                                        </label>
+                                    </div>
 
                                     <hr />
                                     <div class="form-check d-flex justify-content-center">
-                                        <label for="colorpicker">Unrevealed Cell Colour:</label>
+                                        <label for="unrevealedColour">Unrevealed Cell Colour:</label>
                                         <input type="color" id="unrevealedColour" value="#ababab" />
                                     </div>
                                     <div class="form-check d-flex justify-content-center">
-                                        <label for="colorpicker">Revealed Cell Colour:</label>
+                                        <label for="emptyColour">Revealed Cell Colour:</label>
                                         <input type="color" id="emptyColour" value="#d3d3d3" />
                                     </div>
                                     <div class="form-check d-flex justify-content-center">
@@ -203,7 +214,7 @@
                             data-bs-dismiss="modal"
                             aria-label="Close"
                         >
-                            Let's play!
+                            Close Settings!
                         </button>
                     </div>
                 </div>

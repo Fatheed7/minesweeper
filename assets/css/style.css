@@ -119,7 +119,6 @@ table {
 }
 
 .empty-cell {
-    background-color: lightgrey;
     border: 1px solid #000000;
 }
 
@@ -196,6 +195,6 @@ table {
     padding: 10px;
 }
 
-#welcomeCheckbox {
+.form-check-input {
     margin-right: 10px;
 }
