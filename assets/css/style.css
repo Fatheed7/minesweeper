@@ -195,7 +195,8 @@ table {
     }
 }
 
-.form-check {
+.form-check,
+.storageSpacer {
     padding: 10px;
 }
 
