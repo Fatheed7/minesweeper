@@ -309,6 +309,21 @@ $(".settingsFloat").click(function () {
 //
 // Modal Content
 //
+
+$(".modalButton").click(function () {
+    if (gameState == 0) {
+        if (document.getElementById("grid").innerHTML.length > 0) {
+            if (game.width == 9) {
+                newGame(9, 9, 10);
+            } else if (game.width == 16) {
+                newGame(16, 16, 40);
+            } else {
+                newGame(30, 16, 99);
+            }
+        }
+    }
+});
+
 const helpContent = () => {
     $(".modal-title").text("How to play Minesweeper!");
     $("#helpModalBody").load("assets/html/helpContent.html");
@@ -324,7 +339,7 @@ const settings = () => {
 };
 
 const welcome = () => {
-    $(".modal-title").text("");
+    $(".modal-title").text("Welcome to Minesweeper!");
     $("#helpModalBody").load("assets/html/welcomeContent.html");
     $(".modalButton").text("Close window!");
 };
@@ -365,18 +380,8 @@ $("#saveSettings").click(function () {
     applySettingsStyle();
 });
 
-$(".modalButton").click(function () {
-    if (gameState == 0) {
-        if (document.getElementById("grid").innerHTML.length > 0) {
-            if (game.width == 9) {
-                newGame(9, 9, 10);
-            } else if (game.width == 16) {
-                newGame(16, 16, 40);
-            } else {
-                newGame(30, 16, 99);
-            }
-        }
-    }
+$("#welcomeInstructions").click(function () {
+    helpContent();
 });
 
 function loadSettings() {
