@@ -60,6 +60,7 @@ window.addEventListener(
 );
 
 const newGame = (width, height, bombCount) => {
+    gameState = 1;
     bombCells = [];
     cells.length = 0;
     game.width = width;
@@ -298,7 +299,7 @@ $(".settingsFloat").click(function () {
 const helpContent = () => {
     $(".modal-title").text("Welcome to Minesweeper!");
     $("#helpModalBody").load("assets/html/helpContent.html");
-    $(".modalButton").text("Lets play!");
+    $(".modalButton").text("Close Help!");
 };
 
 const settings = () => {
@@ -348,6 +349,18 @@ $("#saveSettings").click(function () {
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
     applySettingsStyle();
+});
+
+$(".modalButton").click(function () {
+    if ($(".modalButton").text("Play again?")) {
+        if (game.width == 9) {
+            newGame(9, 9, 10);
+        } else if (game.width == 16) {
+            newGame(16, 16, 40);
+        } else {
+            newGame(30, 16, 99);
+        }
+    }
 });
 
 function loadSettings() {
