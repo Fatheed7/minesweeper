@@ -48,13 +48,16 @@ document.addEventListener("DOMContentLoaded", function () {
         gameState = 1;
     });
 
+    //Checks if Local Storage settings exists. If not, creates settings.
     if (storage.getItem("Hide") === null) {
         defaultSettings();
     }
+    //Loads settings from Local Storage
     loadSettings();
     rightClick();
 
-    if (storage.getItem("Hide")) {
+    //If Hide setting is not true, then show welcome modal.
+    if (!storage.getItem("Hide")) {
         welcome();
         $(".helpModal").modal("show");
     }
@@ -314,11 +317,13 @@ const helpContent = () => {
 const settings = () => {
     $("#deleteStorage").removeClass("d-none");
     $("#storageConfirm").addClass("d-none");
+    $(".modal-title").text("Customise your settings!");
+    $(".modalButton").text("Close window!");
     loadSettings();
 };
 
 const welcome = () => {
-    $(".modal-title").text("Welcome to Minesweeper!");
+    $(".modal-title").text("");
     $("#helpModalBody").load("assets/html/welcomeContent.html");
     $(".modalButton").text("Close window!");
 };
@@ -356,6 +361,8 @@ $("#saveSettings").click(function () {
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
     storage.setItem("Hide", document.getElementById("welcomeCheckbox").checked);
+    storage.setItem("Animation", document.getElementById("animationCheckbox").checked);
+    loadSettings();
     applySettingsStyle();
 });
 
@@ -376,16 +383,10 @@ $(".modalButton").click(function () {
 function loadSettings() {
     document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
-    console.log(storage);
     if (storage.getItem("Hide")) {
         $("#welcomeCheckbox").checked = true;
     } else {
         $("#welcomeCheckbox").checked = false;
-    }
-    if (storage.getItem("Animation")) {
-        $("#animationCheckbox").checked = true;
-    } else {
-        $("#animationCheckbox").checked = false;
     }
 }
 
@@ -394,11 +395,9 @@ function defaultSettings() {
     storage.setItem("Unrevealed", "#ababab");
     storage.setItem("Empty", "#d3d3d3");
     storage.setItem("Hide", false);
-    storage.setItem("Animation", false);
     document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
     document.getElementById("welcomeCheckbox").checked = false;
-    document.getElementById("animationCheckbox").checked = false;
 }
 
 function applySettingsStyle() {
