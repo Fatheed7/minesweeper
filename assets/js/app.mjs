@@ -356,21 +356,39 @@ const loseContent = () => {
     $(".modalButton").text("Play again?");
 };
 
-$("#deleteStorage").click(function () {
-    $("#deleteStorage").addClass("d-none");
-    $("#storageConfirm").removeClass("d-none");
+// Reset Storage Settings
+$("#resetStorage").click(function () {
+    $("#resetStorage").addClass("d-none");
+    $("#resetConfirm").removeClass("d-none");
 });
 
-$("#storageYes").click(function () {
-    $("#deleteStorage").removeClass("d-none");
-    $("#storageConfirm").addClass("d-none");
+$("#resetYes").click(function () {
+    $("#resetStorage").removeClass("d-none");
+    $("#resetConfirm").addClass("d-none");
     defaultSettings();
     applySettingsStyle();
 });
 
-$("#storageNo").click(function () {
+$("#resetNo").click(function () {
+    $("#resetStorage").removeClass("d-none");
+    $("#resetConfirm").addClass("d-none");
+});
+
+// Delete Store Settings
+$("#deleteStorage").click(function () {
+    $("#deleteStorage").addClass("d-none");
+    $("#deleteConfirm").removeClass("d-none");
+});
+
+$("#deleteYes").click(function () {
     $("#deleteStorage").removeClass("d-none");
-    $("#storageConfirm").addClass("d-none");
+    $("#deleteConfirm").addClass("d-none");
+    storage.clear();
+});
+
+$("#deleteNo").click(function () {
+    $("#deleteStorage").removeClass("d-none");
+    $("#deleteConfirm").addClass("d-none");
 });
 
 $("#saveSettings").click(function () {

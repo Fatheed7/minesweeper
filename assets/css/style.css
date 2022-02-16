@@ -129,8 +129,8 @@ table {
 }
 
 .modal-dialog {
-    font-family: "Press Start 2P", sans-serif;
-    font-size: 14px;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 18px;
 }
 
 .listSpacer {
@@ -162,6 +162,10 @@ table {
     text-align: center;
     box-shadow: 2px 2px 3px #999;
     font-size: 30px;
+}
+
+.labelSpacer {
+    margin-right: 5px;
 }
 
 .float {

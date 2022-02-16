@@ -150,11 +150,13 @@
                                     <hr />
 
                                     <div class="form-check d-flex justify-content-center">
-                                        <label for="unrevealedColour">Unrevealed Cell Colour:</label>
+                                        <label class="labelSpacer" for="unrevealedColour">
+                                            Unrevealed Cell Colour:
+                                        </label>
                                         <input type="color" id="unrevealedColour" value="#ababab" />
                                     </div>
                                     <div class="form-check d-flex justify-content-center">
-                                        <label for="emptyColour">Revealed Cell Colour:</label>
+                                        <label class="labelSpacer" for="emptyColour">Revealed Cell Colour:</label>
                                         <input type="color" id="emptyColour" value="#d3d3d3" />
                                     </div>
                                     <div class="form-check d-flex justify-content-center">
@@ -174,19 +176,19 @@
                                     <button
                                         type="button"
                                         class="btn btn-danger"
-                                        id="deleteStorage"
+                                        id="resetStorage"
                                         aria-label="Reset Settings"
                                     >
                                         Reset Settings
                                     </button>
                                 </div>
-                                <div class="d-flex justify-content-center d-none" id="storageConfirm">
+                                <div class="d-flex justify-content-center d-none" id="resetConfirm">
                                     <div id="hideConfirm">
                                         <span>Are you sure?</span>
                                         <button
                                             type="button"
                                             class="btn btn-success"
-                                            id="storageYes"
+                                            id="resetYes"
                                             aria-label="Reset Settings - Yes"
                                         >
                                             Yes
@@ -194,8 +196,43 @@
                                         <button
                                             type="button"
                                             class="btn btn-danger"
-                                            id="storageNo"
+                                            id="resetNo"
                                             aria-label="Reset Settings - No"
+                                        >
+                                            No
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="text-center">
+                                    Click the button below to delete all locally stored settings.
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        id="deleteStorage"
+                                        aria-label="Delete Locally Stored Settings"
+                                    >
+                                        Delete Locally Stored Settings
+                                    </button>
+                                </div>
+                                <div class="d-flex justify-content-center d-none" id="deleteConfirm">
+                                    <div id="hideConfirm">
+                                        <span>Are you sure?</span>
+                                        <button
+                                            type="button"
+                                            class="btn btn-success"
+                                            id="deleteYes"
+                                            aria-label="Delete Locally Stored Settings - Yes"
+                                        >
+                                            Yes
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger"
+                                            id="deleteNo"
+                                            aria-label="Delete Locally Stored Settings - No"
                                         >
                                             No
                                         </button>
