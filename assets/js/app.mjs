@@ -435,15 +435,17 @@ $("#resetStorage").click(function () {
  * hide confirm buttons and make
  * original button visible.
  * Reset local storage to default values and
- * update button text to confirm reset.
+ * reveal text to confirm reset.
  */
 $("#resetYes").click(function () {
     $("#resetStorage").removeClass("d-none");
     $("#resetConfirm").addClass("d-none");
     defaultSettings();
     applySettingsStyle();
-    $("#resetStorage").text("Settings have been reset");
-    $("#resetStorage").text("Reset Settings").delay(2000);
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+        $("#resetConfirmMessage").addClass("d-none");
+    }, 3000);
 });
 
 /**
@@ -470,15 +472,18 @@ $("#deleteStorage").click(function () {
  * When #deleteYes is clicked
  * hide confirm buttons and make
  * original button visible.
- * Delete local storage and update button text
+ * Delete local storage and reveal text
  * to confirm deletion.
  */
 $("#deleteYes").click(function () {
     $("#deleteStorage").removeClass("d-none");
     $("#deleteConfirm").addClass("d-none");
+    $("#deleteConfirmMessage").removeClass("d-none");
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+        $("#deleteConfirmMessage").addClass("d-none");
+    }, 3000);
     storage.clear();
-    $("#deleteStorage").text("Local Storage has been deleted");
-    $("#deleteStorage").text("Delete Locally Stored Settings").delay(2000);
 });
 
 /**
