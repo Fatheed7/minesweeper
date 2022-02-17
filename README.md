@@ -22,6 +22,8 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
     -   [Welcome Modal](#welcome-modal)
     -   [Help Modal](#help-modal)
     -   [Settings Modal](#settings-modal)
+    -   [Win Modal](#win-modal)
+    -   [Lose Modal](#lose-modal)
     -   [Stats Bar](#stats-bar)
     -   [Game Area](#game-area)
     -   [Button Bar](#button-bar)
@@ -30,7 +32,6 @@ The website can be [found here](https://fatheed7.github.io/minesweeper/).
 -   [Testing](#testing)
     -   [Validator Testing](#validator-testing)
     -   [Manual Testing](#validator-testing)
-    -   [Bugs](#bugs)
 -   [Credits](#credits)
     -   [Languages](#languages)
     -   [Frameworks, Libraries and Tools](#frameworks-libraries-and-tools)
@@ -158,7 +159,7 @@ The was created as my second portfolio project for Code Institute's Diploma in W
 
 -   ## Help Modal
 
-    ![Help Modal Image]()
+    ![Help Modal Image](assets/docs/readme_images/help_modal.png)
 
     If the user clicks the ? button in the bottom right corner of the screen (more information about this can be found in the [Floating Buttons](#floating-buttons) section), they will be shown:
 
@@ -200,6 +201,26 @@ The was created as my second portfolio project for Code Institute's Diploma in W
         -   If the user does not confirm deletion, and then closes the settings modal, the modal will return to it's default state on next load, to prevent any display issues.
 
         #
+
+-   ## Win Modal
+
+    ![Win Modal Image](assets/docs/readme_images/win_modal.png)
+
+    Once the win condition is met for the game the above modal is displayed.
+
+    It is intentionally minimal and allow for the user to close the modal with the cross in the top right and review their time, or click the 'Play again?' button, at which point a game of the same difficulty will be started.
+
+    #
+
+-   ## Lose Modal
+
+    ![Lose Modal Image](assets/docs/readme_images/lose_modal.png)
+
+    If the user clicks on a bomb, it will trigger the lose condition and the above modal is displayed.
+
+    It is intentionally minimal and allow for the user to close the modal with the cross in the top right and review their time, or click the 'Play again?' button, at which point a game of the same difficulty will be started.
+
+    #
 
 -   ## Stats Bar
 
@@ -387,8 +408,6 @@ This warning shows due to the use of JQuery and does not impact the code in any 
         A full version of the test can be viewed [here](https://wave.webaim.org/report#/https://fatheed7.github.io/minesweeper/).
 
     #
-
--   ## Bugs
 
 ## Credits
 
