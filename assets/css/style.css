@@ -28,8 +28,6 @@ table {
 
 .buttons {
     margin: auto;
-    display: flex;
-    justify-content: space-evenly;
     align-content: center;
     margin-bottom: 20px;
     border-bottom-left-radius: 20px;
@@ -182,19 +180,6 @@ table {
     display: none;
 }
 
-@media (max-width: 768px) {
-    #smallScreen {
-        background-color: rgb(211, 211, 211);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-        margin: 0 auto;
-        border-radius: 20px;
-        width: 75%;
-    }
-}
-
 .form-check,
 .storageSpacer {
     padding: 10px;
@@ -206,4 +191,22 @@ table {
 
 .bottom-hr {
     margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    #smallScreen {
+        background-color: rgb(211, 211, 211);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 20px;
+        width: 75%;
+    }
+    .counters,
+    .buttons {
+        font-family: "Noto Sans", sans-serif;
+        font-size: 20px;
+    }
 }

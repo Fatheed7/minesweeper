@@ -20,6 +20,9 @@ const cells = [
     // }
 ];
 
+/**
+ * Constant holding game width, height and bomb count
+ */
 const game = {
     width: 9,
     height: 9,
@@ -64,6 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+/**
+ * Disables Right Click Context Menu
+ */
 window.addEventListener(
     "contextmenu",
     function (e) {
@@ -72,6 +78,12 @@ window.addEventListener(
     false
 );
 
+/**
+ * Accepts game width, height and bomb count.
+ * Clears cells array, clears bombCells array
+ * Hides default message on Stats Bar and shows counters
+ * Resets timer and starts a new timer
+ */
 const newGame = (width, height, bombCount) => {
     gameState = 1;
     bombCells = [];
@@ -105,6 +117,9 @@ const newGame = (width, height, bombCount) => {
     drawGrid();
 };
 
+/**
+ * Generates random coordinates and places bombs within the game.
+ */
 const plantBombs = (bombCount) => {
     while (bombCells.length < bombCount) {
         let bomb = Math.floor(Math.random() * (game.width * game.height));
@@ -115,12 +130,20 @@ const plantBombs = (bombCount) => {
     }
 };
 
+/**
+ * Counts seconds and applies them to #gameTimer
+ */
 const gameTimer = () => {
     ++secondCounter;
     let seconds = secondCounter;
     document.getElementById("gameTimer").innerHTML = seconds;
 };
 
+/**
+ * Is called by clickCell and rightClick and updates the board on user
+ * actions, removing untouched class and applying empty-cell class
+ * where needed.
+ */
 const drawGrid = () => {
     const grid = $(`#grid`);
     grid.css(`grid-template-columns`, `repeat(${game.width}, 1fr)`);
@@ -154,6 +177,10 @@ const drawGrid = () => {
     applySettingsStyle();
 };
 
+/**
+ * Gets the index of the cell clicked and determines what is contained
+ * within the cell
+ */
 const clickCell = (index) => {
     if (gameState == 0) return;
     const cell = cells[index];
@@ -162,6 +189,7 @@ const clickCell = (index) => {
 
     if (cell.hasFlag || cell.hasQuestion) {
         cell.hasFlag = false;
+        flagNo.innerHTML++;
         cell.hasQuestion = false;
     }
     if (cell.isBomb) {
@@ -187,6 +215,13 @@ const clickCell = (index) => {
     drawGrid();
 };
 
+/**
+ * Checks game state
+ * Returns if game has ended or cell is empty.
+ * Adds flag if cell is unrevealed
+ * Removes flag and adds ? if cell already contains flag
+ * Removes ? and returns cell to original state if cell already contains
+ */
 const rightClick = () => {
     $(document).on("contextmenu", ".grid-cell", function () {
         if (gameState == 0) return;
@@ -211,23 +246,34 @@ const rightClick = () => {
     });
 };
 
+/**
+ * Updates the content of the modal
+ * and displays it.
+ */
 function loseGame() {
     loseContent();
     $(".helpModal").modal("show");
 }
 
+/**
+ * Updates the content of the modal
+ * and displays it.
+ */
 function winGame() {
     gameState = 0;
     winContent();
     $(".helpModal").modal("show");
 }
 
+/**
+ * Displays all bombs on the board when the game is lost.
+ */
 function showAllBombs() {
     bombCells.forEach((bomb) => {
         (cells[bomb].hasFlag = false),
-            ((cells[bomb].hasQuestion = false),
+            (cells[bomb].hasQuestion = false),
             $(".grid-cell:nth-of-type(" + bomb + ")").text(`💥`),
-            (cells[bomb].revealed = true));
+            (cells[bomb].revealed = true);
     });
 }
 
@@ -256,7 +302,7 @@ const revealArea = (index) => {
     while (candidates.length > 0) {
         const candidateIndex = candidates.pop();
 
-        // Keep track of the fact that weve already considered this cell
+        // Keep track of the fact that we've already considered this cell
         visited.push(candidateIndex);
 
         // If this index is not valid (out of bounds), skip it
@@ -273,7 +319,7 @@ const revealArea = (index) => {
         // If that cell has bombs surrounding it, we dont keep going
         if (candidate.surroundingBombs > 0) continue;
 
-        // Lets check the neighbours
+        // Check the neighbours
         const { x, y } = getCoords(candidateIndex, game.width, game.height);
 
         const neighbouringIndexes = [
@@ -298,10 +344,16 @@ const revealArea = (index) => {
 //
 // Floating Button Code
 //
+/**
+ * On click, updates modal content to helpContent()
+ */
 $(".helpFloat").click(function () {
     helpContent();
 });
 
+/**
+ * On click, updates modal content to settings()
+ */
 $(".settingsFloat").click(function () {
     settings();
 });
@@ -310,6 +362,11 @@ $(".settingsFloat").click(function () {
 // Modal Content
 //
 
+/**
+ * Used to detect if .modalButton is clicked.
+ * If game state is zero, and a game is in progress,
+ * don't restart the game.
+ */
 $(".modalButton").click(function () {
     if (gameState == 0) {
         if (document.getElementById("grid").innerHTML.length > 0) {
@@ -324,6 +381,11 @@ $(".modalButton").click(function () {
     }
 });
 
+/**
+ * Code between lines 387 - 419 update the content
+ * of the helpModal, allowing a single modal to be used
+ * and reducing the amount of HTML needed.
+ */
 const helpContent = () => {
     $(".modal-title").text("How to play Minesweeper!");
     $("#helpModalBody").load("assets/html/helpContent.html");
@@ -359,40 +421,79 @@ const loseContent = () => {
 };
 
 // Reset Storage Settings
+/**
+ * When #resetStorage is clicked,
+ * hide button and show confirmation buttons.
+ */
 $("#resetStorage").click(function () {
     $("#resetStorage").addClass("d-none");
     $("#resetConfirm").removeClass("d-none");
 });
 
+/**
+ * When #resetYes is clicked
+ * hide confirm buttons and make
+ * original button visible.
+ * Reset local storage to default values and
+ * update button text to confirm reset.
+ */
 $("#resetYes").click(function () {
     $("#resetStorage").removeClass("d-none");
     $("#resetConfirm").addClass("d-none");
     defaultSettings();
     applySettingsStyle();
+    $("#resetStorage").text("Settings have been reset");
+    $("#resetStorage").text("Reset Settings").delay(2000);
 });
 
+/**
+ * When #resetNo is clicked
+ * hide confirm buttons and make
+ * original button visible.
+ */
 $("#resetNo").click(function () {
     $("#resetStorage").removeClass("d-none");
     $("#resetConfirm").addClass("d-none");
 });
 
 // Delete Store Settings
+/**
+ * When #deleteStorage is clicked,
+ * hide button and show confirmation buttons.
+ */
 $("#deleteStorage").click(function () {
     $("#deleteStorage").addClass("d-none");
     $("#deleteConfirm").removeClass("d-none");
 });
 
+/**
+ * When #deleteYes is clicked
+ * hide confirm buttons and make
+ * original button visible.
+ * Delete local storage and update button text
+ * to confirm deletion.
+ */
 $("#deleteYes").click(function () {
     $("#deleteStorage").removeClass("d-none");
     $("#deleteConfirm").addClass("d-none");
     storage.clear();
+    $("#deleteStorage").text("Local Storage has been deleted");
+    $("#deleteStorage").text("Delete Locally Stored Settings").delay(2000);
 });
 
+/**
+ * When #deleteNo is clicked
+ * hide confirm buttons and make
+ * original button visible.
+ */
 $("#deleteNo").click(function () {
     $("#deleteStorage").removeClass("d-none");
     $("#deleteConfirm").addClass("d-none");
 });
 
+/**
+ * Saves the requested settings to local storage.
+ */
 $("#saveSettings").click(function () {
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
@@ -400,10 +501,9 @@ $("#saveSettings").click(function () {
     applySettingsStyle();
 });
 
-$("#welcomeInstructions").click(function () {
-    helpContent();
-});
-
+/**
+ * Loads the settings after they've been saved so they can be applied to the board
+ */
 function loadSettings() {
     document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
@@ -414,6 +514,9 @@ function loadSettings() {
     }
 }
 
+/**
+ * Writes default settings to Local Storage
+ */
 function defaultSettings() {
     storage.clear();
     storage.setItem("Unrevealed", "#ababab");
@@ -424,6 +527,9 @@ function defaultSettings() {
     document.getElementById("welcomeCheckbox").checked = false;
 }
 
+/**
+ * If settings are reset, deleted or saves, applies the style to the board.
+ */
 function applySettingsStyle() {
     let untouched = document.querySelectorAll(".untouched");
     for (let i = 0; i < untouched.length; i++) {
