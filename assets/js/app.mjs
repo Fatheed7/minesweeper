@@ -442,9 +442,9 @@ $("#resetYes").click(function () {
     $("#resetConfirm").addClass("d-none");
     defaultSettings();
     applySettingsStyle();
-    $("#resetConfirmMessage").removeClass("d-none");
+    $(".resetConfirmMessage").removeClass("d-none");
     setTimeout(function () {
-        $("#resetConfirmMessage").addClass("d-none");
+        $(".resetConfirmMessage").addClass("d-none");
     }, 3000);
 });
 
@@ -478,9 +478,9 @@ $("#deleteStorage").click(function () {
 $("#deleteYes").click(function () {
     $("#deleteStorage").removeClass("d-none");
     $("#deleteConfirm").addClass("d-none");
-    $("#deleteConfirmMessage").removeClass("d-none");
+    $(".deleteConfirmMessage").removeClass("d-none");
     setTimeout(function () {
-        $("#deleteConfirmMessage").addClass("d-none");
+        $(".deleteConfirmMessage").addClass("d-none");
     }, 3000);
     storage.clear();
 });
