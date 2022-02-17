@@ -442,6 +442,7 @@ $("#resetYes").click(function () {
     $("#resetConfirm").addClass("d-none");
     defaultSettings();
     applySettingsStyle();
+    $("#resetConfirmMessage").removeClass("d-none");
     setTimeout(function () {
         $("#resetConfirmMessage").addClass("d-none");
     }, 3000);
