@@ -332,7 +332,9 @@ const helpContent = () => {
 
 const settings = () => {
     $("#deleteStorage").removeClass("d-none");
-    $("#storageConfirm").addClass("d-none");
+    $("#deleteConfirm").addClass("d-none");
+    $("#resetStorage").removeClass("d-none");
+    $("#resetConfirm").addClass("d-none");
     $(".modal-title").text("Customise your settings!");
     $(".modalButton").text("Close window!");
     loadSettings();

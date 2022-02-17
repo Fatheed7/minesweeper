@@ -1,6 +1,6 @@
 # MineSweeper -A Javascript Project
 
-The website can be [found here](https://fatheed7-minsweeper.netlify.app/).
+The website can be [found here](https://fatheed7.github.io/minesweeper/).
 
 ## Table of Contents
 
