@@ -14,8 +14,9 @@ body {
 }
 /* End of SVG Backgrounds code */
 
-table {
-    border: 1px solid black;
+.row > * {
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .top {
@@ -122,6 +123,7 @@ table {
 
 /* End of CSS for cells within the game area */
 
+/* Modal CSS */
 .modal-footer {
     display: contents;
 }
@@ -130,9 +132,16 @@ table {
     font-family: "Noto Sans", sans-serif;
     font-size: 18px;
 }
+/* End of Modal CSS */
 
 .listSpacer {
     padding-bottom: 20px;
+}
+
+/* Floating Button CSS */
+
+.float {
+    margin-top: 15px;
 }
 
 .helpFloat {
@@ -162,22 +171,11 @@ table {
     font-size: 30px;
 }
 
+/* End of Floating Button CSS */
+
+/* Spacing CSS for Form on Modal */
 .labelSpacer {
     margin-right: 5px;
-}
-
-.float {
-    margin-top: 15px;
-}
-
-.row > * {
-    padding-right: 0;
-    padding-left: 0;
-}
-
-#smallScreen {
-    border-radius: 20px;
-    display: none;
 }
 
 .form-check,
@@ -191,6 +189,14 @@ table {
 
 .bottom-hr {
     margin-top: 16px;
+}
+/* End Of Spacing CSS for Form on Modal */
+
+/* Media Query and Show Small Screen Warning */
+
+#smallScreen {
+    border-radius: 20px;
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -209,4 +215,8 @@ table {
         font-family: "Noto Sans", sans-serif;
         font-size: 20px;
     }
+}
+
+.maxHeight {
+    max-height: 100vh;
 }

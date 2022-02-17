@@ -32,71 +32,73 @@
     </head>
     <body class="main">
         <main>
-            <div class="row justify-content-center top">
-                <div class="col-10" id="game-stats">
-                    <div class="counters">
-                        <div class="welcome">Please select a difficulty to get started!</div>
-                        <div class="counterContainer d-none counters">
-                            <span class="counterStat">
-                                Bombs:
-                                <span id="bombNo">0</span>
-                            </span>
-                            <span class="counterStat">
-                                Flags:
-                                <span id="flagNo">0</span>
-                            </span>
-                            <span class="counterStat">
-                                Time:
-                                <span id="gameTimer">00:00:00</span>
-                            </span>
+            <div class="maxHeight">
+                <div class="row justify-content-center top">
+                    <div class="col-10" id="game-stats">
+                        <div class="counters">
+                            <div class="welcome">Please select a difficulty to get started!</div>
+                            <div class="counterContainer d-none counters">
+                                <span class="counterStat">
+                                    Bombs:
+                                    <span id="bombNo">0</span>
+                                </span>
+                                <span class="counterStat">
+                                    Flags:
+                                    <span id="flagNo">0</span>
+                                </span>
+                                <span class="counterStat">
+                                    Time:
+                                    <span id="gameTimer">00:00:00</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!--Game grid-->
-            <div class="row justify-content-center">
-                <div class="col-10 d-none" id="gameWrap">
-                    <div id="grid" class="transition"></div>
-                </div>
-            </div>
-
-            <!--New game buttons-->
-            <div class="row justify-content-center">
-                <div class="col-10" id="gameBottom">
-                    <div class="buttons">
-                        <button
-                            type="button"
-                            class="btn gameStart btn-primary"
-                            id="newgame-beginner"
-                            aria-label="Start Beginner Game"
-                        >
-                            Beginner
-                        </button>
-                        <button
-                            type="button"
-                            class="btn gameStart btn-primary"
-                            id="newgame-intermediate"
-                            aria-label="Start Intermediate Game"
-                        >
-                            Intermediate
-                        </button>
-                        <button
-                            type="button"
-                            class="btn gameStart btn-primary"
-                            id="newgame-expert"
-                            aria-label="Start Expert Game"
-                        >
-                            Expert
-                        </button>
+                <!--Game grid-->
+                <div class="row justify-content-center">
+                    <div class="col-10 d-none" id="gameWrap">
+                        <div id="grid" class="transition"></div>
                     </div>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-10" id="smallScreen">
-                    The game is likely to be quite small.
-                    <br />
-                    Please consider rotating your device.
+
+                <!--New game buttons-->
+                <div class="row justify-content-center">
+                    <div class="col-10" id="gameBottom">
+                        <div class="buttons">
+                            <button
+                                type="button"
+                                class="btn gameStart btn-primary"
+                                id="newgame-beginner"
+                                aria-label="Start Beginner Game"
+                            >
+                                Beginner
+                            </button>
+                            <button
+                                type="button"
+                                class="btn gameStart btn-primary"
+                                id="newgame-intermediate"
+                                aria-label="Start Intermediate Game"
+                            >
+                                Intermediate
+                            </button>
+                            <button
+                                type="button"
+                                class="btn gameStart btn-primary"
+                                id="newgame-expert"
+                                aria-label="Start Expert Game"
+                            >
+                                Expert
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-10" id="smallScreen">
+                        The game is likely to be quite small.
+                        <br />
+                        Please consider rotating your device.
+                    </div>
                 </div>
             </div>
         </main>

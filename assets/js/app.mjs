@@ -442,7 +442,6 @@ $("#resetYes").click(function () {
     $("#resetConfirm").addClass("d-none");
     defaultSettings();
     applySettingsStyle();
-    clearTimeout(timeout);
     timeout = setTimeout(function () {
         $("#resetConfirmMessage").addClass("d-none");
     }, 3000);
@@ -479,7 +478,6 @@ $("#deleteYes").click(function () {
     $("#deleteStorage").removeClass("d-none");
     $("#deleteConfirm").addClass("d-none");
     $("#deleteConfirmMessage").removeClass("d-none");
-    clearTimeout(timeout);
     timeout = setTimeout(function () {
         $("#deleteConfirmMessage").addClass("d-none");
     }, 3000);
