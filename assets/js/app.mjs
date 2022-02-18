@@ -6,8 +6,6 @@ let secondCounter = -1;
 let timeCounter = "";
 let bombCells = [];
 let storage = window.localStorage;
-let hide = JSON.parse(storage.getItem("Hide"));
-let vibrate = JSON.parse(storage.getItem("Vibrate"));
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -62,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     rightClick();
 
     //If Hide setting is not true, then show welcome modal.
+    let hide = JSON.parse(storage.getItem("Hide"));
     if (!hide) {
         welcome();
         $(".helpModal").modal("show");
@@ -310,6 +309,7 @@ const rightClick = () => {
  * Vibrates if not disabled
  */
 function loseGame() {
+    let vibrate = JSON.parse(storage.getItem("Vibrate"));
     if (!vibrate) {
         navigator.vibrate(750);
     }
@@ -444,7 +444,7 @@ $(".modalButton").click(function () {
 });
 
 /**
- * Code between lines 452 - 483 update the content
+ * Code between lines 451 - 483 update the content
  * of the helpModal, allowing a single modal to be used
  * and reducing the amount of HTML needed.
  */
@@ -561,6 +561,8 @@ $("#deleteNo").click(function () {
  * Saves the requested settings to local storage.
  */
 $("#saveSettings").click(function () {
+    let hide = JSON.parse(storage.getItem("Hide"));
+    let vibrate = JSON.parse(storage.getItem("Vibrate"));
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
     storage.setItem("Hide", document.getElementById("welcomeCheckbox").checked);
@@ -578,6 +580,8 @@ $("#saveSettings").click(function () {
  * Loads the settings after they've been saved so they can be applied to the board
  */
 function loadSettings() {
+    let hide = JSON.parse(storage.getItem("Hide"));
+    let vibrate = JSON.parse(storage.getItem("Vibrate"));
     document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
     if (hide == true) {
