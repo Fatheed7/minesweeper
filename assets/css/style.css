@@ -205,17 +205,28 @@ body {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 100%;
         margin: 0 auto;
         border-radius: 20px;
         width: 75%;
+        text-align: center;
     }
     .counters,
     .buttons {
         font-family: "Noto Sans", sans-serif;
         font-size: 20px;
     }
+    .buttons {
+        flex-direction: column;
+    }
+    .gameStart {
+        margin: 5px
+    }
 }
+
+@media (max-width: 350px) {
+    .counters, .buttons {
+        font-size: 16px;
+    }
 
 .maxHeight {
     max-height: 100vh;

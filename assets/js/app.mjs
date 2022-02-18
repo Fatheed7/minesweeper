@@ -79,6 +79,18 @@ window.addEventListener(
 );
 
 /**
+ * Checks orientation and hides small screen warning if
+ * in landscape view already.
+ */
+window.addEventListener("orientationchange", function () {
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        $("#smallScreen").removeClass("d-none");
+    } else if (window.matchMedia("(orientation: portrait)").matches) {
+        $("#smallScreen").addClass("d-none");
+    }
+});
+
+/**
  * Accepts game width, height and bomb count.
  * Clears cells array, clears bombCells array
  * Hides default message on Stats Bar and shows counters
@@ -546,10 +558,3 @@ function applySettingsStyle() {
 }
 
 // End of Modal Content
-window.addEventListener("orientationchange", function () {
-    if (window.matchMedia("(orientation: landscape)").matches) {
-        console.log("Landscape");
-    } else if (window.matchMedia("(orientation: portrait)").matches) {
-        console.log("Portrait");
-    }
-});
