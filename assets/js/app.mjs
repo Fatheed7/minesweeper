@@ -35,19 +35,19 @@ const game = {
 document.addEventListener("DOMContentLoaded", function () {
     $(`#newgame-beginner`).click(() => {
         newGame(9, 9, 10);
-        $("#grid").css("width", "25vw");
+        gameGridWidth(beginner);
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
     $(`#newgame-intermediate`).click(() => {
         newGame(16, 16, 40);
-        $("#grid").css("width", "27vw");
+        gameGridWidth(intermediate);
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
     $(`#newgame-expert`).click(() => {
         newGame(30, 16, 99);
-        $("#grid").css("width", "50vw");
+        gameGridWidth(expert);
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
@@ -65,10 +65,39 @@ document.addEventListener("DOMContentLoaded", function () {
         welcome();
         $(".helpModal").modal("show");
     }
-
-    let agent = navigator.userAgent.toLowerCase();
-    console.log(agent);
 });
+
+function gameGridWidth(difficulty) {
+    if ($(window).height < 281) {
+        switch (difficulty) {
+            case beginner:
+                $("#grid").css("width", "18vw");
+                break;
+            case intermediate:
+                $("#grid").css("width", "25vw");
+                $("#gameWrap").css("padding", "5px");
+                $(".buttons").css("padding", "0px");
+                break;
+            case expert:
+                $("#grid").css("width", "25vw");
+                $("#gameWrap").css("padding", "5px");
+                $(".buttons").css("padding", "0px");
+                break;
+        }
+    } else {
+        switch (difficulty) {
+            case beginner:
+                $("#grid").css("width", "25vw");
+                break;
+            case intermediate:
+                $("#grid").css("width", "27vw");
+                break;
+            case expert:
+                $("#grid").css("width", "46vw");
+                break;
+        }
+    }
+}
 
 /**
  * Disables Right Click Context Menu
