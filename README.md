@@ -218,6 +218,8 @@ The was created as my second portfolio project for Code Institute's Diploma in W
 
     If the user clicks on a bomb, it will trigger the lose condition and the above modal is displayed.
 
+    If the user is playing on a mobile device, it will vibrate unless disabled in the settings.
+
     It is intentionally minimal and allow for the user to close the modal with the cross in the top right and review their time, or click the 'Play again?' button, at which point a game of the same difficulty will be started.
 
     #
@@ -374,6 +376,10 @@ This warning shows due to the use of JQuery and does not impact the code in any 
 
     #
 
+    The site was tested manually across a range of devices to ensure all links and styling work correctly and to ensure responsiveness across a range of devices. All features on the page were tested, especially the javascript element, to ensure functionality was not impacted in any way. Testing was carried out on multiple browsers such as Google Chrome, Microsoft Edge, Mozilla Firefox, Safari and Opera. Testing was carried out on an Apple iPhone, Apple iPhone 13, Samsung Galaxy S20 FE, Samsung Galaxy A51, Apple iPad Pro & Windows 10 Desktops.
+
+    Testing was carried out across multiple physical devices as well as using the tools made available via [Browser Stack](https://www.browserstack.com/).
+
     -   ## Lighthouse Testing
 
         Lighthouse Desktop Test
@@ -423,6 +429,7 @@ This warning shows due to the use of JQuery and does not impact the code in any 
     -   [Am I Responsive](http://ami.responsivedesign.is/) - Used to verify responsiveness of website on different devices.
     -   [Balsamiq](https://balsamiq.com/) - Used to generate Wireframe images.
     -   [Bootstrap](https://getbootstrap.com/) - Main framework used for the site, with a focus on responsiveness.
+    -   [Browser Stack](https://www.browserstack.com/) - Used for Cross Site Browser Testing.
     -   [Chrome Dev Tools](https://developer.chrome.com/docs/devtools/) - Used for overall development and tweaking, including testing responsiveness and performance.
     -   [Favicon.io](https://favicon.io) - Used to generate Favicon image.
     -   [Font Awesome](https://fontawesome.com/) - Used for icons on floating buttons.
@@ -430,7 +437,6 @@ This warning shows due to the use of JQuery and does not impact the code in any 
     -   [Google Fonts](https://fonts.google.com/) - Used to import and alter fonts on the page.
     -   [JQuery](https://en.wikipedia.org/wiki/JQuery) - Used to simplify definition of DOM elements, but used minimally with a preference for vanilla Javascript.
     -   [JSHint](https://jshint.com/about/) - Linter used to flag errors, bugs and warnings.
-    -   [LambdaTest](https://www.lambdatest.com/) - Used for Cross Site Browser Testing.
     -   [Parcel](https://www.npmjs.com/package/parcel) - Used to host website locally to aid testing before updates were commited to GitHub.
     -   [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Used for consistent code formatting.
     -   [Slack](https://slack.com/) - Used for support and advice from the Code Insitute Community.
