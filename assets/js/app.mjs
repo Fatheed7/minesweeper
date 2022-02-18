@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * Created to fix display error on Galaxy Fold Device
  */
 function gameGridWidth(difficulty) {
-    if ($(window).height < 281) {
+    if ($(window).height() < 281) {
         switch (difficulty) {
             case "beginner":
                 $("#grid").css("width", "18vw");
@@ -572,6 +572,7 @@ $("#saveSettings").click(function () {
     }, 3000);
     console.log("On save - Hide:" + hide);
     console.log("On save - Vibrate:" + vibrate);
+    loadSettings();
 });
 
 /**
