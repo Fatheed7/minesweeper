@@ -561,8 +561,6 @@ $("#deleteNo").click(function () {
  * Saves the requested settings to local storage.
  */
 $("#saveSettings").click(function () {
-    let hide = JSON.parse(storage.getItem("Hide"));
-    let vibrate = JSON.parse(storage.getItem("Vibrate"));
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
     storage.setItem("Hide", document.getElementById("welcomeCheckbox").checked);
@@ -572,8 +570,6 @@ $("#saveSettings").click(function () {
     setTimeout(function () {
         $(".settingConfirmMessage").addClass("d-none");
     }, 3000);
-    console.log("On save - Hide:" + hide);
-    console.log("On save - Vibrate:" + vibrate);
 });
 
 /**
@@ -594,8 +590,6 @@ function loadSettings() {
     } else {
         document.getElementById("vibrationCheckbox").checked = false;
     }
-    console.log("On load - Hide:" + hide);
-    console.log("On load - Vibrate:" + vibrate);
 }
 
 /**
