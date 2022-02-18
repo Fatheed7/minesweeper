@@ -35,19 +35,19 @@ const game = {
 document.addEventListener("DOMContentLoaded", function () {
     $(`#newgame-beginner`).click(() => {
         newGame(9, 9, 10);
-        $("#grid").css("width", "45%");
+        $("#grid").css("width", "25vw");
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
     $(`#newgame-intermediate`).click(() => {
         newGame(16, 16, 40);
-        $("#grid").css("width", "45%");
+        $("#grid").css("width", "27vw");
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
     $(`#newgame-expert`).click(() => {
         newGame(30, 16, 99);
-        $("#grid").css("width", "75%");
+        $("#grid").css("width", "50vw");
         document.getElementById("gameWrap").classList.remove("d-none");
         gameState = 1;
     });
@@ -388,7 +388,7 @@ $(".modalButton").click(function () {
  */
 const helpContent = () => {
     $(".modal-title").text("How to play Minesweeper!");
-    $("#helpModalBody").load("assets/html/helpContent.html");
+    $("#helpModalBody").load("assets/html/helpcontent.html");
     $(".modalButton").text("Close Help!");
 };
 
@@ -404,7 +404,7 @@ const settings = () => {
 
 const welcome = () => {
     $(".modal-title").text("Welcome to Minesweeper!");
-    $("#helpModalBody").load("assets/html/welcomeContent.html");
+    $("#helpModalBody").load("assets/html/welcomecontent.html");
     $(".modalButton").text("Close window!");
 };
 
@@ -546,3 +546,11 @@ function applySettingsStyle() {
 }
 
 // End of Modal Content
+
+if (window.matchMedia("(orientation: portrait)").matches) {
+    console.log("Portrait");
+}
+
+if (window.matchMedia("(orientation: landscape)").matches) {
+    console.log("Landscape");
+}
