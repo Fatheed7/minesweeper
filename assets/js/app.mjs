@@ -65,6 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
         welcome();
         $(".helpModal").modal("show");
     }
+
+    let agent = navigator.userAgent.toLowerCase();
+    console.log(agent);
 });
 
 /**
@@ -263,6 +266,7 @@ const rightClick = () => {
  * and displays it.
  */
 function loseGame() {
+    navigator.vibrate(1000);
     loseContent();
     $(".helpModal").modal("show");
 }
