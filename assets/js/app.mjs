@@ -570,6 +570,8 @@ $("#saveSettings").click(function () {
     setTimeout(function () {
         $(".settingConfirmMessage").addClass("d-none");
     }, 3000);
+    console.log("On save - Hide:" + hide);
+    console.log("On save - Vibrate:" + vibrate);
 });
 
 /**
@@ -588,6 +590,8 @@ function loadSettings() {
     } else {
         document.getElementById("vibrationCheckbox").checked = false;
     }
+    console.log("On load - Hide:" + hide);
+    console.log("On load - Vibrate:" + vibrate);
 }
 
 /**

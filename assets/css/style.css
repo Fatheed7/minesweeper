@@ -33,12 +33,10 @@ body {
     margin-bottom: 20px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    padding: 10px;
 }
 
 #gameWrap {
     background-color: rgb(105, 105, 105);
-    padding: 20px;
     -webkit-box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow: inset 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
