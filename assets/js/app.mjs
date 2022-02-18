@@ -7,6 +7,7 @@ let timeCounter = "";
 let bombCells = [];
 let storage = window.localStorage;
 let hide = JSON.parse(storage.getItem("Hide"));
+let vibrate = JSON.parse(storage.getItem("Vibrate"));
 
 // Holds all the cells in a left to right, top to bottom order.
 const cells = [
@@ -67,11 +68,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+/**
+ * Checks if window height is less than 281px
+ * Applies different styling if true.
+ * Created to fix display error on Galaxy Fold Device
+ */
 function gameGridWidth(difficulty) {
     if ($(window).height < 281) {
         switch (difficulty) {
             case "beginner":
                 $("#grid").css("width", "18vw");
+                $("#gameWrap").css("padding", "5px");
+                $(".buttons").css("padding", "0px");
                 break;
             case "intermediate":
                 $("#grid").css("width", "25vw");
@@ -88,12 +96,18 @@ function gameGridWidth(difficulty) {
         switch (difficulty) {
             case "beginner":
                 $("#grid").css("width", "25vw");
+                $("#gameWrap").css("padding", "20px");
+                $(".buttons").css("padding", "10px");
                 break;
             case "intermediate":
                 $("#grid").css("width", "27vw");
+                $("#gameWrap").css("padding", "20px");
+                $(".buttons").css("padding", "10px");
                 break;
             case "expert":
                 $("#grid").css("width", "46vw");
+                $("#gameWrap").css("padding", "20px");
+                $(".buttons").css("padding", "10px");
                 break;
         }
     }
@@ -293,9 +307,12 @@ const rightClick = () => {
 /**
  * Updates the content of the modal
  * and displays it.
+ * Vibrates if not disabled
  */
 function loseGame() {
-    navigator.vibrate(1000);
+    if (!vibrate) {
+        navigator.vibrate(750);
+    }
     loseContent();
     $(".helpModal").modal("show");
 }
@@ -427,7 +444,7 @@ $(".modalButton").click(function () {
 });
 
 /**
- * Code between lines 387 - 419 update the content
+ * Code between lines 452 - 483 update the content
  * of the helpModal, allowing a single modal to be used
  * and reducing the amount of HTML needed.
  */
@@ -547,7 +564,12 @@ $("#saveSettings").click(function () {
     storage.setItem("Unrevealed", unrevealedColour.value);
     storage.setItem("Empty", emptyColour.value);
     storage.setItem("Hide", document.getElementById("welcomeCheckbox").checked);
+    storage.setItem("Vibrate", document.getElementById("vibrationCheckbox").checked);
     applySettingsStyle();
+    $(".settingConfirmMessage").removeClass("d-none");
+    setTimeout(function () {
+        $(".settingConfirmMessage").addClass("d-none");
+    }, 3000);
 });
 
 /**
@@ -561,6 +583,11 @@ function loadSettings() {
     } else {
         document.getElementById("welcomeCheckbox").checked = false;
     }
+    if (vibrate == true) {
+        document.getElementById("vibrationCheckbox").checked = true;
+    } else {
+        document.getElementById("vibrationCheckbox").checked = false;
+    }
 }
 
 /**
@@ -571,6 +598,7 @@ function defaultSettings() {
     storage.setItem("Unrevealed", "#ababab");
     storage.setItem("Empty", "#d3d3d3");
     storage.setItem("Hide", false);
+    storage.setItem("Vibrate", false);
     document.getElementById("unrevealedColour").value = storage.Unrevealed;
     document.getElementById("emptyColour").value = storage.Empty;
     document.getElementById("welcomeCheckbox").checked = false;
