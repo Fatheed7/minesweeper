@@ -87,7 +87,7 @@ function gameGridWidth(difficulty) {
                 $(".buttons").css("padding", "0px");
                 break;
             case "expert":
-                $("#grid").css("width", "25vw");
+                $("#grid").css("width", "48vw");
                 $("#gameWrap").css("padding", "5px");
                 $(".buttons").css("padding", "0px");
                 break;
@@ -572,7 +572,6 @@ $("#saveSettings").click(function () {
     }, 3000);
     console.log("On save - Hide:" + hide);
     console.log("On save - Vibrate:" + vibrate);
-    loadSettings();
 });
 
 /**
