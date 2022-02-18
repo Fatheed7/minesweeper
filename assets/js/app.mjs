@@ -547,11 +547,9 @@ function applySettingsStyle() {
 
 // End of Modal Content
 window.addEventListener("orientationchange", function () {
-    if (window.matchMedia("(orientation: portrait)").matches) {
-        console.log("Portrait");
-    }
-
     if (window.matchMedia("(orientation: landscape)").matches) {
         console.log("Landscape");
+    } else if (window.matchMedia("(orientation: portrait)").matches) {
+        console.log("Portrait");
     }
 });
