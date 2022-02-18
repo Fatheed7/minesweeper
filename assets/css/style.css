@@ -219,15 +219,17 @@ body {
         flex-direction: column;
     }
     .gameStart {
-        margin: 5px
+        margin: 5px;
     }
 }
 
 @media (max-width: 350px) {
-    .counters, .buttons {
+    .counters,
+    .buttons {
         font-size: 16px;
     }
 
-.maxHeight {
-    max-height: 100vh;
+    .maxHeight {
+        max-height: 100vh;
+    }
 }
